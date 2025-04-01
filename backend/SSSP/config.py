@@ -6,7 +6,7 @@ from pydantic import Field
 import os
 
 class Ban:
-    ban_list: list = os.getenv("BAN")
+    ban_list: list = os.getenv("BAN") if os.getenv("BAN") else []
 
 class Jwt:
     secret_key: str = os.getenv("JWT_SECRET_KEY")
