@@ -33,6 +33,8 @@ services:
       CHALLENGE_DIR: /app/challenge_files
 
       REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
+
+      CORS_ORIGINS: ${CORS_ORIGINS}
     volumes:
       - sssp_backend_challenge_files:/app/challenge_files
       # - /etc/letsencrypt:/etc/letsencrypt:ro

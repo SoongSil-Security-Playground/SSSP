@@ -51,7 +51,15 @@ async def error_notification_middleware(request, call_next):
 
 
 # CORS
-origins = ["http://localhost:3000", "http://127.0.0.1:3000"]
+CORS_ORIGINS = os.getenv("CORS_ORIGINS")
+if CORS_ORIGINS:
+    CORS_ORIGINS = CORS_ORIGINS.split(" ")
+else:
+    CORS_ORIGINS = []
+
+print(CORS_ORIGINS)
+    
+origins = CORS_ORIGINS
 apimain.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
