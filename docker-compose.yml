@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
 
     ports:
-      - 443:443
+      - "${BACK_PORT}:443"
 
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
@@ -63,7 +63,7 @@ services:
     image: mysql:8.0
     container_name: sssp-database
     ports:
-      - "3306:3306"
+      - ":3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DB}
@@ -93,7 +93,7 @@ services:
     image: redis:7.2-alpine
     container_name: sssp-redis
     ports:
-      - "6379:6379"
+      - ":6379"
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes
