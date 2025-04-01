@@ -1,0 +1,13 @@
+uvicorn[standard]==0.23.0
+fastapi==0.103.1
+pydantic[email]==2.7.0
+pydantic-settings==2.6.1
+sqlalchemy==1.4.48
+passlib==1.7.4
+python-jose==3.3.0
+python-multipart==0.0.6
+pymysql==1.0.3
+cryptography==41.0.3
+boto3==1.26.0
+redis==5.0.1
+requests==2.31.0

@@ -1,0 +1,133 @@
+services:
+  sssp-backend:
+    container_name: sssp-backend
+
+    build:
+      context: backend
+      dockerfile: Dockerfile
+
+    ports:
+      - 443:443
+
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DB: ${MYSQL_DB}
+
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ALGORITHM: ${JWT_ALGORITHM}
+      JWT_TOKEN_EXPIRE_MINUTES: ${JWT_TOKEN_EXPIRE_MINUTES}
+      
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+
+      INITIAL_ADMIN_ID: ${INITIAL_ADMIN_ID}
+      INITIAL_ADMIN_PW: ${INITIAL_ADMIN_PW}
+      
+      GOOGLE_EMAIL_SECRET: ${GOOGLE_EMAIL_SECRET}
+      GOOGLE_EMAIL: ${GOOGLE_EMAIL}
+
+      USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
+      CHALLENGE_DIR: /app/challenge_files
+
+      REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
+    volumes:
+      - sssp_backend_challenge_files:/app/challenge_files
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+
+    depends_on:
+      redis:
+        condition: service_healthy
+      sssp-database:
+        condition: service_healthy
+
+    networks:
+      - sssp_network
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 512M
+    #       cpus: '0.5'
+    restart: always
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-k", "https://localhost:443/health-check"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  sssp-database:
+    image: mysql:8.0
+    container_name: sssp-database
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks:
+      - sssp_network
+
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+    restart: always
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: sssp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - sssp_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    restart: always
+
+  frontend-app:
+    container_name: sssp-frontend
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
+      REACT_APP_USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
+    restart: always
+
+volumes:
+  mysql_data:
+  redis_data:
+  sssp_backend_challenge_files:
+
+networks:
+  sssp_network:
+    driver: bridge
+
