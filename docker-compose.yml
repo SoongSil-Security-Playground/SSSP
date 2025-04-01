@@ -63,7 +63,7 @@ services:
     image: mysql:8.0
     container_name: sssp-database
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DB}
@@ -116,7 +116,7 @@ services:
       context: frontend/
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - "${FRONT_PORT}:3000"
     environment:
       REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
       REACT_APP_USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
