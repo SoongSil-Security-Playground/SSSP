@@ -32,7 +32,9 @@ def get_all_challenge(
             temp.is_user_solved = 1
         else:
             temp.is_user_solved = 0
-            
+        
+        if user.authority == UserRole.USER:
+            temp.flag = "REDACTED"
         challenge_responses.append(temp)
 
     logging.info(f"[*] CHALLENGE_LIST>> {challenge_responses}")
