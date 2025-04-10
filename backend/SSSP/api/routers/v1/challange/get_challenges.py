@@ -37,7 +37,7 @@ def get_all_challenge(
             temp.flag = "REDACTED"
         challenge_responses.append(temp)
 
-    logging.info(f"[*] CHALLENGE_LIST>> {challenge_responses}")
+    #logging.info(f"[*] CHALLENGE_LIST>> {challenge_responses}")
     return challenge_responses
 
 

@@ -49,6 +49,7 @@ def calc_score(user: models.User, db: Session):
         challenge = (
             db.query(models.Challenge).filter(models.Challenge.id == solve_id).first()
         )
-        score += challenge.points
+        if challenge != None:
+            score += challenge.points
 
     return score

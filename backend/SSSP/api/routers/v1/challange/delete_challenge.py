@@ -43,13 +43,13 @@ def delete_challenge(
     if challenge.file_path:
         try:
             logging.info(f'Trying to delete file from Storage: {challenge.file_path}')
-            if delete_file(challenge.file_path.split('/')[-1]) == False:
-                raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail="Failed to save or update file",
-                )   
-            
-            logging.info(f"Deleted file from Storage: {challenge.file_path}")
+            #if delete_file(challenge.file_path.split('/')[-1]) == False:
+            #    raise HTTPException(
+            #        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            #        detail="Failed to save or update file",
+            #    )   
+            logging.info(f"Todo: delete challenge from storage")
+            #logging.info(f"Deleted file from Storage: {challenge.file_path}")
         except Exception as e:
             logging.error(f"Failed to delete file from Storage: {e}")
             raise HTTPException(

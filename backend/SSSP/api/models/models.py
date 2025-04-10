@@ -77,7 +77,7 @@ class Submission(Base):
     is_correct = Column(Boolean, default=False)
     comment = Column(String(255), nullable=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    challenge_id = Column(Integer, ForeignKey("challenges.id"), nullable=False)
+    challenge_id = Column(Integer, ForeignKey("challenges.id"))
 
     user = relationship("User", back_populates="submissions")
     challenge = relationship("Challenge", back_populates="submissions")
