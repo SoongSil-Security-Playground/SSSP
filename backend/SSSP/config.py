@@ -29,8 +29,8 @@ class InitialAdmin:
         self.INITIAL_ADMIN_PW = os.getenv("INITIAL_ADMIN_PW")
 
 class RedisSettings(BaseSettings):
-    REDIS_HOST: str = os.getenv("REDIS_HOST")
-    REDIS_PORT: int = os.getenv("REDIS_PORT")
+    REDIS_HOST: str = os.getenv("REDIS_HOST", "")
+    REDIS_PORT: int = os.getenv("REDIS_PORT", 11111)
 
 
 class EmailSettings(BaseSettings):
@@ -56,8 +56,8 @@ class Settings(BaseSettings):
     initial_account: InitialAdmin = InitialAdmin()
     redis: RedisSettings = RedisSettings()
     email: EmailSettings = EmailSettings(
-        sender_email=os.getenv("GOOGLE_EMAIL"),
-        sender_password=os.getenv("GOOGLE_EMAIL_SECRET"),
+        sender_email=os.getenv("GOOGLE_EMAIL", ''),
+        sender_password=os.getenv("GOOGLE_EMAIL_SECRET", ''),
     )
 
     model_config = {
@@ -67,7 +67,7 @@ class Settings(BaseSettings):
     }
 
     use_email_auth: bool = os.getenv("USE_EMAIL_AUTH").lower() == "true"
-    challenge_file_path: str = os.getenv("CHALLENGE_DIR")
+    challenge_file_path: str = os.getenv("CHALLENGE_DIR", "")
     backend_url: str = os.getenv("REACT_APP_BACKEND_URL")
 
 settings = Settings()

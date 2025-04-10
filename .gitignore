@@ -2,4 +2,5 @@
 **/__pycache__/
 .env
 .DS_Store
-file_save_update.py
+**/tmp/
+local_challenge_upload.py
