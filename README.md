@@ -1,8 +1,7 @@
 # SSSP
 Soongsil Security Playground V1.0
 
-## About
-- 숭실대학교 소프트웨어학부 융합보안프로젝트2 과목에서 개발한 프로젝트 Soongsil Security Playground 입니다.
+숭실대학교 소프트웨어학부 융합보안프로젝트2 과목에서 개발한 프로젝트 Soongsil Security Playground 입니다.
 
 ## Getting Started
 **You can run ctf with only one command!!!**
@@ -36,6 +35,7 @@ SSSP uses the following technology stacks
 - Fix Delete Challenge File
 - Authorization when Challenge File Download 
     - only authroized user can download challenge file.
+- Fix delete user in admin panel
 
 ### Prototype - V1.0 변동사항
 - [chore] Update README.md
