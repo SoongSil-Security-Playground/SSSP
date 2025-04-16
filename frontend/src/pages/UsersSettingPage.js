@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserInfoCard from "../components/UserInfoCard";
 import SearchBar from "../components/SearchBar";
 import { useNavigate } from "react-router-dom";
-import { fetchAllUsers } from '../services/user';
+import { fetchAllUsers, deleteSpecificUser } from '../services/user';
 import { toast } from 'react-toastify';
 
 function UsersSettingPage() {
@@ -18,10 +18,16 @@ function UsersSettingPage() {
     //     navigate(`/admin/users/edit/${userId}`, { state: { user: userToEdit } });
     // };
 
-    const handleDelete = (userId) => {
+    const handleDelete = async (userId) => {
         if (window.confirm("정말로 이 사용자를 삭제하시겠습니까?")) {
             const updatedUsers = users.filter(user => user.id !== userId);
             setUsers(updatedUsers);
+            const token = localStorage.getItem("token");
+            if (!token) {
+                throw new Error("No token found. Please log in.");
+            }
+    
+            await deleteSpecificUser(userId, token);
         }
     };
 

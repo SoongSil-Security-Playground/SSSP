@@ -56,6 +56,26 @@ export const deleteUserInfo = async (token) => {
 
 };
 
+export const deleteSpecificUser = async (id, token) => {
+    const response = await fetch(`${BACKEND_URL}/api/v1/admin/delete_user?user_id=${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/json",
+        },
+    });
+    console.log(response);
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        console.log("fail");
+        throw new Error(errorData.detail || "Failed to delete user.")
+    }
+
+    return await response.json();
+
+};
+
 export const fetchAllUsers = async (token) => {
     const response = await fetch(`${BACKEND_URL}/api/v1/user/user_list`, {
         method: "GET",
