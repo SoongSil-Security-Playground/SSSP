@@ -1,41 +1,41 @@
 # SSSP
 Soongsil Security Playground V1.0
 
-## About
-
-- 숭실대학교 소프트웨어학부 융합보안프로젝트2 과목에서 개발한 프로젝트 **"SSSP"** 의 backend api server입니다.
-
-## Back-end
-<!-- 
-Backend Use Docker-Volume based storage.
-So you don't need to setup mysql, challenge_directory! -->
-
-<!-- 
-### Framework && Languages
-- FastAPI with python3
-- Database : MySQL
-    - ORM: sqlalchemy -->
-
-## port
-<!-- - external:
-    - univorn-backend:443
-    - redis:6379
-- internal
-    - mysql:3306 -->
-
-## Front-end
-### Requirements
+숭실대학교 소프트웨어학부 융합보안프로젝트2 과목에서 개발한 프로젝트 Soongsil Security Playground 입니다.
 
 ## Getting Started
+**You can run ctf with only one command!!!**
 ```bash
 ./run.sh
 ```
 
+### Requirements
+- just docker!
+
+---
+
+## Development
+SSSP uses the following technology stacks
+
+- Backend
+    - python3
+    - FastAPI
+    - Redis ( for Email Authentication )  
+- Data Storage
+    - Mysql ( with sqlalchemy in FastAPI )
+- Frontend
+    - React
+
+## Feature
+- Backend Use Docker-Volume based storage.
+    - So you don't need to setup mysql, challenge_directory!
 
 ### Todo:
 - Delete Submission
-- Download Authorization
+- Fix Delete Challenge File
+- Authorization when Challenge File Download 
     - only authroized user can download challenge file.
+- Fix delete user in admin panel
 
 ### Prototype - V1.0 변동사항
 - [chore] Update README.md
