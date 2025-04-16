@@ -38,7 +38,7 @@ def get_all_score(
         }
         user_responses.append(schema_score.ScoreResponse.construct(**data))
         
-    logging.info(f"[*] Score List >> {user_responses}")
+    # logging.info(f"[*] Score List >> {user_responses}")
 
     return user_responses
 

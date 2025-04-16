@@ -64,6 +64,8 @@ services:
   sssp-database:
     image: mysql:8.0
     container_name: sssp-database
+    expose:
+      - "3306"
     ports:
       - ":3306"
     environment:
