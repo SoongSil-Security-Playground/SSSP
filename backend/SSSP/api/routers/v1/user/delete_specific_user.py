@@ -9,6 +9,7 @@ from SSSP.api.models import models
 from SSSP.api.core import auth
 from SSSP.config import settings
 from SSSP.api.core.database import *
+from SSSP.api.models.enums.user_role import UserRole
 
 
 router = APIRouter()
@@ -22,7 +23,7 @@ def delete_specific_user(
 ):
     logging.info(f"[*] DELETE_SPECIFIC_USER >> Request with {token}")
 
-    user = get_current_user_by_jwt(token, db)
+    user = auth.get_current_user_by_jwt(token, db)
     if user.authority != UserRole.ADMIN:
         logging.warning(f"Unauthorized attempt to delete specific user by user {user.id}")
         raise HTTPException(
@@ -35,7 +36,7 @@ def delete_specific_user(
     if not specific_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    db.delete(delete_target_user)
+    db.delete(specific_user)
     db.commit()
 
     logging.info(f"User deleted successfully: ID {user_id}")
