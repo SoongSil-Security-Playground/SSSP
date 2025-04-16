@@ -23,6 +23,7 @@ SSSP uses the following technology stacks
     - Redis ( for Email Authentication )  
 - Data Storage
     - Mysql ( with sqlalchemy in FastAPI )
+    - If you change the mysql password, you have to delete volume of mysql
 - Frontend
     - React
 
