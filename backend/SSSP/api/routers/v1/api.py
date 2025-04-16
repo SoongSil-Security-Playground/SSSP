@@ -18,6 +18,7 @@ from SSSP.api.routers.v1.user import (
     get_current_user,
     get_user_list,
     update_current_user,
+    delete_specific_user,
 )
 
 from SSSP.api.routers.v1.challange import (
@@ -89,3 +90,4 @@ router.include_router(delete_notice.router, prefix="/admin", tags=["notice"])
 
 ## User
 router.include_router(is_admin.router, prefix="/admin", tags=["auth"])
+router.include_router(delete_specific_user.router, prefix="/admin", tags=["user"])
