@@ -30,11 +30,7 @@ class InitialAdmin:
 
 class RedisSettings(BaseSettings):
     REDIS_HOST: str = os.getenv("REDIS_HOST", "")
-<<<<<<< HEAD
-    REDIS_PORT: int = os.getenv("REDIS_PORT", "")
-=======
-    REDIS_PORT: int = os.getenv("REDIS_PORT", 11111)
->>>>>>> d55d8668c447af4b18cd726d834490ebece063be
+    REDIS_PORT: int = os.getenv("REDIS_PORT", 1111)
 
 
 class EmailSettings(BaseSettings):
