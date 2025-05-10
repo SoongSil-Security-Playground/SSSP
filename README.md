@@ -37,6 +37,7 @@ SSSP uses the following technology stacks
 - Authorization when Challenge File Download 
     - only authroized user can download challenge file.
 - Fix delete user in admin panel
+- MinIO Storage 적용
 
 ### Prototype - V1.0 변동사항
 - [chore] Update README.md
