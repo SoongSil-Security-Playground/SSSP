@@ -13,7 +13,7 @@ export default function SettingPage() {
   const [active, setActive] = useState(1);
 
   return (
-    <div style={{ backgroundColor: "#242424" }}>
+    <div className={styles.container}>
       <h1 className={styles.header}>SETTING</h1>
       <div className={styles.wrapper}>
         <div className={styles.bodyWrapper}>

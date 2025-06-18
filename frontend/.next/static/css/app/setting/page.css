@@ -1,6 +1,13 @@
 /*!***************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/app/setting/page.module.css ***!
   \***************************************************************************************************************************************************************************************************************************************************************************/
+.page_container__RKO2z {
+  width: 100%;
+  background-color: #242424;
+  padding-top: 3%;
+  padding-bottom: 5%;
+}
+
 .page_header__17oTL {
   width: 100%;
   text-align: center;
@@ -271,7 +278,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  min-width: 45%;
+  min-width: 50%;
 }
 
 .ChallengeHeader_searchContainer__qTC0z {
@@ -283,6 +290,8 @@
   border: 1px solid #444;
   border-radius: 4px;
   padding: 8px 8px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
 }
 
 .ChallengeHeader_searchIcon___3AYI {
