@@ -661,3 +661,60 @@
   stroke: #888;
 }
 
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingHeader/SubmissionHeader/index.module.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************/
+.SubmissionHeader_toolbar__MZegn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 40%;
+}
+
+.SubmissionHeader_searchContainer__fX5pT {
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px 8px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.SubmissionHeader_searchIcon__5hw52 {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.SubmissionHeader_searchInput___U6QQ {
+  flex: 1 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.SubmissionHeader_button__LOdZU {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.SubmissionHeader_addButton__j3otD {
+  background: #008eaa;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #fff;
+}
+
