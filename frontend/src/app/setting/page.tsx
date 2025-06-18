@@ -12,7 +12,7 @@ export default function SettingPage() {
 
   return (
     <div style={{ backgroundColor: "#242424" }}>
-      <h1>Here is Setting Page</h1>
+      <h1 className={styles.header}>SETTING</h1>
       <div className={styles.wrapper}>
         <div className={styles.bodyWrapper}>
           <div className={styles.headerWrapper}>

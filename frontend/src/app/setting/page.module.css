@@ -1,3 +1,11 @@
+.header {
+  width: 100%;
+  text-align: center;
+  color: #f1f1f1;
+  font-family: "Silkscreen";
+  font-size: 40px;
+}
+
 .wrapper {
   justify-content: center;
   display: flex;

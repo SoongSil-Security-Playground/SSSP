@@ -6,7 +6,11 @@ type TabsProps = {
   onChange: (newIndex: number) => void;
 };
 
-export default function Tabs({ items, activeIndex, onChange }: TabsProps) {
+export default function SelectSetting({
+  items,
+  activeIndex,
+  onChange,
+}: TabsProps) {
   return (
     <div className={styles.container}>
       {items.map((label, i) => (
