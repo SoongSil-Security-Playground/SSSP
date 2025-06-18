@@ -389,3 +389,39 @@
   color: #fff;
 }
 
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingHeader/UsersHeader/index.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************/
+.UsersHeader_container__cdBlW {
+  width: 35%;
+}
+
+.UsersHeader_searchWrapper__aNrsx {
+  position: relative;
+  min-width: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.UsersHeader_searchInput__j5Gc8 {
+  width: 100%;
+  padding: 10px 48px 10px 40px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+}
+
+.UsersHeader_searchIcon__VNuJF {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  stroke: #888;
+}
+

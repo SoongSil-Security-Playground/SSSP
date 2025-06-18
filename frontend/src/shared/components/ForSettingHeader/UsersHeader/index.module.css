@@ -1,0 +1,32 @@
+.container {
+  width: 35%;
+}
+
+.searchWrapper {
+  position: relative;
+  min-width: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 48px 10px 40px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  stroke: #888;
+}
