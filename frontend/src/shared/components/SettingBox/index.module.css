@@ -3,6 +3,7 @@
 .container {
   width: 100%;
   overflow-x: auto;
+  border-radius: 5px;
 }
 
 .table {
@@ -15,20 +16,15 @@
 /* Header 부분 */
 .header {
   color: #b5c2d6;
-  background: linear-gradient(
-      0deg,
-      rgba(106, 209, 227, 0.16) 0%,
-      rgba(106, 209, 227, 0.16) 100%
-    ),
-    rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(234, 236, 240, 0.16);
+  background: #3d4e51;
+  border: none;
 }
 
 .headerCell {
   padding: 12px;
   text-align: left;
   font-weight: 500;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
 }
 
 .checkboxCell {

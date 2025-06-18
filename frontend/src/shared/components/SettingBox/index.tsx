@@ -3,7 +3,7 @@ import styles from "@/shared/components/SettingBox/index.module.css";
 
 import { dummyRows } from "@/shared/components/SettingBox/dummyData";
 
-export default function SettingBox({}) {
+export default function SettingBox() {
   return (
     <div className={styles.container}>
       <table className={styles.table}>
