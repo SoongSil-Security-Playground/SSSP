@@ -1,0 +1,220 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/app/setting/page.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
+.page_wrapper__fC19s {
+  justify-content: center;
+  display: flex;
+  width: 100cvh;
+  height: 100cvh;
+}
+
+.page_bodyWrapper__4ToaV {
+  display: flex;
+  justify-content: center;
+
+  width: 75%;
+}
+
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/SettingBox/index.module.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************/
+/* components/SettingBox/index.module.css */
+
+.SettingBox_container__ckXQi {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.SettingBox_table__CkpaM {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+/* Header 부분 */
+.SettingBox_header__oGvlQ {
+  color: #b5c2d6;
+  background: linear-gradient(
+      0deg,
+      rgba(106, 209, 227, 0.16) 0%,
+      rgba(106, 209, 227, 0.16) 100%
+    ),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.SettingBox_headerCell__7xTJf {
+  padding: 12px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.SettingBox_checkboxCell__BTdyn {
+  width: 48px;
+  text-align: center;
+}
+
+.SettingBox_titleCell__WrREa,
+.SettingBox_scoreCell__UAZKj {
+  width: 15%;
+  text-align: center;
+}
+
+.SettingBox_updatedCell__SGz8e {
+  width: 15%;
+  padding-left: 5%;
+  text-align: left;
+}
+
+.SettingBox_categoryCell__xjkG1 {
+  width: 40%;
+  padding-right: 5%;
+  text-align: right;
+}
+
+.SettingBox_actionsCell__zRb6m {
+  width: 48px;
+  text-align: right;
+  color: #b5c2d6;
+  padding-right: 1%;
+}
+
+/* Body 부분 */
+.SettingBox_row__Xz56Y {
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+  background-color: #2b2b2b;
+}
+
+/* .row:hover {
+  background-color: #fafafa;
+} */
+
+.SettingBox_selected__j1zdr {
+  background-color: #e6f7ff;
+}
+
+.SettingBox_checkboxBodyCell__mp_cS {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.SettingBox_titleBodyCell__uUKo3 {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #ffffff;
+}
+
+.SettingBox_scoreBodyCell___HNfd {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #b5c2d6;
+}
+
+.SettingBox_updatedBodyCell__hNKHK {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #b5c2d6;
+}
+
+.SettingBox_categoryBodyCell__bhMYf {
+  padding: 12px;
+  padding-right: 5.5%;
+  vertical-align: middle;
+  text-align: right;
+}
+
+.SettingBox_title__S0ROD {
+  font-weight: 600;
+}
+
+.SettingBox_badge__An4s7 {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #64b5bf;
+  color: black;
+}
+
+/* 체크박스 디자인 */
+
+.SettingBox_customCheckbox__DAFky {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #343434;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.SettingBox_customCheckbox__DAFky:checked {
+  background-color: #2cb1cc;
+  border-color: #2cb1cc;
+}
+
+.SettingBox_customCheckbox__DAFky:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.SettingBox_headerCheckbox__0R62z {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #2cb1cc;
+  border-radius: 6px;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+}
+
+.SettingBox_headerCheckbox__0R62z:checked {
+  background-color: #2cb1cc;
+}
+.SettingBox_headerCheckbox__0R62z:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 7px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.SettingBox_headerCheckbox__0R62z:indeterminate {
+  background-color: #fff;
+}
+.SettingBox_headerCheckbox__0R62z:indeterminate::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background-color: #2cb1cc;
+  transform: translate(-50%, -50%);
+}
+

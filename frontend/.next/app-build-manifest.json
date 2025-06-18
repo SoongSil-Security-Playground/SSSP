@@ -10,10 +10,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/layout.js"
     ],
-    "/mypage/page": [
+    "/setting/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/mypage/page.js"
+      "static/css/app/setting/page.css",
+      "static/chunks/app/setting/page.js"
     ]
   }
 }
