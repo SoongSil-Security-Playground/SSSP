@@ -1,9 +1,8 @@
-import React from "react";
 import styles from "./index.module.css";
 
 import { dummyRows } from "./dummyData";
 
-export default function SettingBox() {
+export default function ChallengeBox() {
   return (
     <div className={styles.container}>
       <table className={styles.table}>

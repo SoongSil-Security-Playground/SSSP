@@ -253,7 +253,7 @@
   align-items: center;
   background-color: #3a3a3a;
   padding: 15px 30px;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .UsersBox_userInfo__PT0pP {
@@ -289,6 +289,249 @@
   font-size: 10px;
   cursor: pointer;
   color: #ffffff;
+}
+
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/NotificationBox/index.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+.NotificationBox_container__8dvQ1 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.NotificationBox_noticeRow__0GaHm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 15px 30px;
+  border-radius: 8px;
+}
+
+.NotificationBox_info__NwvV0 {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.NotificationBox_title__Wd_IR {
+  min-width: 16rem;
+  font-family: "Press Start 2P", monospace;
+  font-size: 14px;
+  color: #fff;
+}
+
+.NotificationBox_date__5Nluc {
+  font-family: "VT323", monospace;
+  font-size: 20px;
+  color: #888;
+}
+
+.NotificationBox_actions__bcopB {
+  display: flex;
+  gap: 16px;
+}
+
+.NotificationBox_button__Gb61x {
+  font-family: "Press Start 2P", monospace;
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+}
+
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/SubmissionBox/index.module.css ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
+.SubmissionBox_container__8Idtq {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 5px;
+}
+
+.SubmissionBox_table__3wPNS {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* Header */
+.SubmissionBox_header__lhfie {
+  background: #3d4e51;
+  color: #b5c2d6;
+}
+
+.SubmissionBox_headerCell__vIMup {
+  padding: 10px 24px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.SubmissionBox_checkboxCell__fBOio {
+  width: 48px;
+  text-align: center;
+}
+
+.SubmissionBox_userNameCell__KCpfp {
+  width: 15%;
+  text-align: center;
+}
+
+.SubmissionBox_challengeCell__OO_Qw {
+  width: 20%;
+  text-align: left;
+}
+
+.SubmissionBox_submitCell__HQ_Vg {
+  width: 20%;
+  text-align: center;
+}
+
+.SubmissionBox_solvedCell__GaNYp {
+  width: 20%;
+  text-align: center;
+}
+
+.SubmissionBox_correctCell__afKYB {
+  width: 15%;
+  text-align: center;
+}
+
+.SubmissionBox_actionsCell__wyG7T {
+  width: 48px;
+  text-align: right;
+  color: #b5c2d6;
+  padding-right: 1%;
+}
+
+/* Body */
+.SubmissionBox_row__kWLhi {
+  background-color: #2b2b2b;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.SubmissionBox_cell__bT7Ot {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.SubmissionBox_checkboxBodyCell__YVhuu {
+  text-align: center;
+}
+
+.SubmissionBox_userNameBodyCell__WOizA {
+  color: #ffffff;
+}
+
+.SubmissionBox_challengeBodyCell__kna_Q,
+.SubmissionBox_submitBodyCell__ORAaP,
+.SubmissionBox_solvedBodyCell__fhwV8 {
+  color: #b5c2d6;
+}
+
+.SubmissionBox_correctBodyCell___8QO5 {
+  text-align: center;
+}
+
+.SubmissionBox_badgeCorrect__eEVH9 {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #64b5bf;
+  color: black;
+}
+
+.SubmissionBox_badgeIncorrect__qnKK_ {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #e57373;
+  color: white;
+}
+
+/* custom checkboxes */
+.SubmissionBox_customCheckbox__yAFV5 {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #343434;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.SubmissionBox_customCheckbox__yAFV5:checked {
+  background-color: #2cb1cc;
+  border-color: #2cb1cc;
+}
+
+.SubmissionBox_customCheckbox__yAFV5:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.SubmissionBox_headerCheckbox__mnls2 {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #2cb1cc;
+  border-radius: 6px;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+}
+
+.SubmissionBox_headerCheckbox__mnls2:checked {
+  background-color: #2cb1cc;
+}
+
+.SubmissionBox_headerCheckbox__mnls2:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 7px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.SubmissionBox_headerCheckbox__mnls2:indeterminate {
+  background-color: #fff;
+}
+
+.SubmissionBox_headerCheckbox__mnls2:indeterminate::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background-color: #2cb1cc;
+  transform: translate(-50%, -50%);
 }
 
 /*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
@@ -373,13 +616,6 @@
   font-weight: 500;
   cursor: pointer;
   border: none;
-}
-
-.ChallengeHeader_deleteButton__740uJ {
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
-  padding: 10px 16px;
-  border-radius: 8px;
 }
 
 .ChallengeHeader_addButton__9QQS4 {

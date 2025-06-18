@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.noticeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 15px 30px;
+  border-radius: 8px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.title {
+  min-width: 16rem;
+  font-family: "Press Start 2P", monospace;
+  font-size: 14px;
+  color: #fff;
+}
+
+.date {
+  font-family: "VT323", monospace;
+  font-size: 20px;
+  color: #888;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+}
+
+.button {
+  font-family: "Press Start 2P", monospace;
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+}

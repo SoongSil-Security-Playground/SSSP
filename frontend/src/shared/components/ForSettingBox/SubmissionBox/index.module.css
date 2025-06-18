@@ -1,0 +1,184 @@
+.container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 5px;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* Header */
+.header {
+  background: #3d4e51;
+  color: #b5c2d6;
+}
+
+.headerCell {
+  padding: 10px 24px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.checkboxCell {
+  width: 48px;
+  text-align: center;
+}
+
+.userNameCell {
+  width: 15%;
+  text-align: center;
+}
+
+.challengeCell {
+  width: 20%;
+  text-align: left;
+}
+
+.submitCell {
+  width: 20%;
+  text-align: center;
+}
+
+.solvedCell {
+  width: 20%;
+  text-align: center;
+}
+
+.correctCell {
+  width: 15%;
+  text-align: center;
+}
+
+.actionsCell {
+  width: 48px;
+  text-align: right;
+  color: #b5c2d6;
+  padding-right: 1%;
+}
+
+/* Body */
+.row {
+  background-color: #2b2b2b;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.cell {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.checkboxBodyCell {
+  text-align: center;
+}
+
+.userNameBodyCell {
+  color: #ffffff;
+}
+
+.challengeBodyCell,
+.submitBodyCell,
+.solvedBodyCell {
+  color: #b5c2d6;
+}
+
+.correctBodyCell {
+  text-align: center;
+}
+
+.badgeCorrect {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #64b5bf;
+  color: black;
+}
+
+.badgeIncorrect {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #e57373;
+  color: white;
+}
+
+/* custom checkboxes */
+.customCheckbox {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #343434;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.customCheckbox:checked {
+  background-color: #2cb1cc;
+  border-color: #2cb1cc;
+}
+
+.customCheckbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.headerCheckbox {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #2cb1cc;
+  border-radius: 6px;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+}
+
+.headerCheckbox:checked {
+  background-color: #2cb1cc;
+}
+
+.headerCheckbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 7px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.headerCheckbox:indeterminate {
+  background-color: #fff;
+}
+
+.headerCheckbox:indeterminate::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background-color: #2cb1cc;
+  transform: translate(-50%, -50%);
+}
