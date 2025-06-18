@@ -38,18 +38,18 @@
   justify-content: space-between;
 }
 
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/SettingBox/index.module.css ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/ChallengeBox/index.module.css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* components/SettingBox/index.module.css */
 
-.SettingBox_container__ckXQi {
+.ChallengeBox_container__rQgF7 {
   width: 100%;
   overflow-x: auto;
   border-radius: 5px;
 }
 
-.SettingBox_table__CkpaM {
+.ChallengeBox_table__mtNxL {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
@@ -57,43 +57,43 @@
 }
 
 /* Header 부분 */
-.SettingBox_header__oGvlQ {
+.ChallengeBox_header__2yUak {
   color: #b5c2d6;
   background: #3d4e51;
   border: none;
 }
 
-.SettingBox_headerCell__7xTJf {
-  padding: 12px;
+.ChallengeBox_headerCell__kPS0F {
+  padding: 10px 24px;
   text-align: left;
   font-weight: 500;
   border-bottom: 1px solid rgba(234, 236, 240, 0.16);
 }
 
-.SettingBox_checkboxCell__BTdyn {
+.ChallengeBox_checkboxCell__BMDBF {
   width: 48px;
   text-align: center;
 }
 
-.SettingBox_titleCell__WrREa,
-.SettingBox_scoreCell__UAZKj {
+.ChallengeBox_titleCell__l1mk_,
+.ChallengeBox_scoreCell__wy_vn {
   width: 15%;
   text-align: center;
 }
 
-.SettingBox_updatedCell__SGz8e {
+.ChallengeBox_updatedCell__gOUFf {
   width: 15%;
   padding-left: 5%;
   text-align: left;
 }
 
-.SettingBox_categoryCell__xjkG1 {
+.ChallengeBox_categoryCell__HV095 {
   width: 40%;
   padding-right: 5%;
   text-align: right;
 }
 
-.SettingBox_actionsCell__zRb6m {
+.ChallengeBox_actionsCell__PFM0q {
   width: 48px;
   text-align: right;
   color: #b5c2d6;
@@ -101,7 +101,7 @@
 }
 
 /* Body 부분 */
-.SettingBox_row__Xz56Y {
+.ChallengeBox_row__q_R5Z {
   border-bottom: 1px solid rgba(234, 236, 240, 0.16);
   background-color: #2b2b2b;
 }
@@ -110,49 +110,49 @@
   background-color: #fafafa;
 } */
 
-.SettingBox_selected__j1zdr {
+.ChallengeBox_selected__ZPv_h {
   background-color: #e6f7ff;
 }
 
-.SettingBox_checkboxBodyCell__mp_cS {
+.ChallengeBox_checkboxBodyCell__xnOv0 {
   padding: 12px;
   vertical-align: middle;
   text-align: center;
 }
 
-.SettingBox_titleBodyCell__uUKo3 {
+.ChallengeBox_titleBodyCell__Gdc0R {
   padding: 12px;
   vertical-align: middle;
   text-align: center;
   color: #ffffff;
 }
 
-.SettingBox_scoreBodyCell___HNfd {
+.ChallengeBox_scoreBodyCell__OIt_E {
   padding: 12px;
   vertical-align: middle;
   text-align: center;
   color: #b5c2d6;
 }
 
-.SettingBox_updatedBodyCell__hNKHK {
+.ChallengeBox_updatedBodyCell__vPgny {
   padding: 12px;
   vertical-align: middle;
   text-align: center;
   color: #b5c2d6;
 }
 
-.SettingBox_categoryBodyCell__bhMYf {
+.ChallengeBox_categoryBodyCell__g5eYl {
   padding: 12px;
   padding-right: 5.5%;
   vertical-align: middle;
   text-align: right;
 }
 
-.SettingBox_title__S0ROD {
+.ChallengeBox_title__5B_rw {
   font-weight: 600;
 }
 
-.SettingBox_badge__An4s7 {
+.ChallengeBox_badge__JbNFC {
   display: inline-block;
   padding: 4px 8px;
   font-size: 12px;
@@ -164,7 +164,7 @@
 
 /* 체크박스 디자인 */
 
-.SettingBox_customCheckbox__DAFky {
+.ChallengeBox_customCheckbox__wx90_ {
   -webkit-appearance: none;
   -moz-appearance: none;
        appearance: none;
@@ -178,12 +178,12 @@
   transition: background-color 0.2s, border-color 0.2s;
 }
 
-.SettingBox_customCheckbox__DAFky:checked {
+.ChallengeBox_customCheckbox__wx90_:checked {
   background-color: #2cb1cc;
   border-color: #2cb1cc;
 }
 
-.SettingBox_customCheckbox__DAFky:checked::after {
+.ChallengeBox_customCheckbox__wx90_:checked::after {
   content: "";
   position: absolute;
   top: 3px;
@@ -195,7 +195,7 @@
   transform: rotate(45deg);
 }
 
-.SettingBox_headerCheckbox__0R62z {
+.ChallengeBox_headerCheckbox__EJfLJ {
   -webkit-appearance: none;
   -moz-appearance: none;
        appearance: none;
@@ -208,10 +208,10 @@
   cursor: pointer;
 }
 
-.SettingBox_headerCheckbox__0R62z:checked {
+.ChallengeBox_headerCheckbox__EJfLJ:checked {
   background-color: #2cb1cc;
 }
-.SettingBox_headerCheckbox__0R62z:checked::after {
+.ChallengeBox_headerCheckbox__EJfLJ:checked::after {
   content: "";
   position: absolute;
   top: 3px;
@@ -223,10 +223,10 @@
   transform: rotate(45deg);
 }
 
-.SettingBox_headerCheckbox__0R62z:indeterminate {
+.ChallengeBox_headerCheckbox__EJfLJ:indeterminate {
   background-color: #fff;
 }
-.SettingBox_headerCheckbox__0R62z:indeterminate::after {
+.ChallengeBox_headerCheckbox__EJfLJ:indeterminate::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -235,6 +235,65 @@
   height: 2px;
   background-color: #2cb1cc;
   transform: translate(-50%, -50%);
+}
+
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/UsersBox/index.module.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+.UsersBox_container__unHhR {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.UsersBox_userRow__uEnm3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3a3a3a;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.UsersBox_userInfo__PT0pP {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.UsersBox_username__gAIpb {
+  font-family: "Silkscreen", monospace;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.UsersBox_email__fT0g2 {
+  font-size: 14px;
+  color: #888888;
+}
+
+.UsersBox_actions__yQh83 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.UsersBox_adminBtn__Q6Wr8,
+.UsersBox_deleteBtn__pOpzE {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.UsersBox_adminBtn__Q6Wr8 {
+  color: #ffffff;
+}
+
+.UsersBox_deleteBtn__pOpzE {
+  color: #ee6666;
 }
 
 /*!************************************************************************************************************************************************************************************************************************************************************************************************!*\

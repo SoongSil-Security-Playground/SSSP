@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "@/shared/components/SettingBox/index.module.css";
+import styles from "./index.module.css";
 
-import { dummyRows } from "@/shared/components/SettingBox/dummyData";
+import { dummyRows } from "./dummyData";
 
 export default function SettingBox() {
   return (
