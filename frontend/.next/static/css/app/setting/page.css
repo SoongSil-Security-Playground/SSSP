@@ -243,7 +243,7 @@
 .UsersBox_container__unHhR {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 20px;
   width: 100%;
 }
 
@@ -252,7 +252,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #3a3a3a;
-  padding: 12px;
+  padding: 15px 30px;
   border-radius: 4px;
 }
 
@@ -263,13 +263,15 @@
 }
 
 .UsersBox_username__gAIpb {
-  font-family: "Silkscreen", monospace;
+  min-width: 13rem;
+  font-family: "Press Start 2p", monospace;
   font-size: 16px;
   color: #ffffff;
 }
 
 .UsersBox_email__fT0g2 {
-  font-size: 14px;
+  font-family: "Press Start 2p", monospace;
+  font-size: 12px;
   color: #888888;
 }
 
@@ -281,19 +283,12 @@
 
 .UsersBox_adminBtn__Q6Wr8,
 .UsersBox_deleteBtn__pOpzE {
+  font-family: "Press Start 2p", monospace;
   background: transparent;
   border: none;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 10px;
   cursor: pointer;
-}
-
-.UsersBox_adminBtn__Q6Wr8 {
   color: #ffffff;
-}
-
-.UsersBox_deleteBtn__pOpzE {
-  color: #ee6666;
 }
 
 /*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
