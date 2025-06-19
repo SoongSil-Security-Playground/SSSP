@@ -4,9 +4,9 @@
 // Login, {POST}
 
 export interface LoginForRequest {
-  grant_type?: string | (string | null);
   username: string;
   password: string;
+  grant_type?: string | (string | null);
   scope?: string;
   client_id?: string | (string | null);
   client_secret?: string | (string | null);

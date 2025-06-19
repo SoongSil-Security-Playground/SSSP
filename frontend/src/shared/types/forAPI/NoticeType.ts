@@ -15,6 +15,13 @@ export interface CreateNoticeForRequest {
   content: string;
 }
 
+export interface CreateNoticeSuccess {
+  title: string;
+  content: string;
+  id: number;
+  created_at: string;
+}
+
 // /api/v1/admin/notice
 // Update Notice, {PATCH}
 
