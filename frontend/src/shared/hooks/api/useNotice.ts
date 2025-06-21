@@ -2,10 +2,11 @@ import {
   AuthError,
   AuthValidateError,
 } from "@/shared/types/forAPI/AuthErrorType";
-import { DeleteChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
+
 import {
   CreateNoticeForRequest,
   CreateNoticeSuccess,
+  DeleteNoticeSuccess,
   GetAllNoticeSuccess,
   UpdateNoticeForRequest,
   UpdateNoticeSuccess,
@@ -87,7 +88,7 @@ export const admin_notice_delete = async (notice_id: number) => {
   );
 
   return (await res.json()) as
-    | DeleteChallengeSuccess
+    | DeleteNoticeSuccess
     | AuthError
     | AuthValidateError;
 };

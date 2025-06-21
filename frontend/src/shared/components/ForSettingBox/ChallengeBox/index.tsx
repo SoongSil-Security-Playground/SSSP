@@ -1,8 +1,27 @@
-import styles from "./index.module.css";
+"use client";
 
+import { useQuery } from "@tanstack/react-query";
+
+import styles from "./index.module.css";
 import { dummyRows } from "./dummyData";
+import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
+import {
+  AuthError,
+  AuthValidateError,
+} from "@/shared/types/forAPI/AuthErrorType";
+import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
 
 export default function ChallengeBox() {
+  // const { data } = useQuery<
+  //   GetAllChallengeSuccess | AuthError | AuthValidateError
+  // >({
+  //   queryKey: ["Challenge_Get_All"],
+  //   queryFn: () => challenge_get_all(),
+  //   staleTime: 5 * 1000,
+  // });
+
+  // console.log(data);
+
   return (
     <div className={styles.container}>
       <table className={styles.table}>

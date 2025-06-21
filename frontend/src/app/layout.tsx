@@ -1,4 +1,6 @@
+import { Query } from "@tanstack/react-query";
 import "./global.css";
+import QueryProvider from "@/shared/utils/QueryProvider";
 
 export const metadata = {
   title: "SSSP",
@@ -12,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }

@@ -12,7 +12,10 @@ export interface LoginForRequest {
   client_secret?: string | (string | null);
 }
 
-export type LoginSuccess = string;
+export interface LoginSuccess {
+  access_token: string;
+  token_type: string;
+}
 
 // /api/v1/auth/logout
 // Logout, {POST}
