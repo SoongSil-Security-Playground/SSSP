@@ -25,11 +25,11 @@ export default function SettingPage() {
       case 0:
         return <ChallengeHeader />;
       case 1:
-        return <UsersHeader />;
-      case 2:
-        return <NotificationHeader />;
-      case 3:
         return <SubmissionHeader />;
+      case 2:
+        return <UsersHeader />;
+      case 3:
+        return <NotificationHeader />;
       default:
         return null;
     }
@@ -41,11 +41,11 @@ export default function SettingPage() {
       case 0:
         return <ChallengeBox />;
       case 1:
-        return <UsersBox />;
-      case 2:
-        return <NotificationBox />;
-      case 3:
         return <SubmissionBox />;
+      case 2:
+        return <UsersBox />;
+      case 3:
+        return <NotificationBox />;
       default:
         return null;
     }

@@ -1,9 +1,30 @@
-import React, { useRef, useEffect } from "react";
+"use client";
+
+import { useState } from "react";
 import styles from "./index.module.css";
 import { dummySubmissions, Submission } from "./dummyData";
 
 export default function SubmissionBox() {
-  const headerRef = useRef<HTMLInputElement>(null);
+  // 선택된 row들의 id를 저장
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const allSelected =
+    dummySubmissions.length > 0 &&
+    selectedIds.length === dummySubmissions.length;
+
+  const toggleAll = () => {
+    if (allSelected) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(dummySubmissions.map((r) => r.id));
+    }
+  };
+
+  const toggleOne = (id: number) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -11,7 +32,12 @@ export default function SubmissionBox() {
         <thead className={styles.header}>
           <tr>
             <th className={`${styles.headerCell} ${styles.checkboxCell}`}>
-              <input type="checkbox" className={styles.headerCheckbox} />
+              <input
+                type="checkbox"
+                className={styles.headerCheckbox}
+                checked={allSelected}
+                onChange={toggleAll}
+              />
             </th>
             <th className={`${styles.headerCell} ${styles.userNameCell}`}>
               User Name
@@ -33,12 +59,19 @@ export default function SubmissionBox() {
         </thead>
         <tbody>
           {dummySubmissions.map((s: Submission) => {
+            const isChecked = selectedIds.includes(s.id);
+
             return (
               <tr key={s.id} className={styles.row}>
                 <td
                   className={`${styles.cell} ${styles.checkboxBodyCell} ${styles.checkboxCell}`}
                 >
-                  <input type="checkbox" className={styles.customCheckbox} />
+                  <input
+                    type="checkbox"
+                    className={styles.customCheckbox}
+                    checked={isChecked}
+                    onChange={() => toggleOne(s.id)}
+                  />
                 </td>
                 <td
                   className={`${styles.cell} ${styles.userNameBodyCell} ${styles.userNameCell}`}
