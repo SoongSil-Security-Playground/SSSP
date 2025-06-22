@@ -1,12 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import Image from "next/image";
 import styles from "./index.module.css";
 import { dummySubmissions, Submission } from "./dummyData";
+import arrowDown from "/public/Table/Tags/arrow-down.svg";
+
+type SortKey = keyof Pick<
+  Submission,
+  "userName" | "challengeName" | "submitTime" | "solvedAt" | "correct"
+>;
+
+const columnLabels: Record<SortKey, string> = {
+  userName: "User Name",
+  challengeName: "Challenge Name",
+  submitTime: "Submit Time",
+  solvedAt: "Solved At",
+  correct: "Corerct/Incorrect",
+};
+
+const cellClassMap: Record<SortKey, string> = {
+  userName: styles.userNameCell,
+  challengeName: styles.challengeCell,
+  submitTime: styles.submitCell,
+  solvedAt: styles.solvedCell,
+  correct: styles.correctCell,
+};
 
 export default function SubmissionBox() {
   // 선택된 row들의 id를 저장
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const [sortKey, setSortKey] = useState<SortKey>("userName");
+  const [ascending, setAscending] = useState(true);
 
   const allSelected =
     dummySubmissions.length > 0 &&
@@ -26,6 +52,26 @@ export default function SubmissionBox() {
     );
   };
 
+  const sortedRows = useMemo(() => {
+    return [...dummySubmissions].sort((a, b) => {
+      const aVal = a[sortKey];
+      const bVal = b[sortKey];
+
+      const aStr = String(aVal).toLowerCase();
+      const bStr = String(bVal).toLowerCase();
+      return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
+    });
+  }, [sortKey, ascending]);
+
+  const handleSort = (key: SortKey) => {
+    if (key === sortKey) {
+      setAscending((p) => !p);
+    } else {
+      setSortKey(key);
+      setAscending(true);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <table className={styles.table}>
@@ -39,26 +85,49 @@ export default function SubmissionBox() {
                 onChange={toggleAll}
               />
             </th>
-            <th className={`${styles.headerCell} ${styles.userNameCell}`}>
-              User Name
-            </th>
-            <th className={`${styles.headerCell} ${styles.challengeCell}`}>
-              Challenge Name
-            </th>
-            <th className={`${styles.headerCell} ${styles.submitCell}`}>
-              Submit
-            </th>
-            <th className={`${styles.headerCell} ${styles.solvedCell}`}>
-              Solved At
-            </th>
-            <th className={`${styles.headerCell} ${styles.correctCell}`}>
-              Correct/Incorrect
-            </th>
+            {(
+              [
+                "userName",
+                "challengeName",
+                "submitTime",
+                "solvedAt",
+                "correct",
+              ] as SortKey[]
+            ).map((key) => (
+              <th
+                key={key}
+                className={`${styles.headerCell} ${cellClassMap[key]}`}
+                onClick={() => handleSort(key)}
+                style={{ cursor: "pointer", userSelect: "none" }}
+              >
+                <span className="flex items-center">
+                  {columnLabels[key]}
+                  <Image
+                    src={arrowDown}
+                    alt=""
+                    width={12}
+                    height={12}
+                    className={[
+                      styles.arrowIcon,
+                      sortKey === key && !ascending
+                        ? styles.arrowIconRotated
+                        : "",
+                      sortKey !== key
+                        ? styles.arrowIconDimmed
+                        : styles.arrowIconVisible,
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                  />
+                </span>
+              </th>
+            ))}
+
             <th className={`${styles.headerCell} ${styles.actionsCell}`}></th>
           </tr>
         </thead>
         <tbody>
-          {dummySubmissions.map((s: Submission) => {
+          {sortedRows.map((s: Submission) => {
             const isChecked = selectedIds.includes(s.id);
 
             return (

@@ -1,4 +1,6 @@
 {
-  "/setting/page": "app/setting/page.js",
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/setting/add/notice/page": "app/setting/add/notice/page.js",
+  "/page": "app/page.js",
+  "/setting/page": "app/setting/page.js"
 }

@@ -16,6 +16,17 @@
       "static/chunks/main-app.js",
       "static/css/app/setting/page.css",
       "static/chunks/app/setting/page.js"
+    ],
+    "/setting/add/notice/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/setting/add/notice/page.css",
+      "static/chunks/app/setting/add/notice/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }
