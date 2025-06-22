@@ -42,6 +42,7 @@
   width: 15%;
   padding-left: 5%;
   text-align: left;
+  white-space: nowrap;
 }
 
 .categoryCell {
@@ -55,6 +56,23 @@
   text-align: right;
   color: #b5c2d6;
   padding-right: 1%;
+}
+
+.arrowIcon {
+  margin-left: 0.35rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.arrowIconRotated {
+  transform: rotate(180deg);
+}
+
+.arrowIconDimmed {
+  opacity: 0.5;
+}
+
+.arrowIconVisible {
+  opacity: 1;
 }
 
 /* Body 부분 */
@@ -96,6 +114,7 @@
   vertical-align: middle;
   text-align: center;
   color: #b5c2d6;
+  white-space: nowrap;
 }
 
 .categoryBodyCell {

@@ -1,0 +1,739 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/app/setting/page.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
+.page_container__RKO2z {
+  width: 100%;
+  background-color: #242424;
+  padding-top: 3%;
+  padding-bottom: 5%;
+}
+
+.page_header__17oTL {
+  width: 100%;
+  text-align: center;
+  color: #f1f1f1;
+  font-family: "Silkscreen";
+  font-size: 40px;
+  padding-bottom: 3%;
+}
+
+.page_wrapper__fC19s {
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.page_bodyWrapper__4ToaV {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  justify-content: center;
+  width: 75%;
+}
+
+.page_headerWrapper__m1cUq {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/ChallengeBox/index.module.css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* components/SettingBox/index.module.css */
+
+.ChallengeBox_container__rQgF7 {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 5px;
+}
+
+.ChallengeBox_table__mtNxL {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+/* Header 부분 */
+.ChallengeBox_header__2yUak {
+  color: #b5c2d6;
+  background: #3d4e51;
+  border: none;
+}
+
+.ChallengeBox_headerCell__kPS0F {
+  padding: 10px 24px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.ChallengeBox_checkboxCell__BMDBF {
+  width: 48px;
+  text-align: center;
+}
+
+.ChallengeBox_titleCell__l1mk_,
+.ChallengeBox_scoreCell__wy_vn {
+  width: 15%;
+  text-align: center;
+}
+
+.ChallengeBox_updatedCell__gOUFf {
+  width: 15%;
+  padding-left: 5%;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ChallengeBox_categoryCell__HV095 {
+  width: 40%;
+  padding-right: 5%;
+  text-align: right;
+}
+
+.ChallengeBox_actionsCell__PFM0q {
+  width: 48px;
+  text-align: right;
+  color: #b5c2d6;
+  padding-right: 1%;
+}
+
+.ChallengeBox_arrowIcon__dDgzz {
+  margin-left: 0.35rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.ChallengeBox_arrowIconRotated__XChM_ {
+  transform: rotate(180deg);
+}
+
+.ChallengeBox_arrowIconDimmed__EOgXh {
+  opacity: 0.5;
+}
+
+.ChallengeBox_arrowIconVisible__AAkiO {
+  opacity: 1;
+}
+
+/* Body 부분 */
+.ChallengeBox_row__q_R5Z {
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+  background-color: #2b2b2b;
+}
+
+/* .row:hover {
+  background-color: #fafafa;
+} */
+
+.ChallengeBox_selected__ZPv_h {
+  background-color: #e6f7ff;
+}
+
+.ChallengeBox_checkboxBodyCell__xnOv0 {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.ChallengeBox_titleBodyCell__Gdc0R {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #ffffff;
+}
+
+.ChallengeBox_scoreBodyCell__OIt_E {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #b5c2d6;
+}
+
+.ChallengeBox_updatedBodyCell__vPgny {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #b5c2d6;
+  white-space: nowrap;
+}
+
+.ChallengeBox_categoryBodyCell__g5eYl {
+  padding: 12px;
+  padding-right: 5.5%;
+  vertical-align: middle;
+  text-align: right;
+}
+
+.ChallengeBox_title__5B_rw {
+  font-weight: 600;
+}
+
+.ChallengeBox_badge__JbNFC {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #64b5bf;
+  color: black;
+}
+
+/* 체크박스 디자인 */
+
+.ChallengeBox_customCheckbox__wx90_ {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #343434;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.ChallengeBox_customCheckbox__wx90_:checked {
+  background-color: #2cb1cc;
+  border-color: #2cb1cc;
+}
+
+.ChallengeBox_customCheckbox__wx90_:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.ChallengeBox_headerCheckbox__EJfLJ {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #2cb1cc;
+  border-radius: 6px;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+}
+
+.ChallengeBox_headerCheckbox__EJfLJ:checked {
+  background-color: #2cb1cc;
+}
+.ChallengeBox_headerCheckbox__EJfLJ:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 7px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.ChallengeBox_headerCheckbox__EJfLJ:indeterminate {
+  background-color: #fff;
+}
+.ChallengeBox_headerCheckbox__EJfLJ:indeterminate::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background-color: #2cb1cc;
+  transform: translate(-50%, -50%);
+}
+
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/UsersBox/index.module.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+.UsersBox_container__unHhR {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.UsersBox_userRow__uEnm3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3a3a3a;
+  padding: 15px 30px;
+  border-radius: 8px;
+}
+
+.UsersBox_userInfo__PT0pP {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.UsersBox_username__gAIpb {
+  min-width: 13rem;
+  font-family: "Press Start 2p", monospace;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.UsersBox_email__fT0g2 {
+  font-family: "Press Start 2p", monospace;
+  font-size: 12px;
+  color: #888888;
+}
+
+.UsersBox_actions__yQh83 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.UsersBox_adminBtn__Q6Wr8,
+.UsersBox_deleteBtn__pOpzE {
+  font-family: "Press Start 2p", monospace;
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/NotificationBox/index.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+.NotificationBox_container__8dvQ1 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.NotificationBox_noticeRow__0GaHm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 15px 30px;
+  border-radius: 8px;
+}
+
+.NotificationBox_info__NwvV0 {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.NotificationBox_title__Wd_IR {
+  min-width: 16rem;
+  font-family: "Press Start 2P", monospace;
+  font-size: 14px;
+  color: #fff;
+}
+
+.NotificationBox_date__5Nluc {
+  font-family: "VT323", monospace;
+  font-size: 20px;
+  color: #888;
+}
+
+.NotificationBox_actions__bcopB {
+  display: flex;
+  gap: 16px;
+}
+
+.NotificationBox_button__Gb61x {
+  font-family: "Press Start 2P", monospace;
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+}
+
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingBox/SubmissionBox/index.module.css ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
+.SubmissionBox_container__8Idtq {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 5px;
+}
+
+.SubmissionBox_table__3wPNS {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* Header */
+.SubmissionBox_header__lhfie {
+  background: #3d4e51;
+  color: #b5c2d6;
+}
+
+.SubmissionBox_headerCell__vIMup {
+  padding: 10px 24px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.SubmissionBox_checkboxCell__fBOio {
+  width: 48px;
+  text-align: center;
+}
+
+.SubmissionBox_userNameCell__KCpfp {
+  width: 15%;
+  text-align: center;
+}
+
+.SubmissionBox_challengeCell__OO_Qw {
+  width: 20%;
+  text-align: left;
+}
+
+.SubmissionBox_submitCell__HQ_Vg {
+  width: 20%;
+  text-align: center;
+}
+
+.SubmissionBox_solvedCell__GaNYp {
+  width: 20%;
+  text-align: center;
+}
+
+.SubmissionBox_correctCell__afKYB {
+  width: 15%;
+  text-align: center;
+}
+
+.SubmissionBox_actionsCell__wyG7T {
+  width: 48px;
+  text-align: right;
+  color: #b5c2d6;
+  padding-right: 1%;
+}
+
+/* Body */
+.SubmissionBox_row__kWLhi {
+  background-color: #2b2b2b;
+  border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+}
+
+.SubmissionBox_cell__bT7Ot {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.SubmissionBox_checkboxBodyCell__YVhuu {
+  text-align: center;
+}
+
+.SubmissionBox_userNameBodyCell__WOizA {
+  color: #ffffff;
+}
+
+.SubmissionBox_challengeBodyCell__kna_Q,
+.SubmissionBox_submitBodyCell__ORAaP,
+.SubmissionBox_solvedBodyCell__fhwV8 {
+  color: #b5c2d6;
+}
+
+.SubmissionBox_correctBodyCell___8QO5 {
+  text-align: center;
+}
+
+.SubmissionBox_badgeCorrect__eEVH9 {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #64b5bf;
+  color: black;
+}
+
+.SubmissionBox_badgeIncorrect__qnKK_ {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #e57373;
+  color: white;
+}
+
+/* custom checkboxes */
+.SubmissionBox_customCheckbox__yAFV5 {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #343434;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.SubmissionBox_customCheckbox__yAFV5:checked {
+  background-color: #2cb1cc;
+  border-color: #2cb1cc;
+}
+
+.SubmissionBox_customCheckbox__yAFV5:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.SubmissionBox_headerCheckbox__mnls2 {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #2cb1cc;
+  border-radius: 6px;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+}
+
+.SubmissionBox_headerCheckbox__mnls2:checked {
+  background-color: #2cb1cc;
+}
+
+.SubmissionBox_headerCheckbox__mnls2:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 7px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.SubmissionBox_headerCheckbox__mnls2:indeterminate {
+  background-color: #fff;
+}
+
+.SubmissionBox_headerCheckbox__mnls2:indeterminate::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background-color: #2cb1cc;
+  transform: translate(-50%, -50%);
+}
+
+/*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/SelectSetting/index.module.css ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************/
+.SelectSetting_container__ibQ34 {
+  display: flex;
+  border-radius: 8px;
+  border: 1px solid var(--Gray-300, #d0d5dd);
+  overflow: hidden;
+  background-color: #2e2f33;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.SelectSetting_tab__SS_YV {
+  flex: 1 1;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #a1a1a1;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-right: 1px solid var(--Gray-300, #d0d5dd);
+}
+
+.SelectSetting_tab__SS_YV:hover:not(.SelectSetting_active__o3aBc) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.SelectSetting_active__o3aBc {
+  background-color: #4e888c;
+  color: black;
+}
+
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingHeader/ChallengeHeader/index.module.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************/
+.ChallengeHeader_toolbar__bjIij {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 50%;
+}
+
+.ChallengeHeader_searchContainer__qTC0z {
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px 8px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.ChallengeHeader_searchIcon___3AYI {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.ChallengeHeader_searchInput__jemxY {
+  flex: 1 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.ChallengeHeader_button___GQH9 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.ChallengeHeader_addButton__9QQS4 {
+  background: #008eaa;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #fff;
+}
+
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingHeader/UsersHeader/index.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************/
+.UsersHeader_container__cdBlW {
+  width: 35%;
+}
+
+.UsersHeader_searchWrapper__aNrsx {
+  position: relative;
+  min-width: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.UsersHeader_searchInput__j5Gc8 {
+  width: 100%;
+  padding: 10px 48px 10px 40px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+}
+
+.UsersHeader_searchIcon__VNuJF {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  stroke: #888;
+}
+
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./src/shared/components/ForSettingHeader/SubmissionHeader/index.module.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************/
+.SubmissionHeader_toolbar__MZegn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 40%;
+}
+
+.SubmissionHeader_searchContainer__fX5pT {
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px 8px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.SubmissionHeader_searchIcon__5hw52 {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.SubmissionHeader_searchInput___U6QQ {
+  flex: 1 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.SubmissionHeader_button__LOdZU {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.SubmissionHeader_addButton__j3otD {
+  background: #008eaa;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #fff;
+}
+

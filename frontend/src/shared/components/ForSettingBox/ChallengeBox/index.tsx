@@ -1,39 +1,66 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-
+import { useState, useMemo } from "react";
+import Image from "next/image";
 import styles from "./index.module.css";
-import { dummyRows } from "./dummyData";
-import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
-import {
-  AuthError,
-  AuthValidateError,
-} from "@/shared/types/forAPI/AuthErrorType";
-import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
+import { dummyChallenges, Challenge } from "./dummyData";
+import arrowDown from "/public/Table/Tags/arrow-down.svg";
+
+type SortKey = keyof Pick<
+  Challenge,
+  "name" | "points" | "created_at" | "category"
+>;
+
+const columnLabels: Record<SortKey, string> = {
+  name: "Name",
+  points: "Points",
+  created_at: "Created At",
+  category: "Category",
+};
+
+const cellClassMap: Record<SortKey, string> = {
+  name: styles.titleCell,
+  points: styles.scoreCell,
+  created_at: styles.updatedCell,
+  category: styles.categoryCell,
+};
 
 export default function ChallengeBox() {
-  // const { data } = useQuery<
-  //   GetAllChallengeSuccess | AuthError | AuthValidateError
-  // >({
-  //   queryKey: ["Challenge_Get_All"],
-  //   queryFn: () => challenge_get_all(),
-  //   staleTime: 5 * 1000,
-  // });
-
-  // console.log(data);
-
-  // 선택된 row들의 id를 저장
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
+  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [ascending, setAscending] = useState(true);
+
+  const sortedRows = useMemo(() => {
+    return [...dummyChallenges].sort((a, b) => {
+      const aVal = a[sortKey];
+      const bVal = b[sortKey];
+      if (typeof aVal === "number" && typeof bVal === "number") {
+        return ascending ? aVal - bVal : bVal - aVal;
+      }
+      const aStr = String(aVal).toLowerCase();
+      const bStr = String(bVal).toLowerCase();
+      return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
+    });
+  }, [sortKey, ascending]);
+
+  const handleSort = (key: SortKey) => {
+    if (key === sortKey) {
+      setAscending((p) => !p);
+    } else {
+      setSortKey(key);
+      setAscending(true);
+    }
+  };
+
   const allSelected =
-    dummyRows.length > 0 && selectedIds.length === dummyRows.length;
+    dummyChallenges.length > 0 && selectedIds.length === dummyChallenges.length;
 
   const toggleAll = () => {
     if (allSelected) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(dummyRows.map((r) => r.id));
+      setSelectedIds(dummyChallenges.map((r) => r.id));
     }
   };
 
@@ -56,27 +83,47 @@ export default function ChallengeBox() {
                 onChange={toggleAll}
               />
             </th>
-            <th className={`${styles.headerCell} ${styles.titleCell}`}>
-              Title
-            </th>
-            <th className={`${styles.headerCell} ${styles.scoreCell}`}>
-              Score
-            </th>
-            <th className={`${styles.headerCell} ${styles.updatedCell}`}>
-              Updated At
-            </th>
-            <th className={`${styles.headerCell} ${styles.categoryCell}`}>
-              Category
-            </th>
+
+            {(["name", "points", "created_at", "category"] as SortKey[]).map(
+              (key) => (
+                <th
+                  key={key}
+                  className={`${styles.headerCell} ${cellClassMap[key]}`}
+                  onClick={() => handleSort(key)}
+                  style={{ cursor: "pointer", userSelect: "none" }}
+                >
+                  <span className="flex items-center">
+                    {columnLabels[key]}
+                    <Image
+                      src={arrowDown}
+                      alt=""
+                      width={12}
+                      height={12}
+                      className={[
+                        styles.arrowIcon,
+                        sortKey === key && !ascending
+                          ? styles.arrowIconRotated
+                          : "",
+                        sortKey !== key
+                          ? styles.arrowIconDimmed
+                          : styles.arrowIconVisible,
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    />
+                  </span>
+                </th>
+              )
+            )}
+
             <th className={`${styles.headerCell} ${styles.actionsCell}`}></th>
           </tr>
         </thead>
         <tbody>
-          {dummyRows.map((row) => {
+          {sortedRows.map((row) => {
             const isChecked = selectedIds.includes(row.id);
-
             return (
-              <tr key={row.id} className={`${styles.row}`}>
+              <tr key={row.id} className={styles.row}>
                 <td
                   className={`${styles.checkboxBodycell} ${styles.checkboxCell}`}
                 >
@@ -88,10 +135,10 @@ export default function ChallengeBox() {
                   />
                 </td>
                 <td className={`${styles.titleBodyCell} ${styles.title}`}>
-                  {row.title}
+                  {row.name}
                 </td>
-                <td className={styles.scoreBodyCell}>{row.score}</td>
-                <td className={styles.updatedBodyCell}>{row.updatedAt}</td>
+                <td className={styles.scoreBodyCell}>{row.points}</td>
+                <td className={styles.updatedBodyCell}>{row.created_at}</td>
                 <td className={styles.categoryBodyCell}>
                   <span className={styles.badge}>{row.category}</span>
                 </td>

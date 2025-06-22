@@ -16,7 +16,7 @@ import NotificationHeader from "@/shared/components/ForSettingHeader/Notificatio
 import SubmissionHeader from "@/shared/components/ForSettingHeader/SubmissionHeader";
 
 export default function SettingPage() {
-  const tabs = ["Challenges", "Users", "Notification", "Submissions"];
+  const tabs = ["Challenges", "Submissions", "Users", "Notification"];
   const [active, setActive] = useState(0);
 
   // 오른쪽 헤더 분기
