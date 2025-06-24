@@ -1,0 +1,40 @@
+.wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+  font-family: 'Share Tech Mono'
+}
+
+.input {
+  width: -webkit-fill-available;
+  padding: 0.75rem;
+  background-color: transparent;
+  border: 1px solid #888;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 1rem;
+}
+
+.label {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.input:focus+.label,
+.wrapper.filled .label {
+  top: -0.5rem;
+  left: 0.5rem;
+  font-size: 0.875rem;
+  color: white;
+}
+
+
+.input:focus {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: transparent;
+  color: white;
+}

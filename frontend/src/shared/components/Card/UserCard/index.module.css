@@ -1,0 +1,52 @@
+.wrapper {
+    background-color: #323232;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wrapper:hover {
+    transform: translateY(-2px);
+}
+
+/* .profile img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    object-fit: cover;
+} */
+
+.profile {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    background-color: #464646;
+    justify-content: center;
+}
+
+.id {
+    font-family: 'Share Tech Mono', monospace;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.rank {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #fbbf24;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.875rem;
+}

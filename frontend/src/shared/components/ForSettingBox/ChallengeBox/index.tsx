@@ -125,7 +125,7 @@ export default function ChallengeBox() {
             return (
               <tr key={row.id} className={styles.row}>
                 <td
-                  className={`${styles.checkboxBodycell} ${styles.checkboxCell}`}
+                  className={`${styles.checkboxBodyCell} ${styles.checkboxCell}`}
                 >
                   <input
                     type="checkbox"

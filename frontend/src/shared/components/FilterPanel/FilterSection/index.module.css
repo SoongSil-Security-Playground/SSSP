@@ -1,0 +1,37 @@
+.section {
+    margin-bottom: 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: 'Share Tech Mono';
+    text-transform: uppercase;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.icon {
+    margin-left: auto;
+}
+
+.content {
+    margin-top: 0.5rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+        max-height 0.3s ease,
+        opacity 0.3s ease;
+}
+
+.contentOpen {
+    max-height: 1000px;
+    opacity: 1;
+}

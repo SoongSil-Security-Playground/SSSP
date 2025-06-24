@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 24rem;
+  padding: 2rem;
+}
+
+.title {
+  font-family: 'Silkscreen';
+  font-size: 2rem;
+  color: #f87171;
+  text-align: center;
+  text-shadow:
+    -0.2rem 0 0 black,
+    0.2rem 0 0 black,
+    0 -0.2rem 0 black,
+    0 0.2rem 0 black,
+
+    -0.2rem -0.2rem 0 black,
+    0.2rem -0.2rem 0 black,
+    -0.2rem 0.2rem 0 black,
+    0.2rem 0.2rem 0 black;
+  margin: 1rem 0rem;
+}
+
+.message {
+  color: white;
+  font-size: 0.875rem;
+  font-family: 'Share Mono Tech';
+  text-align: center;
+}
+
+.input {
+  padding: 0.5rem;
+  border: 1px solid #4d4d4d;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}

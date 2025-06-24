@@ -14,6 +14,7 @@ import ChallengeHeader from "@/shared/components/ForSettingHeader/ChallengeHeade
 import UsersHeader from "@/shared/components/ForSettingHeader/UsersHeader";
 import NotificationHeader from "@/shared/components/ForSettingHeader/NotificationHeader";
 import SubmissionHeader from "@/shared/components/ForSettingHeader/SubmissionHeader";
+import { PageTitle } from "@/shared/components/Title";
 
 export default function SettingPage() {
   const tabs = ["Challenges", "Submissions", "Users", "Notification"];
@@ -53,19 +54,17 @@ export default function SettingPage() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>SETTING</h1>
-      <div className={styles.wrapper}>
-        <div className={styles.bodyWrapper}>
-          <div className={styles.headerWrapper}>
-            <SelectSetting
-              items={tabs}
-              activeIndex={active}
-              onChange={setActive}
-            />
-            <Header />
-          </div>
-          <Content />
-        </div>
+      <PageTitle text="Settings" />
+      <div className={styles.headerWrapper}>
+        <SelectSetting
+          items={tabs}
+          activeIndex={active}
+          onChange={setActive}
+        />
+        <Header />
+      </div>
+      <div className={styles.bodyWrapper}>
+        <Content />
       </div>
     </div>
   );

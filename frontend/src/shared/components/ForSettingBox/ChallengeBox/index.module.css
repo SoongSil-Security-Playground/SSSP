@@ -1,34 +1,39 @@
-/* components/SettingBox/index.module.css */
-
 .container {
   width: 100%;
   overflow-x: auto;
-  border-radius: 5px;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.5rem;
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
 }
 
 .table {
   width: 100%;
-  table-layout: fixed;
   border-collapse: collapse;
-  background-color: #ffffff;
 }
 
-/* Header 부분 */
 .header {
   color: #b5c2d6;
   background: #3d4e51;
   border: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .headerCell {
-  padding: 10px 24px;
+  padding: 0.5rem 1rem;
   text-align: left;
   font-weight: 500;
   border-bottom: 1px solid rgba(234, 236, 240, 0.16);
+  white-space: nowrap;
 }
 
 .checkboxCell {
-  width: 48px;
+  width: 24px;
   text-align: center;
 }
 
@@ -40,13 +45,12 @@
 
 .updatedCell {
   width: 15%;
-  padding-left: 5%;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
 }
 
 .categoryCell {
-  width: 40%;
+  width: auto;
   padding-right: 5%;
   text-align: right;
 }
@@ -63,22 +67,22 @@
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.arrowIconRotated {
-  transform: rotate(180deg);
+.arrowIconVisible {
+  opacity: 1;
 }
 
 .arrowIconDimmed {
   opacity: 0.5;
 }
 
-.arrowIconVisible {
-  opacity: 1;
+.arrowIconRotated {
+  transform: rotate(180deg);
 }
 
-/* Body 부분 */
 .row {
   border-bottom: 1px solid rgba(234, 236, 240, 0.16);
   background-color: #2b2b2b;
+  padding: 0.5rem;
 }
 
 /* .row:hover {
@@ -92,7 +96,6 @@
 .checkboxBodyCell {
   padding: 12px;
   vertical-align: middle;
-  text-align: center;
 }
 
 .titleBodyCell {
@@ -138,7 +141,6 @@
   color: black;
 }
 
-/* 체크박스 디자인 */
 
 .customCheckbox {
   -webkit-appearance: none;
@@ -185,6 +187,7 @@
 .headerCheckbox:checked {
   background-color: #2cb1cc;
 }
+
 .headerCheckbox:checked::after {
   content: "";
   position: absolute;
@@ -200,6 +203,7 @@
 .headerCheckbox:indeterminate {
   background-color: #fff;
 }
+
 .headerCheckbox:indeterminate::after {
   content: "";
   position: absolute;

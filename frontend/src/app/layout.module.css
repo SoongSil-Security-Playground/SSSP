@@ -1,0 +1,10 @@
+.body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0px;
+    padding: 0px;
+    background-color: #2d2d2d;
+    font-family: 'Press Start 2P',
+        'Share Tech Mono',
+        sans-serif
+}

@@ -1,0 +1,22 @@
+.wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+    display: flex;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem;
+    transform: translateY(-50%);
+    color: #4d4d4d;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    border: 1px solid #4d4d4d;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: white;
+}

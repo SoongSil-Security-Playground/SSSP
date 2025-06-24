@@ -1,0 +1,15 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    justify-content: flex-start;
+    justify-items: center;
+    align-items: center;
+}
+
+.cardWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
