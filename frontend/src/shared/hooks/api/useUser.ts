@@ -18,21 +18,48 @@ import {
 // /api/v1/user/user_list
 // Get User List, {GET}
 
-export const user_list = async () => {
-  const token = localStorage.getItem("token");
+export class UserListError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UserListError";
+  }
+}
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/user/user_list`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+export const user_list = async (): Promise<UserListSuccess> => {
+  const token = localStorage.getItem('token');
 
-  return (await res.json()) as UserListSuccess | AuthError | AuthValidateError;
+  let res: Response;
+  try {
+    res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/user/user_list`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
+  } catch (err: any) {
+    throw new UserListError(`Network error: ${err.message}`);
+  }
+
+  let payload: unknown;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new UserListError('Invalid JSON response from server');
+  }
+
+  if (!res.ok) {
+    const errMsg =
+      typeof payload === 'object' && payload !== null && 'message' in payload
+        ? (payload as any).message
+        : `Error ${res.status}`;
+    throw new UserListError(errMsg);
+  }
+
+  return payload as UserListSuccess;
 };
 
 // /api/v1/user/update_password
