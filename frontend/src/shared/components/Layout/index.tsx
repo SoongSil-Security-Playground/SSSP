@@ -7,44 +7,39 @@ import { Drawer } from '../Drawer';
 import { Button } from '../Button';
 import { LoginForm } from '../Form/LoginForm';
 import { SignupForm } from '../Form/SignupForm';
-import styles from './index.module.css'
+import { useAuth } from '@/shared/utils/AuthProvider';
+import styles from './index.module.css';
 
 interface LayoutProps {
     children: ReactNode;
 }
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
+    const { isLoggedIn, isAdmin, login, logout } = useAuth();
     const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAuthOpen, setAuthOpen] = useState(false);
 
     const openLogin = () => {
         setAuthMode('login');
         setAuthOpen(true);
     };
-
     const openSignup = () => {
         setAuthMode('signup');
         setAuthOpen(true);
     };
+    const closeAuth = () => setAuthOpen(false);
 
-    const closeAuth = () => {
-        setAuthOpen(false);
+    const handleLogout = async () => {
+        await logout();
+        closeAuth();
     };
 
-    const handleLogout = () => {
-        // TODO: 실제 로그아웃 로직
-        setIsLoggedIn(false);
-    };
-
-    const handleLoginSuccess = () => {
-        // TODO: 실제 로그인 성공 처리
-        setIsLoggedIn(true);
+    const handleLoginSuccess = (token: string) => {
+        login(token);
         closeAuth();
     };
 
     const handleSignupSuccess = () => {
-        // TODO: 실제 회원가입 성공 처리
         setAuthMode('login');
     };
 
@@ -52,11 +47,16 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
         <div className={styles.layoutContainer}>
             <Header
                 isLoggedIn={isLoggedIn}
+                isAdmin={!!isAdmin}
                 onLoginClick={openLogin}
                 onSignupClick={openSignup}
                 onLogoutClick={handleLogout}
             />
-            <main className={styles.mainContent}>{children}</main>
+
+            <main className={styles.mainContent}>
+                {children}
+            </main>
+
             <Drawer isOpen={isAuthOpen} onClose={closeAuth}>
                 <h2 className={styles.authTitle}>
                     {authMode === 'login' ? '로그인' : '회원가입'}
@@ -94,6 +94,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
                     </>
                 )}
             </Drawer>
+
             <Footer />
         </div>
     );

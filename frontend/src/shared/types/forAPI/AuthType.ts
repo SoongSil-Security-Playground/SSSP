@@ -42,7 +42,9 @@ export interface RegisterSuccess {
 // /api/v1/auth/auth-check
 // Auth Check, {GET}
 
-export type AuthCheckSuccess = string;
+export interface AuthCheckSuccess {
+  authority: 'ADMIN' | 'USER';
+}
 
 // /api/v1/auth/send-auth-code
 // Send Auth Code, {POST}
@@ -68,4 +70,4 @@ export type VerifyAuthCodeSuccess = string;
 // /api/v1/admin/is_admin
 // IS Admin?, {GET}
 
-export type IsAdminSuccess = string;
+export type IsAdminSuccess = boolean;

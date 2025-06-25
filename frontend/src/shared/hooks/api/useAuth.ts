@@ -1,5 +1,4 @@
 import {
-  AuthError,
   AuthValidateError,
 } from "@/shared/types/forAPI/AuthErrorType";
 
@@ -17,32 +16,33 @@ import {
   VerifyAuthCodeSuccess,
 } from "@/shared/types/forAPI/AuthType";
 
+
+export class AuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthError";
+  }
+}
+
 // /api/v1/auth/login
 // Login, {POST}
 
 export const auth_login = async (
   username: string,
   password: string,
-  grant_type?: string | (string | null),
-  scope?: string,
-  client_id?: string | (string | null),
-  client_secret?: string | (string | null)
 ) => {
+  const params = new URLSearchParams();
+  params.append("username", username);
+  params.append("password", password);
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/auth/login`,
     {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: JSON.stringify({
-        grant_type,
-        username,
-        password,
-        scope,
-        client_id,
-        client_secret,
-      } satisfies LoginForRequest),
+      body: params.toString(),
     }
   );
 
@@ -95,21 +95,45 @@ export const auth_register = async (
 // /api/v1/auth/auth-check
 // Auth Check, {GET}
 
-export const auth_check = async () => {
-  const token = localStorage.getItem("token");
-
+export const auth_check = async (): Promise<'ADMIN' | 'USER'> => {
+  const token = localStorage.getItem('token');
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/auth/auth-check`,
     {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     }
   );
 
-  return (await res.json()) as AuthCheckSuccess | AuthError;
+  if (res.status === 401) {
+    throw new AuthError('Token expired or invalid. Please login again.');
+  }
+
+  let payload: any;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new AuthError('Invalid response from auth-check endpoint');
+  }
+
+  if (!res.ok) {
+    const message =
+      typeof payload?.message === 'string'
+        ? payload.message
+        : `Auth check failed with status ${res.status}`;
+    throw new AuthError(message);
+  }
+
+  const { authority } = payload as { authority?: string };
+  if (authority !== 'ADMIN' && authority !== 'USER') {
+    throw new AuthError(
+      `Unexpected authority value: ${String(authority)}`
+    );
+  }
+  return authority;
 };
 
 // /api/v1/auth/send-auth-code
@@ -165,11 +189,11 @@ export const auth_verify_auth_code = async (
 // /api/v1/auth/is_admin
 // Is Admin, {GET}
 
-export const auth_is_admin = async () => {
+export const auth_is_admin = async (): Promise<boolean> => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/auth/is_admin`,
+    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/is_admin`,
     {
       method: "GET",
       headers: {
@@ -179,5 +203,12 @@ export const auth_is_admin = async () => {
     }
   );
 
-  return (await res.json()) as IsAdminSuccess | AuthError;
+  const payload = await res.json();
+
+  if (!res.ok) {
+    const { message } = payload as { message: string };
+    throw new AuthError(message);
+  }
+
+  return payload as IsAdminSuccess;
 };

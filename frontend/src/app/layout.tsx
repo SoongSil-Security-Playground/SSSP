@@ -1,4 +1,5 @@
 import styles from './layout.module.css'
+import { AuthProvider } from '@/shared/utils/AuthProvider';
 import { Layout } from '@/shared/components/Layout';
 
 export const metadata = {
@@ -19,9 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={styles.body}>
-        <Layout>
-          {children}
-        </Layout>
+        <AuthProvider>
+          <Layout>
+            {children}
+          </Layout>
+        </AuthProvider>
       </body>
     </html>
   );

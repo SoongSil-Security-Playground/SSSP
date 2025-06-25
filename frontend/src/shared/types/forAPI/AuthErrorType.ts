@@ -2,7 +2,7 @@
 // 토큰이 없는데 접근했을 때
 
 export interface AuthError {
-  detail: string;
+  message: string;
 }
 
 // 422 Error.. validate
