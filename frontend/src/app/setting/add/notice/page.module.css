@@ -124,3 +124,17 @@
 .FileUploadImg {
   left: 1rem;
 }
+
+.hiddenFileInput {
+  display: none;
+}
+
+.uploadButton {
+  cursor: pointer;
+}
+
+.fileCount {
+  margin-left: 8px;
+  font-size: 0.9rem;
+  color: #666;
+}

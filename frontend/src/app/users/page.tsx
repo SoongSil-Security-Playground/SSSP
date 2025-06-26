@@ -1,33 +1,45 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { PageTitle } from '@/shared/components/Title';
-import { UserList } from '@/shared/components/List/UserList';
-import { UserListSuccess } from '@/shared/types/forAPI/UserType';
-import { user_list } from '@/shared/hooks/api/useUser';
-import styles from './page.module.css';
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+
+import { AuthValidateError } from "@/shared/types/forAPI/AuthErrorType";
+import { LoginSuccess } from "@/shared/types/forAPI/AuthType";
+import { auth_login } from "@/shared/hooks/api/useAuth";
 
 export default function UserPage() {
-  const [items, setItems] = useState<UserListSuccess>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState<string>("mlnl");
+  const [password, setPassword] = useState<string>("mlnlmlnl");
 
-  useEffect(() => {
-    user_list()
-      .then((data) => setItems(data))
-      .catch((err: any) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+  const { mutate, data } = useMutation<
+    LoginSuccess,
+    AuthValidateError,
+    { username: string; password: string }
+  >({
+    mutationFn: async ({ username, password }) => {
+      const result = await auth_login(username, password);
+      if ("access_token" in result) {
+        return result;
+      }
+      throw result;
+    },
+    onSuccess: async (data) => {
+      if ("accessToken" in data) {
+        localStorage.setItem("token", data.access_token);
+      }
+    },
+  });
 
-  if (loading) return <div className={styles.container}>Loading...</div>;
-  if (error)   return <div className={styles.container}>Error: {error}</div>;
+  const handleLogin = () => {
+    mutate({ username, password });
+  };
 
   return (
-    <div className={styles.container}>
-      <PageTitle text="USERS" />
-      <div className={styles.contentWrapper}>
-        <UserList items={items} />
-      </div>
+    <div>
+      <h1>Here is Users Page</h1>
+      <input value={username} />
+      <input value={password} />
+      <div onClick={() => handleLogin()} />
     </div>
   );
 }
