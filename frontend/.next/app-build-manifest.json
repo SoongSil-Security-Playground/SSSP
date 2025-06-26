@@ -9,13 +9,19 @@
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
+      "static/css/app/page.css",
       "static/chunks/app/page.js"
     ],
-    "/setting/add/notice/page": [
+    "/scoreboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/setting/add/notice/page.css",
-      "static/chunks/app/setting/add/notice/page.js"
+      "static/css/app/scoreboard/page.css",
+      "static/chunks/app/scoreboard/page.js"
+    ],
+    "/users/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/users/page.js"
     ],
     "/setting/page": [
       "static/chunks/webpack.js",
