@@ -56,23 +56,28 @@ export default function AddNotification() {
 
         <div className={styles.formFooter}>
           <div className={styles.formGroup}>
-            <label htmlFor="files" className={styles.label}>
-              FILES
-            </label>
-            <Image
-              src={FileUplaoad}
-              alt=""
-              width={24}
-              height={24}
-              className={styles.FileUploadImg}
-            />
             <input
               id="files"
               type="file"
               multiple
               onChange={handleFileChange}
-              className={styles.fileInput}
+              className={styles.hiddenFileInput}
             />
+
+            <label htmlFor="files" className={styles.uploadButton}>
+              <Image
+                src={FileUplaoad}
+                alt="파일 업로드"
+                width={24}
+                height={24}
+              />
+            </label>
+
+            {files && files.length > 0 && (
+              <span className={styles.fileCount}>
+                {files.length}개 파일 선택됨
+              </span>
+            )}
           </div>
           <button type="submit" className={styles.submitButton}>
             SUBMIT

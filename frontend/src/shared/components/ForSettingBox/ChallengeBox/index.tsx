@@ -2,9 +2,17 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+
 import styles from "./index.module.css";
 import { dummyChallenges, Challenge } from "./dummyData";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
+import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
+import {
+  AuthError,
+  AuthValidateError,
+} from "@/shared/types/forAPI/AuthErrorType";
+import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
 
 type SortKey = keyof Pick<
   Challenge,
@@ -30,6 +38,16 @@ export default function ChallengeBox() {
 
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
+
+  const { data: chall } = useQuery<
+    GetAllChallengeSuccess | AuthError | AuthValidateError
+  >({
+    queryKey: ["challenge_get_all"],
+    queryFn: () => challenge_get_all(),
+    staleTime: 5 * 1000,
+  });
+
+  console.log(chall);
 
   const sortedRows = useMemo(() => {
     return [...dummyChallenges].sort((a, b) => {
