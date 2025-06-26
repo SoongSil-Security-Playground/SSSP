@@ -8,36 +8,25 @@ import { user_list } from '@/shared/hooks/api/useUser';
 import styles from './page.module.css';
 
 export default function UserPage() {
-  const [users, setUsers]   = useState<UserListSuccess>([]);
-  const [error, setError]   = useState<string | null>(null);
+  const [items, setItems] = useState<UserListSuccess>([]);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     user_list()
-      .then((data) => setUsers(data))
+      .then((data) => setItems(data))
       .catch((err: any) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return <div className={styles.container}>로딩 중…</div>;
-  }
-  if (error) {
-    return (
-      <div className={styles.container}>
-        <PageTitle text="USERS" />
-        <div className={styles.contentWrapper}>
-          <p>error: {error}</p>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div className={styles.container}>Loading...</div>;
+  if (error)   return <div className={styles.container}>Error: {error}</div>;
 
   return (
     <div className={styles.container}>
       <PageTitle text="USERS" />
       <div className={styles.contentWrapper}>
-        <UserList items={users} />
+        <UserList items={items} />
       </div>
     </div>
   );

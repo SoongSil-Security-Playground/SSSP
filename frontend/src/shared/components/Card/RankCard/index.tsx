@@ -1,35 +1,34 @@
 import { type FC } from "react";
 import styles from './index.module.css'
 import { Trophy, User } from "lucide-react";
+import { ScoreListContent } from "@/shared/types/forAPI/ScoringType";
 
-export type RankCardProps = {
-    id: string;
-    rank: Number;
-    score: Number;
-}
+export type RankCardProps = ScoreListContent & {
+    id: number;
+};
 
-export const RankCard: FC<RankCardProps> = ({ id, rank, score }) => {
+export const RankCard: FC<RankCardProps> = ({ id, username, total_score }) => {
 
     let borderClass = '';
-    if (rank === 1) borderClass = styles.gold;
-    else if (rank === 2) borderClass = styles.silver;
-    else if (rank === 3) borderClass = styles.bronze;
+    if (id === 1) borderClass = styles.gold;
+    else if (id === 2) borderClass = styles.silver;
+    else if (id === 3) borderClass = styles.bronze;
 
     return (
         <div className={`${styles.wrapper} ${borderClass}`}>
             <div className={styles.rank}>
-                {rank.toString()}
+                {id.toString()}
             </div>
             <div className={styles.profile}>
                 {/* <img /> */}
                 <User size={16} />
             </div>
-            <div className={styles.id}>
-                {id}
+            <div className={styles.username}>
+                {username}
             </div>
             <div className={styles.score}>
                 <Trophy size={12} />
-                {score.toString()}
+                {total_score.toString()}
             </div>
         </div>
     );

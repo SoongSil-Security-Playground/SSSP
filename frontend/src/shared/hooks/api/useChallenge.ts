@@ -18,6 +18,12 @@ import {
   UpdateChallengeSuccess,
 } from "@/shared/types/forAPI/ChallengeType";
 
+export class ChallengeError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ChallengeError';
+  }
+}
 // /api/v1/challenges/download/{file_path}
 // Download Challenge File, {GET}
 
@@ -41,24 +47,51 @@ export const challenge_download_file = async (file_path: string) => {
 // /api/v1/challenges/get_all_challenge
 // Get All Challenges, {GET}
 
-export const challenge_get_all = async () => {
-  const token = localStorage.getItem("token");
+export const challenge_get_all = async (): Promise<GetAllChallengeSuccess> => {
+  const token = localStorage.getItem('token');
+  let res: Response;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/challenges/get_all_challenge`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  try {
+    res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/challenges/get_all_challenge`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
+  } catch (networkErr: any) {
+    throw new ChallengeError(`Network error: ${networkErr.message}`);
+  }
 
-  return (await res.json()) as
-    | GetAllChallengeSuccess
-    | AuthError
-    | AuthValidateError;
+  if (res.status === 401) {
+    throw new ChallengeError('Token expired or invalid. Please login again.');
+  }
+
+  let payload: unknown;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new ChallengeError('Invalid JSON response from server');
+  }
+
+  if (
+    typeof payload === 'object' &&
+    payload !== null &&
+    ('detail' in payload || 'message' in payload)
+  ) {
+    const errObj = payload as { detail?: string; message?: string };
+    const msg = errObj.detail ?? errObj.message ?? `Error ${res.status}`;
+    throw new ChallengeError(msg);
+  }
+
+  if (!res.ok) {
+    throw new ChallengeError(`Error ${res.status}`);
+  }
+
+  return payload as GetAllChallengeSuccess;
 };
 
 // /api/v1/challenges/{challenge_id}
@@ -87,48 +120,91 @@ export const challenge_get_spec = async (challenge_id: number) => {
 // /api/v1/challenges/{challenge_id}/submit
 // Submit Challenge, {POST}
 
-export const challenge_submit = async (challenge_id: number, flag: string) => {
-  const token = localStorage.getItem("token");
+export const challenge_submit = async (
+  challenge_id: number,
+  flag: string
+): Promise<SubmitChallengeSuccess> => {
+  const params = new URLSearchParams();
+  params.append("flag", flag)
+  const token = localStorage.getItem('token');
+  let res: Response;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/challenges/${challenge_id}/submit`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ flag } satisfies SubmitChallengeForRequest),
-    }
-  );
+  try {
+    res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/challenges/${challenge_id}/submit`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: params.toString(),
+      }
+    );
+  } catch (networkErr: any) {
+    throw new ChallengeError(`Network error: ${networkErr.message}`);
+  }
 
-  return (await res.json()) as
-    | SubmitChallengeSuccess
-    | AuthError
-    | AuthValidateError;
+  let payload: unknown;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new ChallengeError('Invalid JSON response from server');
+  }
+
+  if (!res.ok) {
+    const errObj = payload as { detail?: string; message?: string };
+    const msg = errObj.detail ?? errObj.message ?? `Error ${res.status}`;
+    throw new ChallengeError(msg);
+  }
+
+  const result = payload as SubmitChallengeSuccess;
+
+  if (!result.is_correct) {
+    throw new ChallengeError(result.detail);
+  }
+
+  return result;
 };
 
 // /api/v1/challenges/solved/me
 // Get User Solved Challenges, {GET}
 
-export const challenge_get_user_solved = async () => {
-  const token = localStorage.getItem("token");
+export const challenge_get_user_solved = async (): Promise<GetUserSolvedChallengeSuccess> => {
+  const token = localStorage.getItem('token');
+  let res: Response;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/challenges/solved/me`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  try {
+    res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/challenges/solved/me`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
+  } catch (networkErr: any) {
+    throw new ChallengeError(`Network error: ${networkErr.message}`);
+  }
 
-  return (await res.json()) as
-    | GetUserSolvedChallengeSuccess
-    | AuthError
-    | AuthValidateError;
+  let payload: unknown;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new ChallengeError('Invalid JSON response from server');
+  }
+
+  if (!res.ok) {
+    const msg =
+      typeof payload === 'object' && payload !== null && 'message' in payload
+        ? (payload as any).message
+        : `Error ${res.status}`;
+    throw new ChallengeError(msg as string);
+  }
+
+  return payload as GetUserSolvedChallengeSuccess;
 };
 
 // /api/v1/admin/challenges

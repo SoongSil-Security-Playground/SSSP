@@ -1,14 +1,13 @@
 import React, { type FC } from 'react';
 import { Star } from 'lucide-react';
 import styles from './index.module.css';
-import type { Category } from '../CategoryFilter';
 import type { Status } from '../StatusFilter';
 
 export type ActiveFiltersProps = {
     search: string;
     onClearSearch: () => void;
 
-    selectedCategory: Category | null;
+    selectedCategory: string | null;
     onClearCategory: () => void;
 
     selectedDifficulty: number | null;

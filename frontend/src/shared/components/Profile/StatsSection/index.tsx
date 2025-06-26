@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styles from './index.module.css'
 import { Medal, Trophy, Crown } from 'lucide-react';
 
-type Stat = { label: string; value: string | number };
+export type Stat = { label: string; value: string | number };
 
 // label 별로 매핑할 아이콘
 const iconMap: Record<string, React.FC<any>> = {
@@ -11,7 +11,7 @@ const iconMap: Record<string, React.FC<any>> = {
   Solved: Medal,
 };
 
-type StatsSectionProps = {
+export type StatsSectionProps = {
   stats: Stat[];
 };
 

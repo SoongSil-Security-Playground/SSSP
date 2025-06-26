@@ -5,7 +5,7 @@ import { UserListContent } from "@/shared/types/forAPI/UserType";
 
 export type UserCardProps = Pick<UserListContent, 'username'>;
 
-export const UserCard: FC<UserCardProps> = ({username}) => {
+export const UserCard: FC<UserCardProps> = ({ username }) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.profile}>

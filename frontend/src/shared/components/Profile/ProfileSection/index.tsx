@@ -6,12 +6,12 @@ import { ChangePasswordModal } from '../../Modal/ChangePasswordModal';
 import { DeleteAccountModal } from '../../Modal/DeleteAccountModal';
 import styles from './index.module.css'
 
-export type ProfileProps = {
-  email: string;
-  nickname: string;
+export type ProfileSectionProps = {
+  email?: string;
+  username?: string;
 }
 
-export const ProfileSection: FC<ProfileProps> = ({ email, nickname }) => {
+export const ProfileSection: FC<ProfileSectionProps> = ({ email, username }) => {
   const [isChangeOpen, setChangeOpen] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
 
@@ -24,7 +24,7 @@ export const ProfileSection: FC<ProfileProps> = ({ email, nickname }) => {
         <User size={64} />
       </div>
       <div className={styles.infoLabel}>{email}</div>
-      <div className={styles.infoLabel}>{nickname}</div>
+      <div className={styles.infoLabel}>{username}</div>
 
       <nav className={styles.accountNav}>
         <button

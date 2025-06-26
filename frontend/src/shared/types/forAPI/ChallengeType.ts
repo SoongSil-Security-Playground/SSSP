@@ -48,7 +48,10 @@ export interface SubmitChallengeForRequest {
   flag: string;
 }
 
-export type SubmitChallengeSuccess = string;
+export interface SubmitChallengeSuccess {
+  is_correct: Boolean;
+  detail: string;
+}
 
 // /api/v1/challenges/solved/me
 // Get User Solved Challenges, {GET}

@@ -21,15 +21,15 @@
 }
 
 .gold {
-  border-color: #FFD700;
+    border-color: #FFD700;
 }
 
 .silver {
-  border-color: #C0C0C0;
+    border-color: #C0C0C0;
 }
 
 .bronze {
-  border-color: #CD7F32;
+    border-color: #CD7F32;
 }
 
 
@@ -55,7 +55,7 @@
     justify-content: center;
 }
 
-.id {
+.username {
     font-family: 'Share Tech Mono', monospace;
     color: #ffffff;
     font-size: 1rem;

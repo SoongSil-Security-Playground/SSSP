@@ -34,7 +34,7 @@
     display: flex;
     flex: 1;
     justify-content: center;
-    gap: 2rem;
+    gap: clamp(0.5rem, 2vw, 3rem);
 }
 
 .navItem {
@@ -47,6 +47,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    padding: 0.5rem;
 }
 
 .navItem:hover {

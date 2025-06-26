@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, type ReactNode, type FC } from 'react';
+import React, { useState, type ReactNode, type FC, useEffect } from 'react';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 import { Drawer } from '../Drawer';
@@ -8,6 +8,7 @@ import { Button } from '../Button';
 import { LoginForm } from '../Form/LoginForm';
 import { SignupForm } from '../Form/SignupForm';
 import { useAuth } from '@/shared/utils/AuthProvider';
+import { useRouter } from 'next/navigation';
 import styles from './index.module.css';
 
 interface LayoutProps {
@@ -18,6 +19,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
     const { isLoggedIn, isAdmin, login, logout } = useAuth();
     const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
     const [isAuthOpen, setAuthOpen] = useState(false);
+    const router = useRouter();
 
     const openLogin = () => {
         setAuthMode('login');
@@ -42,6 +44,10 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
     const handleSignupSuccess = () => {
         setAuthMode('login');
     };
+
+    useEffect(() => {
+        if (!isLoggedIn) router.replace('/');
+    }, [isLoggedIn]);
 
     return (
         <div className={styles.layoutContainer}>

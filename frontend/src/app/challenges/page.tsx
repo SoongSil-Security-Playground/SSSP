@@ -1,31 +1,57 @@
 'use client';
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { FilterPanel } from "@/shared/components/FilterPanel";
-import { type ChallengeCardProps } from "@/shared/components/Card/ChallengeCard";
 import { PageTitle } from "@/shared/components/Title";
 import { ChallengeList } from "@/shared/components/List/ChallengeList";
 import { ChallengeDetailModal } from "@/shared/components/Modal/ChallengeDetailModal";
-import { type Category } from "@/shared/components/FilterPanel/CategoryFilter";
+import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
+import { DefaultChallengeContent } from "@/shared/types/forAPI/ChallengeType";
 import styles from "./page.module.css"
 
 export default function ChallengesPage() {
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState<Category | null>(null);
+  const [items, setItems] = useState<DefaultChallengeContent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<number | null>(null);
-  const [status, setStatus] = useState<'all' | 'solved' | 'unsolved'>('all');
-  const [selected, setSelected] = useState<ChallengeCardProps | null>(null);
+  const [status, setStatus] = useState<"all" | "solved" | "unsolved">("all");
+  const [selected, setSelected] = useState<DefaultChallengeContent | null>(null);
+  const categories = useMemo<string[]>(() => {
+    const cats = new Set(items.map((i) => i.category));
+    return Array.from(cats);
+  }, [items]);
 
-  const filtered = useMemo(() => {
-    return dummyChallenges.filter(item => {
-      if (search && !item.title.toLowerCase().includes(search.toLowerCase()))
-        return false;
+  useEffect(() => {
+    challenge_get_all()
+      .then((data) => setItems(data))
+      .catch((err: any) => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const filtered = useMemo(() => (
+    items.filter(item => {
+      if (search && !item.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (category && item.category !== category) return false;
-      if (difficulty !== null && item.stars !== difficulty) return false;
-      if (status !== 'all' && item.status !== status) return false;
+      if (difficulty !== null && parseInt(item.level, 10) !== difficulty) return false;
+      if (status !== "all" && (item.is_user_solved === 1 ? 'solved' : 'unsolved' !== status)) return false;
       return true;
-    });
-  }, [search, category, difficulty, status]);
+    })
+  ), [items, search, category, difficulty, status]);
+
+  const handleSolve = (id: number) => {
+    setItems(curr =>
+      curr.map(item =>
+        item.id === id
+          ? { ...item, is_user_solved: 1 }
+          : item
+      )
+    );
+  };
+
+  if (loading) return <div className={styles.container}>Loading...</div>;
+  if (error) return <div className={styles.container}>Error: {error}</div>;
 
   return (
     <div className={styles.container}>
@@ -37,8 +63,9 @@ export default function ChallengesPage() {
         <FilterPanel
           search={search}
           onSearchChange={setSearch}
+          categories={categories}
           selectedCategory={category}
-          onCategoryToggle={c => setCategory((prev: any) => (prev === c ? null : c))}
+          onCategoryToggle={c => setCategory(prev => (prev === c ? null : c))}
           selectedDifficulty={difficulty}
           onDifficultySelect={setDifficulty}
           selectedStatus={status}
@@ -53,51 +80,9 @@ export default function ChallengesPage() {
       <ChallengeDetailModal
         isOpen={!!selected}
         onClose={() => setSelected(null)}
+        onSolve={handleSolve}
         item={selected}
       />
     </div>
   );
 }
-
-const dummyChallenges: ChallengeCardProps[] = [
-  {
-    title: 'ShortDesc',
-    stars: 1,
-    points: 100,
-    category: 'misc',
-    description: '짧은 설명',
-    status: 'unsolved',
-  },
-  {
-    title: 'MediumDesc',
-    stars: 3,
-    points: 250,
-    category: 'rev',
-    description: '이것은 두 줄 정도로 감싸지는 중간 길이의 설명입니다.',
-    status: 'solved',
-  },
-  {
-    title: 'LongDesc',
-    stars: 5,
-    points: 500,
-    category: 'crypto',
-    description: '여기는 매우 긴 설명입니다. 카드 높이를 테스트하기 위해 여러 줄로 길게 작성됩니다. 텍스트가 고정된 높이를 넘을 때 어떻게 줄임표나 클램프 처리가 되는지 확인해 보세요.',
-    status: 'unsolved',
-  },
-  {
-    title: 'VeryLongDesc',
-    stars: 2,
-    points: 180,
-    category: 'web',
-    description: '이 설명은 훨씬 더 길어서, 카드 컴포넌트 내에서 최대 줄 수를 넘어서는 경우를 시뮬레이션합니다. 여러 문장으로 구성되어 있으며, 줄 바꿈과 텍스트 클램프가 정상 동작하는지 반드시 확인해야 합니다.',
-    status: 'solved',
-  },
-  {
-    title: 'SingleWord',
-    stars: 4,
-    points: 300,
-    category: 'pwn',
-    description: 'Supercalifragilisticexpialidocious',
-    status: 'unsolved',
-  },
-];

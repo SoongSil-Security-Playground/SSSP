@@ -6,6 +6,7 @@
   color: white;
   font-family: 'Share Tech Mono';
   width: 36rem;
+  height: max-content;
   min-height: 100%;
   background: linear-gradient(0deg, rgba(123, 240, 255, 0.30) 100%), #464646;
   box-shadow: 0px 9px 46px 0px rgba(0, 0, 0, 0.12), 0px 11px 15px 0px rgba(0, 0, 0, 0.20), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -147,4 +148,32 @@
 
 .solved p {
   margin: 0;
+}
+
+.error {
+  display: flex;
+  position: relative;
+  margin: 0;
+  height: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  top: -8rem;
+  font-family: "Share Mono Tech";
+  color: white;
+} 
+
+.success {
+  display: flex;
+  position: relative;
+  margin: 0;
+  height: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  top: -6rem;
+  font-family: "Share Mono Tech";
+  color: white;
 }

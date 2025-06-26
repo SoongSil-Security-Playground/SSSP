@@ -4,7 +4,7 @@ import React, { type FC, useState } from 'react';
 import { SearchBox } from '../SearchBox';
 import { ActiveFilters } from './ActiveFilters';
 import { FilterSection } from './FilterSection';
-import { CategoryFilter, type Category } from './CategoryFilter';
+import { CategoryFilter } from './CategoryFilter';
 import { DifficultyFilter } from './DifficultyFilter';
 import { StatusFilter, type Status } from './StatusFilter';
 import styles from './index.module.css';
@@ -13,8 +13,10 @@ type FilterProps = {
     search: string;
     onSearchChange: (q: string) => void;
 
-    selectedCategory: Category | null;
-    onCategoryToggle: (cat: Category | null) => void;
+    categories: string[];
+
+    selectedCategory: string | null;
+    onCategoryToggle: (cat: string | null) => void;
 
     selectedDifficulty: number | null;
     onDifficultySelect: (stars: number | null) => void;
@@ -26,6 +28,7 @@ type FilterProps = {
 export const FilterPanel: FC<FilterProps> = ({
     search,
     onSearchChange,
+    categories,
     selectedCategory,
     onCategoryToggle,
     selectedDifficulty,
@@ -57,6 +60,7 @@ export const FilterPanel: FC<FilterProps> = ({
                 onToggle={() => toggleSection('CATEGORY')}
             >
                 <CategoryFilter
+                    categories={categories}
                     selected={selectedCategory}
                     onToggle={onCategoryToggle}
                 />

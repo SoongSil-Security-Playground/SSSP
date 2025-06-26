@@ -8,14 +8,13 @@ import {
 } from 'lucide-react';
 import styles from './index.module.css';
 
-export type Category = 'pwn' | 'rev' | 'crypto' | 'web' | 'misc';
-
 type CategoryFilterProps = {
-    selected: Category | null;
-    onToggle: (cat: Category | null) => void;
+    categories: string[];
+    selected: string | null;
+    onToggle: (cat: string | null) => void;
 };
 
-export const icons: Record<Category, React.FC<any>> = {
+export const icons: Record<string, React.FC<any>> = {
     pwn: Settings,
     rev: Wrench,
     crypto: Lock,
@@ -24,10 +23,10 @@ export const icons: Record<Category, React.FC<any>> = {
 };
 
 export const CategoryFilter: FC<CategoryFilterProps> = ({
+    categories,
     selected,
     onToggle,
 }) => {
-    const cats: Category[] = ['pwn', 'rev', 'crypto', 'web', 'misc'];
     return (
         <ul className={styles.list}>
             <li>
@@ -38,15 +37,15 @@ export const CategoryFilter: FC<CategoryFilterProps> = ({
                     All
                 </button>
             </li>
-            {cats.map((cat) => {
-                const Icon = icons[cat];
+            {categories.map((cat) => {
+                const Icon = icons[cat.toLowerCase()];
                 return (
                     <li key={cat}>
                         <button
                             className={`${styles.button} ${selected === cat ? styles.selected : ''}`}
                             onClick={() => onToggle(cat)}
                         >
-                            <Icon size={16} className={styles.icon} />
+                            {Icon && <Icon size={16} className={styles.icon} />}
                             <span className={styles.label}>{cat.toUpperCase()}</span>
                         </button>
                     </li>

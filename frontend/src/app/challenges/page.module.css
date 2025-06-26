@@ -1,9 +1,8 @@
 .container {
     display: flex;
+    width: 100%;
     flex-direction: column;
     height: 100vh;
-    width: 100%;
-    position: relative;
 }
 
 .headerWrapper {
@@ -23,11 +22,11 @@
 
 .mainWrapper {
     flex: 1;
-    padding: 0 20rem;
-    overflow-y: auto;
-    /* hide scrollbar in Firefox/IE */
     scrollbar-width: none;
     -ms-overflow-style: none;
+    container-type: inline-size;
+    margin: 0px 280px;
+    box-sizing: border-box;
 }
 
 /* hide scrollbar in WebKit */
