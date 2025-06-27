@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { SolveLogSuccess } from "@/shared/types/forAPI/ChallengeType";
+import {
+  AuthError,
+  AuthValidateError,
+} from "@/shared/types/forAPI/AuthErrorType";
+import { challenge_get_solve_log } from "@/shared/hooks/api/useChallenge";
 import Image from "next/image";
 import styles from "./index.module.css";
 import { dummySubmissions, Submission } from "./dummyData";
@@ -28,6 +35,14 @@ const cellClassMap: Record<SortKey, string> = {
 };
 
 export default function SubmissionBox() {
+  const { data: log } = useQuery<
+    SolveLogSuccess | AuthError | AuthValidateError
+  >({
+    queryKey: ["log_get_all"],
+    queryFn: () => challenge_get_solve_log(),
+    staleTime: 5 * 1000,
+  });
+
   // 선택된 row들의 id를 저장
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 

@@ -8,10 +8,6 @@ import styles from "./index.module.css";
 import { dummyChallenges, Challenge } from "./dummyData";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
 import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
-import {
-  AuthError,
-  AuthValidateError,
-} from "@/shared/types/forAPI/AuthErrorType";
 import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
 
 type SortKey = keyof Pick<
@@ -39,18 +35,14 @@ export default function ChallengeBox() {
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
 
-  const { data: chall } = useQuery<
-    GetAllChallengeSuccess | AuthError | AuthValidateError
-  >({
+  const { data: chall } = useQuery<GetAllChallengeSuccess>({
     queryKey: ["challenge_get_all"],
     queryFn: () => challenge_get_all(),
     staleTime: 5 * 1000,
   });
 
-  console.log(chall);
-
   const sortedRows = useMemo(() => {
-    return [...dummyChallenges].sort((a, b) => {
+    return [...chall!].sort((a, b) => {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
       if (typeof aVal === "number" && typeof bVal === "number") {
@@ -72,7 +64,7 @@ export default function ChallengeBox() {
   };
 
   const allSelected =
-    dummyChallenges.length > 0 && selectedIds.length === dummyChallenges.length;
+    chall!.length > 0 && selectedIds.length === dummyChallenges.length;
 
   const toggleAll = () => {
     if (allSelected) {
