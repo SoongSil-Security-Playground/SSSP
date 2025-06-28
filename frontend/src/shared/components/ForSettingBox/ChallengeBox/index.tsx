@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
@@ -29,8 +29,30 @@ const cellClassMap: Record<SortKey, string> = {
   category: styles.categoryCell,
 };
 
+const sortedRow = (
+  chall: GetAllChallengeSuccess,
+  ascending: boolean,
+  sortKey: SortKey
+) => {
+  if (!Array.isArray(chall)) {
+    return [];
+  }
+
+  return [...chall!].sort((a, b) => {
+    const aVal = a[sortKey];
+    const bVal = b[sortKey];
+    if (typeof aVal === "number" && typeof bVal === "number") {
+      return ascending ? aVal - bVal : bVal - aVal;
+    }
+    const aStr = String(aVal).toLowerCase();
+    const bStr = String(bVal).toLowerCase();
+    return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
+  });
+};
+
 export default function ChallengeBox() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [sortedRows, setSortedRows] = useState<GetAllChallengeSuccess>([]);
 
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
@@ -41,18 +63,9 @@ export default function ChallengeBox() {
     staleTime: 5 * 1000,
   });
 
-  const sortedRows = useMemo(() => {
-    return [...chall!].sort((a, b) => {
-      const aVal = a[sortKey];
-      const bVal = b[sortKey];
-      if (typeof aVal === "number" && typeof bVal === "number") {
-        return ascending ? aVal - bVal : bVal - aVal;
-      }
-      const aStr = String(aVal).toLowerCase();
-      const bStr = String(bVal).toLowerCase();
-      return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
-    });
-  }, [sortKey, ascending]);
+  useEffect(() => {
+    setSortedRows(sortedRow(chall!, ascending, sortKey));
+  }, [chall, sortKey, ascending]);
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -64,7 +77,7 @@ export default function ChallengeBox() {
   };
 
   const allSelected =
-    chall!.length > 0 && selectedIds.length === dummyChallenges.length;
+    chall && chall!.length > 0 && selectedIds.length === dummyChallenges.length;
 
   const toggleAll = () => {
     if (allSelected) {
