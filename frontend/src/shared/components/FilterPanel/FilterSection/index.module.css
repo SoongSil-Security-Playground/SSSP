@@ -9,7 +9,7 @@
     width: 100%;
     background: none;
     border: none;
-    color: white;
+    color: var(--offwhite);
     cursor: pointer;
     font-family: 'Share Tech Mono';
     text-transform: uppercase;

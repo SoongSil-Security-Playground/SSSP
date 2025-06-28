@@ -7,53 +7,48 @@ import { FilterSection } from './FilterSection';
 import { CategoryFilter } from './CategoryFilter';
 import { DifficultyFilter } from './DifficultyFilter';
 import { StatusFilter, type Status } from './StatusFilter';
+import { useFilters } from './FilterContext';
 import styles from './index.module.css';
 
-type FilterProps = {
-    search: string;
-    onSearchChange: (q: string) => void;
+export const FilterPanel: React.FC = () => {
+    const {
+        search, setSearch,
+        status, setStatus,
 
-    categories: string[];
+        categories,
+        selectedCategories,
+        toggleCategory,
 
-    selectedCategory: string | null;
-    onCategoryToggle: (cat: string | null) => void;
+        difficulties,
+        selectedDifficulties,
+        toggleDifficulty,
 
-    selectedDifficulty: number | null;
-    onDifficultySelect: (stars: number | null) => void;
+        removeCategory,
+        removeDifficulty,
 
-    selectedStatus: Status;
-    onStatusChange: (status: Status) => void;
-};
-
-export const FilterPanel: FC<FilterProps> = ({
-    search,
-    onSearchChange,
-    categories,
-    selectedCategory,
-    onCategoryToggle,
-    selectedDifficulty,
-    onDifficultySelect,
-    selectedStatus,
-    onStatusChange,
-}) => {
+        clearAllCategories,
+        clearAllDifficulties,
+    } = useFilters();
 
     const [openSection, setOpenSection] = useState<string | null>(null);
     const toggleSection = (sec: string) =>
-        setOpenSection(prev => (prev === sec ? null : sec));
+        setOpenSection(prev => prev === sec ? null : sec);
 
     return (
         <aside className={styles.sidebar}>
-            <SearchBox value={search} onChange={onSearchChange} />
+            <SearchBox value={search} onChange={setSearch} />
+
             <ActiveFilters
                 search={search}
-                onClearSearch={() => onSearchChange('')}
-                selectedCategory={selectedCategory}
-                onClearCategory={() => onCategoryToggle(null)}
-                selectedDifficulty={selectedDifficulty}
-                onClearDifficulty={() => onDifficultySelect(null)}
-                selectedStatus={selectedStatus}
-                onClearStatus={() => onStatusChange('all')}
+                onClearSearch={() => setSearch('')}
+                selectedCategories={selectedCategories}
+                onRemoveCategory={removeCategory}
+                selectedDifficulties={selectedDifficulties}
+                onRemoveDifficulty={removeDifficulty}
+                selectedStatus={status}
+                onClearStatus={() => setStatus('all')}
             />
+
             <FilterSection
                 title="CATEGORY"
                 isOpen={openSection === 'CATEGORY'}
@@ -61,28 +56,33 @@ export const FilterPanel: FC<FilterProps> = ({
             >
                 <CategoryFilter
                     categories={categories}
-                    selected={selectedCategory}
-                    onToggle={onCategoryToggle}
+                    selected={selectedCategories}
+                    onToggle={toggleCategory}
+                    onClearAll={clearAllCategories}
                 />
             </FilterSection>
+
             <FilterSection
                 title="DIFFICULTY"
                 isOpen={openSection === 'DIFFICULTY'}
                 onToggle={() => toggleSection('DIFFICULTY')}
             >
                 <DifficultyFilter
-                    selected={selectedDifficulty}
-                    onSelect={onDifficultySelect}
+                    difficulties={difficulties}
+                    selected={selectedDifficulties}
+                    onToggle={toggleDifficulty}
+                    onClearAll={clearAllDifficulties}
                 />
             </FilterSection>
+
             <FilterSection
                 title="STATUS"
                 isOpen={openSection === 'STATUS'}
                 onToggle={() => toggleSection('STATUS')}
             >
                 <StatusFilter
-                    selected={selectedStatus}
-                    onChange={onStatusChange}
+                    selected={status}
+                    onChange={setStatus}
                 />
             </FilterSection>
         </aside>

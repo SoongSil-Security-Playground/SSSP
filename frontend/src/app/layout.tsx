@@ -1,4 +1,6 @@
 import styles from './layout.module.css'
+import './global.css'
+import QueryProvider from '@/shared/utils/QueryProvider';
 import { AuthProvider } from '@/shared/utils/AuthProvider';
 import { Layout } from '@/shared/components/Layout';
 
@@ -21,9 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={styles.body}>
         <AuthProvider>
-          <Layout>
-            {children}
-          </Layout>
+          <QueryProvider>
+            <Layout>
+              {children}
+            </Layout>
+          </QueryProvider>
         </AuthProvider>
       </body>
     </html>

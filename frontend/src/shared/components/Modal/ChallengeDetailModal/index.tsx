@@ -1,50 +1,60 @@
 'use client';
 
-import React, { type FC, useState, useEffect } from 'react';
-import { type DefaultChallengeContent } from '@/shared/types/forAPI/ChallengeType';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useFilters } from '../../FilterPanel/FilterContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { challenge_submit } from '@/shared/hooks/api/useChallenge';
 import { Modal } from '../Modal';
 import { FloatingInput } from '../../Input/FloatingInput';
 import { Button } from '../../Button';
 import { StarRating } from '../../Rating';
 import { CheckCircle, AlertCircle } from 'lucide-react';
-import { challenge_submit } from '@/shared/hooks/api/useChallenge';
 import styles from './index.module.css';
+import type { SubmitChallengeSuccess, DefaultChallengeContent } from '@/shared/types/forAPI/ChallengeType';
 
-export type ChallengeDetailModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onSolve?: (id: number) => void;
-  item: DefaultChallengeContent | null;
-};
+export const ChallengeDetailModal: React.FC = () => {
+  const qc = useQueryClient();
+  const {
+    items,
+    isLoading: listLoading,
+    isError: listError,
+    error: listErrorObj,
+    selectedId,
+    setSelectedId,
+  } = useFilters();
 
-export const ChallengeDetailModal: FC<ChallengeDetailModalProps> = ({ isOpen, onClose, onSolve, item }) => {
+  const item = useMemo<DefaultChallengeContent | undefined>(
+    () => items.find((i) => i.id === selectedId!),
+    [items, selectedId]
+  );
+
   const [flagInput, setFlagInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [solved, setSolved] = useState(false);
+
+  const mutation = useMutation<SubmitChallengeSuccess, Error, string>({
+    mutationFn: (flag) => challenge_submit(item!.id, flag),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['challenges'] });
+      setSelectedId(null);
+    },
+  });
 
   useEffect(() => {
-    if (isOpen) {
-      setFlagInput('');
-      setError(null);
-      setSuccessMessage(null);
-      setLoading(false);
-      setSolved(item?.is_user_solved === 1);
-    }
-  }, [isOpen, item]);
+    if (item) setFlagInput('');
+  }, [item]);
+
+  const handleClose = () => setSelectedId(null);
 
   if (!item) return null;
+  if (listLoading) return <div className={styles.container}>Loading...</div>;
+  if (listError) return <div className={styles.container}>Error: {listErrorObj?.message}</div>;
+
+  const solved = item.is_user_solved === 1;
 
   const handleDownload = () => {
-    if (!item?.file_path) {
-      console.error("No file path available for download.");
-      return;
-    }
-
+    if (!item.file_path) return;
     const url = item.file_path;
-    const filename = url.split("/").pop() || "download";
-    const link = document.createElement("a");
+    const filename = url.split('/').pop() ?? 'download';
+    const link = document.createElement('a');
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
@@ -52,28 +62,10 @@ export const ChallengeDetailModal: FC<ChallengeDetailModalProps> = ({ isOpen, on
     document.body.removeChild(link);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
-    setLoading(true);
-
-    try {
-      const result = await challenge_submit(item.id, flagInput);
-      setSuccessMessage(result.detail);
-      setSolved(true);
-      onSolve?.(item.id);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={true} onClose={handleClose}>
       <div className={styles.container}>
-        <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+        <button className={styles.closeBtn} onClick={handleClose} aria-label="Close">
           &times;
         </button>
         <div className={styles.title}>{item.name}</div>
@@ -83,41 +75,54 @@ export const ChallengeDetailModal: FC<ChallengeDetailModalProps> = ({ isOpen, on
           <span className={styles.categoryPill}>{item.category.toUpperCase()}</span>
         </div>
         <p className={styles.description}>{item.description}</p>
-        <Button className={styles.downloadBtn} onClick={handleDownload}>
-          download
-        </Button>
+        {item.file_path ? (
+          <>
+            <Button className={styles.downloadBtn} onClick={handleDownload}>
+              download
+            </Button>
+          </>
+        ) :
+          (
+            <></>
+          )
+        }
         {solved ? (
           <>
             <div className={styles.solved}>
               <CheckCircle size={16} className={styles.solvedIcon} />
               <p>Solved!</p>
             </div>
-            {successMessage && <p className={styles.success}>{successMessage}</p>}
+            {mutation.isSuccess && mutation.data?.detail && (
+              <p className={styles.success}>{mutation.data.detail}</p>
+            )}
           </>
         ) : (
-          <form className={styles.flagForm} onSubmit={handleSubmit}>
+          <form className={styles.flagForm} onSubmit={(e) => {
+            e.preventDefault();
+            mutation.mutate(flagInput);
+          }}>
             <FloatingInput
               type="text"
               label="FLAG"
               value={flagInput}
               className={styles.flagInput}
               onChange={(e) => setFlagInput(e.target.value)}
-              disabled={loading}
+              disabled={mutation.isPending}
               required
             />
             <Button
               type="submit"
               className={styles.flagSubmit}
-              disabled={loading || !flagInput}
+              disabled={mutation.isPending || !flagInput}
             >
-              {loading ? 'Submitting…' : 'Submit'}
+              {mutation.isPending ? 'Submitting…' : 'Submit'}
             </Button>
           </form>
         )}
       </div>
-      {error && (
+      {(mutation.isError || mutation.error) && (
         <p className={styles.error}>
-          <AlertCircle size={16} /> {error}
+          <AlertCircle size={16} /> {mutation.error?.message}
         </p>
       )}
     </Modal>

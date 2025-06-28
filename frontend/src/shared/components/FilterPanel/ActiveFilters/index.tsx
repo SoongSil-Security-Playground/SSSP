@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { FC } from 'react';
 import { Star } from 'lucide-react';
 import styles from './index.module.css';
 import type { Status } from '../StatusFilter';
@@ -7,11 +7,11 @@ export type ActiveFiltersProps = {
     search: string;
     onClearSearch: () => void;
 
-    selectedCategory: string | null;
-    onClearCategory: () => void;
+    selectedCategories: string[];
+    onRemoveCategory: (c: string) => void;
 
-    selectedDifficulty: number | null;
-    onClearDifficulty: () => void;
+    selectedDifficulties: number[];
+    onRemoveDifficulty: (d: number) => void;
 
     selectedStatus: Status;
     onClearStatus: () => void;
@@ -20,17 +20,20 @@ export type ActiveFiltersProps = {
 export const ActiveFilters: FC<ActiveFiltersProps> = ({
     search,
     onClearSearch,
-    selectedCategory,
-    onClearCategory,
-    selectedDifficulty,
-    onClearDifficulty,
+
+    selectedCategories,
+    onRemoveCategory,
+
+    selectedDifficulties,
+    onRemoveDifficulty,
+
     selectedStatus,
     onClearStatus,
 }) => {
     const hasAny =
         !!search ||
-        selectedCategory !== null ||
-        selectedDifficulty !== null ||
+        selectedCategories.length > 0 ||
+        selectedDifficulties.length > 0 ||
         selectedStatus !== 'all';
 
     if (!hasAny) return null;
@@ -40,32 +43,51 @@ export const ActiveFilters: FC<ActiveFiltersProps> = ({
             {search && (
                 <span className={styles.tag}>
                     {search}
-                    <button onClick={onClearSearch} className={styles.tagRemove}>
+                    <button
+                        onClick={onClearSearch}
+                        className={styles.tagRemove}
+                        aria-label="Clear search"
+                    >
                         ×
                     </button>
                 </span>
             )}
-            {selectedCategory && (
-                <span className={styles.tag}>
-                    {selectedCategory.toUpperCase()}
-                    <button onClick={onClearCategory} className={styles.tagRemove}>
+
+            {selectedCategories.map(cat => (
+                <span key={cat} className={styles.tag}>
+                    {cat.toUpperCase()}
+                    <button
+                        onClick={() => onRemoveCategory(cat)}
+                        className={styles.tagRemove}
+                        aria-label={`Remove category ${cat}`}
+                    >
                         ×
                     </button>
                 </span>
-            )}
-            {selectedDifficulty !== null && (
-                <span className={styles.tag}>
-                    {selectedDifficulty}
-                    <Star size={12} />
-                    <button onClick={onClearDifficulty} className={styles.tagRemove}>
+            ))}
+
+            {selectedDifficulties.map(d => (
+                <span key={d} className={styles.tag}>
+                    {d}
+                    <Star size={12} className={styles.tagIcon} />
+                    <button
+                        onClick={() => onRemoveDifficulty(d)}
+                        className={styles.tagRemove}
+                        aria-label={`Remove difficulty ${d}`}
+                    >
                         ×
                     </button>
                 </span>
-            )}
+            ))}
+
             {selectedStatus !== 'all' && (
                 <span className={styles.tag}>
                     {selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1)}
-                    <button onClick={onClearStatus} className={styles.tagRemove}>
+                    <button
+                        onClick={onClearStatus}
+                        className={styles.tagRemove}
+                        aria-label="Clear status"
+                    >
                         ×
                     </button>
                 </span>

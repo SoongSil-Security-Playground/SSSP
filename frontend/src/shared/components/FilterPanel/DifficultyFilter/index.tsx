@@ -3,8 +3,10 @@ import { StarRating } from '../../Rating';
 import styles from './index.module.css';
 
 type DifficultyFilterProps = {
-    selected: number | null;
-    onSelect: (stars: number | null) => void;
+    selected: number[];
+    difficulties: number[];
+    onToggle: (stars: number) => void;
+    onClearAll: () => void
 };
 
 const levels = [
@@ -16,29 +18,48 @@ const levels = [
 ];
 
 export const DifficultyFilter: FC<DifficultyFilterProps> = ({
+    difficulties,
     selected,
-    onSelect,
+    onToggle,
+    onClearAll
 }) => (
     <ul className={styles.list}>
-        <li>
-            <button
-                className={`${styles.button} ${selected === null ? styles.selected : ''}`}
-                onClick={() => onSelect(null)}
-            >
-                All
-            </button>
-        </li>
-        {levels.map((lvl) => (
-            <li key={lvl.stars}>
+        {onClearAll && (
+            <li key="all">
                 <button
-                    className={`${styles.button} ${selected === lvl.stars ? styles.selected : ''
-                        }`}
-                    onClick={() => onSelect(lvl.stars)}
+                    className={[
+                        styles.button,
+                        selected.length === 0 && styles.selected,
+                    ]
+                        .filter(Boolean)
+                        .join(' ')}
+                    onClick={onClearAll}
                 >
-                    <span>{lvl.label}</span>
-                    <StarRating rating={lvl.stars} />
+                    All
                 </button>
             </li>
-        ))}
+        )}
+        {difficulties.map((stars) => {
+            const lvl = levels.find((l) => l.stars === stars);
+            const label = lvl ? lvl.label : `${stars} stars`;
+            const isSel = selected.includes(stars);
+
+            return (
+                <li key={stars}>
+                    <button
+                        className={[
+                            styles.button,
+                            isSel && styles.selected,
+                        ]
+                            .filter(Boolean)
+                            .join(' ')}
+                        onClick={() => onToggle(stars)}
+                    >
+                        <StarRating rating={stars} />
+                        <span className={styles.label}>{label}</span>
+                    </button>
+                </li>
+            );
+        })}
     </ul>
 );
