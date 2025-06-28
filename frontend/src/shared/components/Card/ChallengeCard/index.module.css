@@ -24,8 +24,8 @@
     font-feature-settings: 'liga' off, 'clig' off;
     font-size: 1.25rem;
     font-weight: bold;
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
+    color: var(--offwhite);
+    -webkit-text-fill-color: var(--offwhite);
     text-shadow:
         -2px -2px 0 #334648,
         0 -2px 0 #334648,
@@ -64,22 +64,23 @@
 .points {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.875rem;
-    color: #ffffff;
+    color: var(--offwhite);
 }
 
 .categoryPill {
     margin-left: auto;
     padding: 0.25rem 0.75rem;
-    border: 1px solid #ffffff;
+    border: 1px solid var(--offwhite);
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--offwhite);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .description {
     font-size: 0.875rem;
-    color: #ffffff;
+    color: var(--offwhite);
     margin: 0 0 0.5rem 0;
 
     flex: 1 1 auto;
@@ -102,7 +103,7 @@
     font-size: 0.875rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: #ffffff;
+    color: var(--offwhite);
     letter-spacing: 0.05em;
     display: flex;
     justify-content: center;
@@ -110,14 +111,26 @@
     align-self: stretch;
 }
 
-.solved {
+/* .solved {
     border: 2px solid #2D2D2D;
     background: #3A3A3A;
     box-shadow: 0px 9px 46px 0px rgba(0, 0, 0, 0.12) inset, 0px 11px 15px 0px rgba(0, 0, 0, 0.20) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 }
 
 .unsolved {
-    border: 2px solid white;
+    border: 2px solid var(--offwhite);
     background: linear-gradient(0deg, rgba(123, 242, 255, 0.40) 0%, rgba(123, 242, 255, 0.40) 100%), rgba(255, 255, 255, 0.08);
+    box-shadow: 0px 9px 46px 0px rgba(0, 0, 0, 0.12), 0px 11px 15px 0px rgba(0, 0, 0, 0.20), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+} */
+
+.solved {
+    border: 2px solid var(--offwhite);
+    background: #5a9f9f;
+    box-shadow: 0px 9px 46px 0px rgba(0, 0, 0, 0.12), 0px 11px 15px 0px rgba(0, 0, 0, 0.20), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.unsolved {
+    border: 2px solid #4f4f4f;
+    background: #3A3A3A;
     box-shadow: 0px 9px 46px 0px rgba(0, 0, 0, 0.12), 0px 11px 15px 0px rgba(0, 0, 0, 0.20), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }

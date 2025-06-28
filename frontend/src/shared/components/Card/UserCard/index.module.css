@@ -38,7 +38,7 @@
 
 .username {
     font-family: 'Share Tech Mono', monospace;
-    color: #ffffff;
+    color: var(--offwhite);
     font-size: 1rem;
 }
 

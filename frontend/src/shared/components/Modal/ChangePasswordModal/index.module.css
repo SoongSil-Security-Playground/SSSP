@@ -9,7 +9,7 @@
 .title {
   font-family: 'Silkscreen';
   font-size: 2rem;
-  color: white;
+  color: var(--offwhite);
   text-align: center;
   text-shadow:
     -0.2rem 0 0 black,
@@ -29,7 +29,7 @@
   border: 1px solid #4d4d4d;
   border-radius: 0.25rem;
   background: transparent;
-  color: white;
+  color: var(--offwhite);
 }
 
 .actions {

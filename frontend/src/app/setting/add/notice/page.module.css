@@ -1,7 +1,7 @@
 /* 전체 컨테이너 */
 .container {
   background-color: #242424;
-  color: #ffffff;
+  color: var(--offwhite);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,7 +58,7 @@
   font-size: 18px;
   font-weight: 400;
   text-transform: uppercase;
-  color: #ffffff;
+  color: var(--offwhite);
   z-index: 1;
 }
 
@@ -110,7 +110,7 @@
 .submitButton {
   font-family: "Press Start 2P", monospace;
   background-color: transparent;
-  color: #ffffff;
+  color: var(--offwhite);
   border: none;
   padding: 0.5rem 1.5rem;
   font-size: 14px;

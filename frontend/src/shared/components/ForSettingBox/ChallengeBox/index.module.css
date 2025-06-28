@@ -102,7 +102,7 @@
   padding: 12px;
   vertical-align: middle;
   text-align: center;
-  color: #ffffff;
+  color: var(--offwhite);
 }
 
 .scoreBodyCell {

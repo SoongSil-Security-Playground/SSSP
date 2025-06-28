@@ -8,9 +8,9 @@
   width: -webkit-fill-available;
   padding: 0.75rem;
   background-color: transparent;
-  border: 1px solid #888;
+  border: 1px solid #ccc;
   border-radius: 0.5rem;
-  color: white;
+  color: var(--offwhite);
   font-size: 1rem;
 }
 
@@ -20,7 +20,7 @@
   top: 0.75rem;
   pointer-events: none;
   transition: all 0.2s ease;
-  color: white;
+  color: var(--offwhite);
 }
 
 .input:focus+.label,
@@ -28,12 +28,12 @@
   top: -0.5rem;
   left: 0.5rem;
   font-size: 0.875rem;
-  color: white;
+  color: var(--offwhite);
 }
 
 .input:focus {
   outline: none;
-  border: 1px solid #ccc;
+  border: 1px solid var(--offwhite);
   background-color: transparent;
-  color: white;
+  color: var(--offwhite);
 }

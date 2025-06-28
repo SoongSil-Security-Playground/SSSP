@@ -21,8 +21,8 @@
     font-feature-settings: 'liga' off, 'clig' off;
     font-size: 1.25rem;
     font-weight: bold;
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
+    color: var(--offwhite);
+    -webkit-text-fill-color: var(--offwhite);
     text-shadow:
         -2px -2px 0 #334648,
         0 -2px 0 #334648,

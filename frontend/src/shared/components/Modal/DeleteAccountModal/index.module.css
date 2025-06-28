@@ -25,7 +25,7 @@
 }
 
 .message {
-  color: white;
+  color: var(--offwhite);
   font-size: 0.875rem;
   font-family: 'Share Mono Tech';
   text-align: center;
@@ -36,7 +36,7 @@
   border: 1px solid #4d4d4d;
   border-radius: 0.25rem;
   background: transparent;
-  color: white;
+  color: var(--offwhite);
   margin-bottom: 1rem;
 }
 

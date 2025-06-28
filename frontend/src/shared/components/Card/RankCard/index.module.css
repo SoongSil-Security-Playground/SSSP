@@ -57,7 +57,7 @@
 
 .username {
     font-family: 'Share Tech Mono', monospace;
-    color: #ffffff;
+    color: var(--offwhite);
     font-size: 1rem;
 }
 
@@ -65,7 +65,7 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    color: #ffffff;
+    color: var(--offwhite);
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.875rem;
     margin-left: auto;
