@@ -68,7 +68,6 @@ export const FilterPanel: React.FC = () => {
                 onToggle={() => toggleSection('DIFFICULTY')}
             >
                 <DifficultyFilter
-                    difficulties={difficulties}
                     selected={selectedDifficulties}
                     onToggle={toggleDifficulty}
                     onClearAll={clearAllDifficulties}

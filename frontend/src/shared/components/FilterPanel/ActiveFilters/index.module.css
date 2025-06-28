@@ -17,6 +17,10 @@
     align-content: center;
 }
 
+.tagIcon {
+    color: #FFD700;
+}
+
 .tagRemove {
     display: inline-flex;
     align-items: center;
