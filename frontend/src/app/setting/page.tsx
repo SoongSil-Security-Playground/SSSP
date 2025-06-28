@@ -56,11 +56,7 @@ export default function SettingPage() {
     <div className={styles.container}>
       <PageTitle text="Settings" />
       <div className={styles.headerWrapper}>
-        <SelectSetting
-          items={tabs}
-          activeIndex={active}
-          onChange={setActive}
-        />
+        <SelectSetting items={tabs} activeIndex={active} onChange={setActive} />
         <Header />
       </div>
       <div className={styles.bodyWrapper}>

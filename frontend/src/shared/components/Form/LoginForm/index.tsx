@@ -11,10 +11,6 @@ import {
   AuthError,
 } from "@/shared/types/forAPI/AuthErrorType";
 
-import { useQuery } from "@tanstack/react-query";
-import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
-import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
-
 function isValidateError(
   error: AuthError | AuthValidateError
 ): error is AuthValidateError {
@@ -30,14 +26,6 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const { data: chall } = useQuery<GetAllChallengeSuccess>({
-    queryKey: ["challenge_get_all"],
-    queryFn: () => challenge_get_all(),
-    staleTime: 5 * 1000,
-  });
-
-  console.log(chall);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

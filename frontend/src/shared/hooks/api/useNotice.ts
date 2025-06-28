@@ -24,19 +24,20 @@ export class NoticeError extends Error {
 
 export const admin_notice = async (title: string, content: string) => {
   const token = localStorage.getItem("token");
+  const form = new URLSearchParams({
+    title,
+    content,
+  }).toString();
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice`,
     {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        title,
-        content,
-      } satisfies CreateNoticeForRequest),
+      body: form,
     }
   );
 

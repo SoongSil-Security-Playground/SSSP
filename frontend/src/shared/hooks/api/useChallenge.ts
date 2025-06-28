@@ -211,18 +211,7 @@ export const challenge_get_user_solved =
 // /api/v1/admin/challenges
 // Create Challenge, {POST}
 
-export const challenge_create = async (
-  name: string,
-  description: string,
-  points: string,
-  category: string,
-  flag: string,
-  level: string,
-  decay: string,
-  minimum_point: string,
-  is_dynamic: boolean,
-  file?: string | (string | null)
-) => {
+export const challenge_create = async (formData: FormData) => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(
@@ -230,20 +219,10 @@ export const challenge_create = async (
     {
       method: "POST",
       headers: {
+        // "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        name,
-        description,
-        points,
-        category,
-        flag,
-        level,
-        decay,
-        minimum_point,
-        is_dynamic,
-        file,
-      } satisfies CreateChallengeForRequest),
+      body: formData,
     }
   );
 
