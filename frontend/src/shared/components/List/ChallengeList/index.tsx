@@ -5,7 +5,7 @@ import { useFilters } from '../../FilterPanel/FilterContext';
 import { ChallengeCard } from '../../Card/ChallengeCard';
 import styles from './index.module.css';
 
-export const ChallengeList: React.FC = () => {
+export const ChallengeList: FC = () => {
   const {
     filteredItems,
     isLoading,

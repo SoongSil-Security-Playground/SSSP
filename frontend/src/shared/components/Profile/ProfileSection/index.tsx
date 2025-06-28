@@ -1,19 +1,25 @@
 'use client';
 
 import React, { type FC, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { user_get } from '@/shared/hooks/api/useUser';
+import { GetUserSuccess } from '@/shared/types/forAPI/UserType';
 import { UserLock, ArrowUpRightFromSquare, User } from 'lucide-react';
 import { ChangePasswordModal } from '../../Modal/ChangePasswordModal';
 import { DeleteAccountModal } from '../../Modal/DeleteAccountModal';
 import styles from './index.module.css'
 
-export type ProfileSectionProps = {
-  email?: string;
-  username?: string;
-}
+export const ProfileSection: FC = () => {
+  const { data, isLoading, isError, error } = useQuery<GetUserSuccess, Error>({
+    queryKey: ['user'],
+    queryFn: user_get,
+  });
 
-export const ProfileSection: FC<ProfileSectionProps> = ({ email, username }) => {
   const [isChangeOpen, setChangeOpen] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
+
+  if (isLoading) return <div>Loading profile…</div>;
+  if (isError) return <div>Error: {(error as Error).message}</div>;
 
   return (
     <div className={styles.profileForm}>
@@ -23,8 +29,8 @@ export const ProfileSection: FC<ProfileSectionProps> = ({ email, username }) => 
         {/* <img /> */}
         <User size={64} />
       </div>
-      <div className={styles.infoLabel}>{email}</div>
-      <div className={styles.infoLabel}>{username}</div>
+      <div className={styles.infoLabel}>{data?.email}</div>
+      <div className={styles.infoLabel}>{data?.username}</div>
 
       <nav className={styles.accountNav}>
         <button

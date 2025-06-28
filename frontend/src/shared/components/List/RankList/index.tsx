@@ -1,15 +1,28 @@
-import React, { type FC } from 'react';
-import { ScoreListContent, GetScoreListSuccess } from '@/shared/types/forAPI/ScoringType';
-import { RankCard } from '../../Card/RankCard';
+'use client';
+
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { GetScoreListSuccess } from '@/shared/types/forAPI/ScoringType';
+import { get_score } from '@/shared/hooks/api/useScoring';
+import { RankCard } from '../../Card/RankCard'; 4
 import styles from './index.module.css';
 
-export type RankListProps = {
-  items: GetScoreListSuccess;
-  onItemClick?: (rank: ScoreListContent & { id: number }) => void;
-};
+export const RankList = () => {
+  const { data: items = [], isLoading, isError, error } =
+    useQuery<GetScoreListSuccess, Error>({
+      queryKey: ['users'],
+      queryFn: get_score,
+    }
+    );
 
-export const RankList: FC<RankListProps> = ({ items, onItemClick }) => {
   const sortedItems = [...items].sort((a, b) => b.total_score - a.total_score);
+
+  if (isLoading) {
+    return <div className={styles.container}>Loading...</div>;
+  }
+  if (isError) {
+    return <div className={styles.container}>Error: {error?.message}</div>;
+  }
 
   return (
     <div className={styles.list}>
@@ -20,8 +33,6 @@ export const RankList: FC<RankListProps> = ({ items, onItemClick }) => {
           <div
             key={index}
             className={styles.cardWrapper}
-            style={{ cursor: onItemClick ? 'pointer' : 'default' }}
-            onClick={() => onItemClick?.(rankWithId)}
           >
             <RankCard {...rankWithId} />
           </div>

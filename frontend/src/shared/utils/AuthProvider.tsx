@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             localStorage.removeItem('token');
             setToken(null);
             setIsLoggedIn(false);
-            setIsAdmin(null);
+            setIsAdmin(false);
             router.push('/');
         }
     };

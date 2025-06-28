@@ -48,4 +48,4 @@ export type DeleteNoticeSuccess = string;
 // /api/v1/notice
 // Get All Notice, {GET}
 
-export type GetAllNoticeSuccess = DefaultNoticeContent[];
+export type GetNoticeListSuccess = DefaultNoticeContent[];

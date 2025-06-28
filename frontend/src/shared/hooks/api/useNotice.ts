@@ -7,7 +7,7 @@ import {
   CreateNoticeForRequest,
   CreateNoticeSuccess,
   DeleteNoticeSuccess,
-  GetAllNoticeSuccess,
+  GetNoticeListSuccess,
   UpdateNoticeForRequest,
   UpdateNoticeSuccess,
 } from "@/shared/types/forAPI/NoticeType";
@@ -103,7 +103,7 @@ export const admin_notice_delete = async (notice_id: number) => {
 // /api/v1/notice
 // Get All Notice, {GET}
 
-export const notice_get_all = async (): Promise<GetAllNoticeSuccess> => {
+export const notice_get_all = async (): Promise<GetNoticeListSuccess> => {
   const token = localStorage.getItem('token');
   let res: Response;
 
@@ -144,5 +144,5 @@ export const notice_get_all = async (): Promise<GetAllNoticeSuccess> => {
     throw new NoticeError(`Error ${res.status}`);
   }
 
-  return payload as GetAllNoticeSuccess;
+  return payload as GetNoticeListSuccess;
 };

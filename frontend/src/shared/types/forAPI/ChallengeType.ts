@@ -26,7 +26,7 @@ export type DonwloadFileSuccess = string;
 // /api/v1/challenges/get_all_challenge
 // Get All Challenges, {GET}
 
-export type GetAllChallengeSuccess = DefaultChallengeContent[];
+export type GetChallnegeListSucces = DefaultChallengeContent[];
 
 // /api/v1/challenges/{challenge_id}
 // Get Challenge, {GET}

@@ -29,6 +29,7 @@ export const ChallengeDetailModal: React.FC = () => {
   );
 
   const [flagInput, setFlagInput] = useState('');
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const mutation = useMutation<SubmitChallengeSuccess, Error, string>({
     mutationFn: (flag) => challenge_submit(item!.id, flag),
@@ -36,10 +37,14 @@ export const ChallengeDetailModal: React.FC = () => {
       qc.invalidateQueries({ queryKey: ['challenges'] });
       setSelectedId(null);
     },
+    onError: (err) => {
+      setSubmitError(err.message ?? 'Flag submission failed');
+    }
   });
 
   useEffect(() => {
     if (item) setFlagInput('');
+    setSubmitError(null);
   }, [item]);
 
   const handleClose = () => setSelectedId(null);
@@ -99,6 +104,7 @@ export const ChallengeDetailModal: React.FC = () => {
         ) : (
           <form className={styles.flagForm} onSubmit={(e) => {
             e.preventDefault();
+            setSubmitError(null);
             mutation.mutate(flagInput);
           }}>
             <FloatingInput
@@ -120,9 +126,9 @@ export const ChallengeDetailModal: React.FC = () => {
           </form>
         )}
       </div>
-      {(mutation.isError || mutation.error) && (
+      {(mutation.isError || submitError) && (
         <p className={styles.error}>
-          <AlertCircle size={16} /> {mutation.error?.message}
+          <AlertCircle size={16} /> {submitError ?? mutation.error?.message}
         </p>
       )}
     </Modal>

@@ -12,7 +12,7 @@ import {
   UpdatePasswordSuccess,
   UpdateUserForRequest,
   UpdateUserSuccess,
-  UserListSuccess,
+  GetUserListSuccess,
 } from "@/shared/types/forAPI/UserType";
 
 // /api/v1/user/user_list
@@ -25,7 +25,7 @@ export class UserError extends Error {
   }
 }
 
-export const user_list = async (): Promise<UserListSuccess> => {
+export const user_list = async (): Promise<GetUserListSuccess> => {
   const token = localStorage.getItem('token');
 
   let res: Response;
@@ -63,7 +63,7 @@ export const user_list = async (): Promise<UserListSuccess> => {
     throw new UserError(errMsg);
   }
 
-  return payload as UserListSuccess;
+  return payload as GetUserListSuccess;
 };
 
 // /api/v1/user/update_password
