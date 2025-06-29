@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/shared/utils/AuthProvider";
 import styles from "@/app/setting/page.module.css";
 
 import ChallengeBox from "@/shared/components/ForSettingBox/ChallengeBox";
@@ -17,8 +19,20 @@ import SubmissionHeader from "@/shared/components/ForSettingHeader/SubmissionHea
 import { PageTitle } from "@/shared/components/Title";
 
 export default function SettingPage() {
+  const { isLoggedIn, isAdmin } = useAuth();
+  const router = useRouter();
   const tabs = ["Challenges", "Submissions", "Users", "Notification"];
   const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (!isLoggedIn || isAdmin === false) {
+      router.replace('/');
+    }
+  }, [isLoggedIn, isAdmin, router]);
+
+  if (!isLoggedIn || isAdmin !== true) {
+    return <div>Loading...</div>;
+  }
 
   // 오른쪽 헤더 분기
   const Header = () => {
