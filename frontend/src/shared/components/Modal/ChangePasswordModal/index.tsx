@@ -1,12 +1,13 @@
 'use client';
 
 import React, { type FC, useEffect, useState, FormEvent } from 'react';
+import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from '../Modal';
 import { Button } from '../../Button';
 import { FloatingInput } from '../../Input/FloatingInput';
 import { user_update_password } from '@/shared/hooks/api/useUser';
-import { AlertCircle } from 'lucide-react';
+import { UpdatePasswordSuccess } from '@/shared/types/forAPI/UserType';
 import styles from './index.module.css';
 
 type ChangePasswordModalProps = {
@@ -22,17 +23,19 @@ export const ChangePasswordModal: FC<ChangePasswordModalProps> = ({
   const [currentPwd, setCurrentPwd] = useState('');
   const [newPwd, setNewPwd] = useState('');
   const [confirm, setConfirm] = useState('');
-  const [localError, setLocalError] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<UpdatePasswordSuccess | null>(null);
 
   const mutation = useMutation({
     mutationFn: ({ current, next }: { current: string; next: string }) =>
       user_update_password(current, next),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+      toast.success('Password changed successfully!');
       onClose();
     },
     onError: (err: any) => {
       setLocalError(err.message || 'Failed to change password.');
+      toast.error(localError);
     },
   });
 
@@ -50,6 +53,7 @@ export const ChangePasswordModal: FC<ChangePasswordModalProps> = ({
     setLocalError(null);
     if (newPwd !== confirm) {
       setLocalError('New password and confirmation do not match.');
+      toast.error(localError);
       return;
     }
     mutation.mutate({ current: currentPwd, next: newPwd });
@@ -93,13 +97,6 @@ export const ChangePasswordModal: FC<ChangePasswordModalProps> = ({
             {mutation.isPending ? 'Submitting…' : 'Submit'}
           </Button>
         </div>
-
-        {(localError || mutation.isError) && (
-          <p className={styles.error}>
-            <AlertCircle size={16} />
-            {localError ?? (mutation.error as Error).message}
-          </p>
-        )}
       </form>
     </Modal>
   );

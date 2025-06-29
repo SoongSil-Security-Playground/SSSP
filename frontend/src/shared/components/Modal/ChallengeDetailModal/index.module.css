@@ -101,7 +101,7 @@
 }
 
 .flagForm {
-  margin-top: 3rem;
+  margin-top: 6rem;
   display: flex;
   align-items: stretch;
   width: 100%;
@@ -149,32 +149,4 @@
 
 .solved p {
   margin: 0;
-}
-
-.error {
-  display: flex;
-  position: relative;
-  margin: 0;
-  height: 0;
-  justify-content: center;
-  align-items: center;
-  gap: 0.25rem;
-  width: 100%;
-  top: -8rem;
-  font-family: "Share Mono Tech";
-  color: var(--offwhite);
-}
-
-.success {
-  display: flex;
-  position: relative;
-  margin: 0;
-  height: 0;
-  justify-content: center;
-  align-items: center;
-  gap: 0.25rem;
-  width: 100%;
-  top: -6rem;
-  font-family: "Share Mono Tech";
-  color: var(--offwhite);
 }

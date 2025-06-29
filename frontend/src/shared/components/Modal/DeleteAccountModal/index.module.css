@@ -45,16 +45,3 @@
   justify-content: flex-end;
   gap: 0.5rem;
 }
-
-.error {
-  display: flex;
-  width: 100%;
-  gap: 0.5rem;
-  margin: 0;
-  justify-content: center;
-  font-family: 'Share Mono Tech';
-  font-size: 1rem;
-  color: #f87171;
-  align-items: center;
-  align-content: center;
-}

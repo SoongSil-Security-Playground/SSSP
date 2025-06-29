@@ -1,6 +1,7 @@
 'use client';
 
 import React, { FC, useEffect, useState } from 'react';
+import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from '../Modal';
 import { Button } from '../../Button';
@@ -24,7 +25,7 @@ export const DeleteAccountModal: FC<DeleteAccountModalProps> = ({
   const [confirmText, setConfirmText] = useState('');
   const [localError, setLocalError] = useState<DeleteCurUserSuccess | null>(null);
 
-  const { mutate, status, error } = useMutation<
+  const mutation = useMutation<
     DeleteCurUserSuccess,
     Error
   >({
@@ -33,9 +34,11 @@ export const DeleteAccountModal: FC<DeleteAccountModalProps> = ({
       qc.clear();
       logout();
       onClose();
+      toast.success('Account deleted successfully.');
     },
     onError: (err) => {
       setLocalError(err.message);
+      toast.error(localError);
     },
   });
 
@@ -48,11 +51,8 @@ export const DeleteAccountModal: FC<DeleteAccountModalProps> = ({
 
   const handleDelete = () => {
     setLocalError(null);
-    mutate();
+    mutation.mutate();
   };
-
-  const isDeleting = status === 'pending';
-  const hasError   = status === 'error';
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -68,32 +68,25 @@ export const DeleteAccountModal: FC<DeleteAccountModalProps> = ({
           value={confirmText}
           onChange={e => setConfirmText(e.target.value)}
           className={styles.input}
-          disabled={isDeleting}
+          disabled={mutation.isPending}
         />
 
         <div className={styles.actions}>
           <Button
             type="button"
             onClick={onClose}
-            disabled={isDeleting}
+            disabled={mutation.isPending}
           >
             Cancel
           </Button>
           <Button
             type="button"
             onClick={handleDelete}
-            disabled={isDeleting || confirmText !== 'DELETE'}
+            disabled={mutation.isPending || confirmText !== 'DELETE'}
           >
-            {isDeleting ? 'Deleting…' : 'Delete'}
+            {mutation.isPending ? 'Deleting…' : 'Delete'}
           </Button>
         </div>
-
-        {(localError || hasError) && (
-          <p className={styles.error}>
-            <AlertCircle size={16} />
-            {localError ?? error?.message}
-          </p>
-        )}
       </div>
     </Modal>
   );

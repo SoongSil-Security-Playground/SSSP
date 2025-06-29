@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, type ReactNode, type FC, useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 import { Drawer } from '../Drawer';
@@ -51,6 +53,14 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
 
     return (
         <div className={styles.layoutContainer}>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar
+                newestOnTop
+                closeOnClick
+                pauseOnHover
+            />
             <Header
                 isLoggedIn={isLoggedIn}
                 isAdmin={!!isAdmin}

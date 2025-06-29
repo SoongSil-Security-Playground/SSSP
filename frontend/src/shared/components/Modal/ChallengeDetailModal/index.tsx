@@ -9,6 +9,7 @@ import { FloatingInput } from '../../Input/FloatingInput';
 import { Button } from '../../Button';
 import { StarRating } from '../../Rating';
 import { CheckCircle, AlertCircle } from 'lucide-react';
+import { toast } from 'react-toastify';
 import styles from './index.module.css';
 import type { SubmitChallengeSuccess, DefaultChallengeContent } from '@/shared/types/forAPI/ChallengeType';
 
@@ -33,25 +34,30 @@ export const ChallengeDetailModal: React.FC = () => {
 
   const mutation = useMutation<SubmitChallengeSuccess, Error, string>({
     mutationFn: (flag) => challenge_submit(item!.id, flag),
-    onSuccess: () => {
+    onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ['challenges'] });
       setSelectedId(null);
+      if (data.detail) {
+        toast.success(data.detail);
+      }
     },
     onError: (err) => {
-      setSubmitError(err.message ?? 'Flag submission failed');
+      toast.error(err.message || 'Flag submission failed');
     }
   });
 
   useEffect(() => {
     if (item) setFlagInput('');
-    setSubmitError(null);
   }, [item]);
 
   const handleClose = () => setSelectedId(null);
 
   if (!item) return null;
   if (listLoading) return <div className={styles.container}>Loading...</div>;
-  if (listError) return <div className={styles.container}>Error: {listErrorObj?.message}</div>;
+  if (listError) {
+    toast.error(listErrorObj?.message || 'Failed to load challenges');
+    return <div className={styles.container}>Error loading challenge</div>;
+  }
 
   const solved = item.is_user_solved === 1;
 
@@ -97,9 +103,6 @@ export const ChallengeDetailModal: React.FC = () => {
               <CheckCircle size={16} className={styles.solvedIcon} />
               <p>Solved!</p>
             </div>
-            {mutation.isSuccess && mutation.data?.detail && (
-              <p className={styles.success}>{mutation.data.detail}</p>
-            )}
           </>
         ) : (
           <form className={styles.flagForm} onSubmit={(e) => {
@@ -126,11 +129,6 @@ export const ChallengeDetailModal: React.FC = () => {
           </form>
         )}
       </div>
-      {(mutation.isError || submitError) && (
-        <p className={styles.error}>
-          <AlertCircle size={16} /> {submitError ?? mutation.error?.message}
-        </p>
-      )}
     </Modal>
   );
 };

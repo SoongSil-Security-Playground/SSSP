@@ -1,55 +1,42 @@
 'use client';
 
-import React, { type FC, useState } from 'react';
+import React, { FC, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import { FloatingInput } from '../../Input/FloatingInput';
 import { Button } from '../../Button';
 import styles from './index.module.css';
 import { auth_login } from '@/shared/hooks/api/useAuth';
-import { LoginSuccess } from '@/shared/types/forAPI/AuthType';
-import { AuthValidateError, AuthError } from '@/shared/types/forAPI/AuthErrorType';
+import type { LoginSuccess } from '@/shared/types/forAPI/AuthType';
 
-function isValidateError(
-  error: AuthError | AuthValidateError
-): error is AuthValidateError {
-  return Array.isArray((error as AuthValidateError).detail);
-}
-
-export type LoginFormProps = {
+type LoginFormProps = {
   onSuccess: (token: string) => void;
 };
 
 export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const mutation = useMutation<
+    LoginSuccess,
+    Error,
+    { username: string; password: string }
+  >({
+    mutationFn: ({ username, password }) =>
+      auth_login(username, password),
+    onSuccess: (data) => {
+      localStorage.setItem('token', data.access_token);
+      toast.success('Logged in successfully!');
+      onSuccess(data.access_token);
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await auth_login(username, password);
-      if ('access_token' in response) {
-        const data = response as LoginSuccess;
-        localStorage.setItem('token', data.access_token);
-        onSuccess(data.access_token);
-      } else {
-        const apiError = response as AuthError | AuthValidateError;
-        if (isValidateError(apiError)) {
-          const messages = apiError.detail.map(item => item.msg).join(', ');
-          setError(messages);
-        } else {
-          setError(apiError.message || '로그인에 실패했습니다.');
-        }
-      }
-    } catch (err) {
-      console.error(err);
-      setError('서버와 통신 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
-    }
+    mutation.mutate({ username, password });
   };
 
   return (
@@ -61,6 +48,7 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
         type="text"
         value={username}
         onChange={e => setUsername(e.target.value)}
+        disabled={mutation.isPending}
         required
       />
 
@@ -71,6 +59,7 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
         type="password"
         value={password}
         onChange={e => setPassword(e.target.value)}
+        disabled={mutation.isPending}
         required
       />
 
@@ -78,8 +67,9 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
         type="submit"
         variant="primary"
         className={styles.submitBtn}
+        disabled={mutation.isPending}
       >
-        LogIn
+        {mutation.isPending ? 'Logging in…' : 'Log In'}
       </Button>
     </form>
   );

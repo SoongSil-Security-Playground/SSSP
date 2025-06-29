@@ -29,8 +29,8 @@ export class AuthError extends Error {
 
 export const auth_login = async (
   username: string,
-  password: string,
-) => {
+  password: string
+): Promise<LoginSuccess> => {
   const params = new URLSearchParams();
   params.append("username", username);
   params.append("password", password);
@@ -46,7 +46,22 @@ export const auth_login = async (
     }
   );
 
-  return (await res.json()) as LoginSuccess | AuthValidateError;
+  let payload: unknown;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new AuthError('Invalid JSON response');
+  }
+
+  if (!res.ok) {
+    const detail = (payload as any).detail;
+    const msg = Array.isArray(detail)
+      ? detail.map((d: any) => d.msg).join(', ')
+      : (payload as any).detail || (payload as any).message || `Error ${res.status}`;
+    throw new AuthError(msg);
+  }
+
+  return payload as LoginSuccess;
 };
 
 // /api/v1/auth/logout
@@ -63,7 +78,22 @@ export const auth_logout = async () => {
     }
   );
 
-  return (await res.json()) as LogoutSuccess | AuthError | AuthValidateError;
+  let payload: unknown;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new AuthError('Invalid JSON response');
+  }
+
+  if (!res.ok) {
+    const detail = (payload as any).detail;
+    const msg = Array.isArray(detail)
+      ? detail.map((d: any) => d.msg).join(', ')
+      : (payload as any).detail || (payload as any).message || `Error ${res.status}`;
+    throw new AuthError(msg);
+  }
+
+  return payload as LogoutSuccess;
 };
 
 // /api/v1/auth/register
