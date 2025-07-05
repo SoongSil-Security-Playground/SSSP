@@ -1,10 +1,13 @@
 'use client';
 
-import React, {
+import React,
+{
     createContext,
     useContext,
     useState,
     useEffect,
+    useCallback,
+    useMemo,
     ReactNode,
 } from "react";
 import { toast } from "react-toastify";
@@ -13,8 +16,8 @@ import { useRouter } from "next/navigation";
 
 export interface AuthContextType {
     isLoggedIn: boolean;
-    isAdmin: boolean | null;
-    login: (token: string) => void;
+    isAdmin: boolean;
+    login: (token: string) => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -32,34 +35,42 @@ export function useAuth(): AuthContextType {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const router = useRouter();
 
-    const login = (newToken: string) => {
+    const login = useCallback(async (newToken: string) => {
         try {
             localStorage.setItem('token', newToken);
             setIsLoggedIn(true);
-            router.push('/');
+            const authority = await auth_check();
+            setIsAdmin(authority === 'ADMIN');
+            router.replace('/');
         } catch (err: any) {
-            toast.error(`Login error: ${err.detail}`)
+            const msg = err instanceof Error
+                ? err.message
+                : err.detail || 'Login error';
+            toast.error(msg);
         }
-    };
+    }, [router]);
 
-    const logout = async () => {
+    const logout = useCallback(async () => {
         try {
             await auth_logout();
         } catch (err: any) {
-            toast.error(`Logout failed: ${err.detail}`);
+            const msg = err instanceof Error
+                ? err.message
+                : err.detail || 'Logout failed';
+            toast.error(msg);
         } finally {
             localStorage.removeItem('token');
             setIsLoggedIn(false);
             setIsAdmin(false);
-            router.push('/');
-            toast.success(`Logedout in successfully!`);
+            router.replace('/');
+            toast.success('Logged out successfully!');
         }
-    };
+    }, [router]);
 
     useEffect(() => {
         const stored = localStorage.getItem('token');
@@ -75,11 +86,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 const authority = await auth_check();
                 setIsAdmin(authority === 'ADMIN');
             } catch (err: any) {
-                const msg =
-                    err instanceof Error
-                        ? err.message
-                        : JSON.stringify(err) || 'Unknown admin-check error';
-                toast.error(err);
+                const msg = err instanceof Error
+                    ? err.message
+                    : JSON.stringify(err) || 'Unknown admin-check error';
+                toast.error(msg);
                 if (msg.includes('expired') || msg.includes('invalid')) {
                     await logout();
                     return;
@@ -91,14 +101,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         };
 
         checkAuthority();
-    }, []);
+    }, [logout]);
+
+    const value = useMemo(() => ({ isLoggedIn, isAdmin, login, logout }), [isLoggedIn, isAdmin, login, logout]);
 
     if (loading) return <div>Loading...</div>;
 
     return (
-        <AuthContext.Provider
-            value={{ isLoggedIn, isAdmin, login, logout }}
-        >
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );
