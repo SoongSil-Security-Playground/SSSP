@@ -1,10 +1,14 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+
 import styles from "./index.module.css";
 import { dummyChallenges, Challenge } from "./dummyData";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
+import { GetChallnegeListSucces } from "@/shared/types/forAPI/ChallengeType";
+import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
 
 type SortKey = keyof Pick<
   Challenge,
@@ -25,24 +29,43 @@ const cellClassMap: Record<SortKey, string> = {
   category: styles.categoryCell,
 };
 
+const sortedRow = (
+  chall: GetChallnegeListSucces,
+  ascending: boolean,
+  sortKey: SortKey
+) => {
+  if (!Array.isArray(chall)) {
+    return [];
+  }
+
+  return [...chall!].sort((a, b) => {
+    const aVal = a[sortKey];
+    const bVal = b[sortKey];
+    if (typeof aVal === "number" && typeof bVal === "number") {
+      return ascending ? aVal - bVal : bVal - aVal;
+    }
+    const aStr = String(aVal).toLowerCase();
+    const bStr = String(bVal).toLowerCase();
+    return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
+  });
+};
+
 export default function ChallengeBox() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [sortedRows, setSortedRows] = useState<GetChallnegeListSucces>([]);
 
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
 
-  const sortedRows = useMemo(() => {
-    return [...dummyChallenges].sort((a, b) => {
-      const aVal = a[sortKey];
-      const bVal = b[sortKey];
-      if (typeof aVal === "number" && typeof bVal === "number") {
-        return ascending ? aVal - bVal : bVal - aVal;
-      }
-      const aStr = String(aVal).toLowerCase();
-      const bStr = String(bVal).toLowerCase();
-      return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
-    });
-  }, [sortKey, ascending]);
+  const { data: chall } = useQuery<GetChallnegeListSucces>({
+    queryKey: ["challenge_get_all"],
+    queryFn: () => challenge_get_all(),
+    staleTime: 5 * 1000,
+  });
+
+  useEffect(() => {
+    setSortedRows(sortedRow(chall!, ascending, sortKey));
+  }, [chall, sortKey, ascending]);
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -54,7 +77,7 @@ export default function ChallengeBox() {
   };
 
   const allSelected =
-    dummyChallenges.length > 0 && selectedIds.length === dummyChallenges.length;
+    chall && chall!.length > 0 && selectedIds.length === dummyChallenges.length;
 
   const toggleAll = () => {
     if (allSelected) {

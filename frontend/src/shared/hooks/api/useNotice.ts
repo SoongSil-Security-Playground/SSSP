@@ -15,7 +15,7 @@ import {
 export class NoticeError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'NoticeError';
+    this.name = "NoticeError";
   }
 }
 
@@ -24,19 +24,20 @@ export class NoticeError extends Error {
 
 export const admin_notice = async (title: string, content: string) => {
   const token = localStorage.getItem("token");
+  const form = new URLSearchParams({
+    title,
+    content,
+  }).toString();
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice`,
     {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        title,
-        content,
-      } satisfies CreateNoticeForRequest),
+      body: form,
     }
   );
 
@@ -109,9 +110,9 @@ export const notice_get_all = async (): Promise<GetNoticeListSuccess> => {
 
   try {
     res = await fetch(`${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/notice`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });
@@ -120,20 +121,20 @@ export const notice_get_all = async (): Promise<GetNoticeListSuccess> => {
   }
 
   if (res.status === 401) {
-    throw new NoticeError('Token expired or invalid. Please login again.');
+    throw new NoticeError("Token expired or invalid. Please login again.");
   }
 
   let payload: unknown;
   try {
     payload = await res.json();
   } catch {
-    throw new NoticeError('Invalid JSON response from server');
+    throw new NoticeError("Invalid JSON response from server");
   }
 
   if (
-    typeof payload === 'object' &&
+    typeof payload === "object" &&
     payload !== null &&
-    ('detail' in payload || 'message' in payload)
+    ("detail" in payload || "message" in payload)
   ) {
     const errObj = payload as { detail?: string; message?: string };
     const msg = errObj.detail ?? errObj.message ?? `Error ${res.status}`;

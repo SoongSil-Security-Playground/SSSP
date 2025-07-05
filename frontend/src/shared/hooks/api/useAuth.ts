@@ -1,6 +1,4 @@
-import {
-  AuthValidateError,
-} from "@/shared/types/forAPI/AuthErrorType";
+import { AuthValidateError } from "@/shared/types/forAPI/AuthErrorType";
 
 import {
   AuthCheckSuccess,
@@ -15,7 +13,6 @@ import {
   VerifyAuthCodeForRequest,
   VerifyAuthCodeSuccess,
 } from "@/shared/types/forAPI/AuthType";
-
 
 export class AuthError extends Error {
   constructor(message: string) {
@@ -125,43 +122,41 @@ export const auth_register = async (
 // /api/v1/auth/auth-check
 // Auth Check, {GET}
 
-export const auth_check = async (): Promise<'ADMIN' | 'USER'> => {
-  const token = localStorage.getItem('token');
+export const auth_check = async (): Promise<"ADMIN" | "USER"> => {
+  const token = localStorage.getItem("token");
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/auth/auth-check`,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     }
   );
 
   if (res.status === 401) {
-    throw new AuthError('Token expired or invalid. Please login again.');
+    throw new AuthError("Token expired or invalid. Please login again.");
   }
 
   let payload: any;
   try {
     payload = await res.json();
   } catch {
-    throw new AuthError('Invalid response from auth-check endpoint');
+    throw new AuthError("Invalid response from auth-check endpoint");
   }
 
   if (!res.ok) {
     const message =
-      typeof payload?.message === 'string'
+      typeof payload?.message === "string"
         ? payload.message
         : `Auth check failed with status ${res.status}`;
     throw new AuthError(message);
   }
 
   const { authority } = payload as { authority?: string };
-  if (authority !== 'ADMIN' && authority !== 'USER') {
-    throw new AuthError(
-      `Unexpected authority value: ${String(authority)}`
-    );
+  if (authority !== "ADMIN" && authority !== "USER") {
+    throw new AuthError(`Unexpected authority value: ${String(authority)}`);
   }
   return authority;
 };

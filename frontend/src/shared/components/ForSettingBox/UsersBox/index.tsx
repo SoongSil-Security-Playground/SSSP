@@ -1,14 +1,22 @@
 import styles from "@/shared/components/ForSettingBox/UsersBox/index.module.css";
 
-import { dummyUsers } from "./dummyData";
+import { useQuery } from "@tanstack/react-query";
+import { GetUserListSuccess } from "@/shared/types/forAPI/UserType";
+import { user_list } from "@/shared/hooks/api/useUser";
 
 export default function UsersBox() {
+  const { data: users } = useQuery<GetUserListSuccess>({
+    queryKey: ["user_get_all"],
+    queryFn: () => user_list(),
+    staleTime: 5 * 1000,
+  });
+
   return (
     <div className={styles.container}>
-      {dummyUsers.map((user) => (
+      {users?.map((user) => (
         <div key={user.id} className={styles.userRow}>
           <div className={styles.userInfo}>
-            <span className={styles.username}>{user.name}</span>
+            <span className={styles.username}>{user.username}</span>
             <span className={styles.email}>{user.email}</span>
           </div>
           <div className={styles.actions}>
