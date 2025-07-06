@@ -37,13 +37,13 @@
 }
 
 .userNameCell {
-  width: 15%;
+  width: 12%;
   text-align: center;
 }
 
 .challengeCell {
   width: 20%;
-  text-align: left;
+  text-align: center;
 }
 
 .submitCell {
@@ -109,6 +109,7 @@
 .submitBodyCell,
 .solvedBodyCell {
   color: #b5c2d6;
+  justify-items: center;
 }
 
 .correctBodyCell {
@@ -207,4 +208,25 @@
   height: 2px;
   background-color: #2cb1cc;
   transform: translate(-50%, -50%);
+}
+
+.expandedRow td {
+  background: #252525;
+}
+
+.detailCell {
+  justify-content: space-between;
+  padding: 0 10rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.detailGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.selected {
+  background-color: #686868;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { SolveLogSuccess } from "@/shared/types/forAPI/ChallengeType";
 import Image from "next/image";
 import styles from "./index.module.css";
@@ -13,6 +13,8 @@ export interface Submission {
   submitTime: string;
   solvedAt: string;
   correct: boolean;
+  user_flag: string;
+  real_flag: string;
 }
 
 type SortKey = keyof Pick<
@@ -74,6 +76,8 @@ const mapLogToSubmissions = (log: SolveLogSuccess): Submission[] => {
       submitTime,
       solvedAt,
       correct: entry.comment !== "Wrong Flag!",
+      user_flag: entry.user_flag,
+      real_flag: entry.real_flag,
     };
   });
 };
@@ -108,20 +112,27 @@ export default function SubmissionBox({
   const [sortedRows, setSortedRows] = useState<Submission[]>([]);
   const [sortKey, setSortKey] = useState<SortKey>("userName");
   const [ascending, setAscending] = useState(true);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const [submissions] = useState<Submission[]>(() => mapLogToSubmissions(log));
 
   useEffect(() => {
-    const filtered = submissions.filter((item) => {
-      const q = searchString.toLowerCase();
-      return (
-        item.userName.toLowerCase().includes(q) ||
-        item.challengeName.toLowerCase().includes(q)
-      );
-    });
+    const q = searchString.toLowerCase().trim();
+
+    const filtered = q
+      ? submissions.filter(
+          (item) =>
+            item.userName.toLowerCase().includes(q) ||
+            item.challengeName.toLowerCase().includes(q)
+        )
+      : submissions;
 
     setSortedRows(sortedRow(filtered, ascending, sortKey));
-  }, [searchString, sortKey, ascending]);
+  }, [searchString, submissions, ascending, sortKey]);
+
+  const handleRowClick = (id: number) => {
+    setExpandedId((prev) => (prev === id ? null : id));
+  };
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) setAscending((p) => !p);
@@ -208,52 +219,64 @@ export default function SubmissionBox({
         <tbody>
           {sortedRows.map((s: Submission) => {
             const isChecked = selectedIds.includes(s.id);
+            const isExpanded = expandedId === s.id;
 
             return (
-              <tr key={s.id} className={styles.row}>
-                <td
-                  className={`${styles.cell} ${styles.checkboxBodyCell} ${styles.checkboxCell}`}
+              <Fragment key={s.id}>
+                <tr
+                  className={`${styles.row} ${
+                    isExpanded ? styles.selected : ""
+                  }`}
+                  onClick={() => handleRowClick(s.id)}
                 >
-                  <input
-                    type="checkbox"
-                    className={styles.customCheckbox}
-                    checked={isChecked}
-                    onChange={() => toggleOne(s.id)}
-                  />
-                </td>
-                <td
-                  className={`${styles.cell} ${styles.userNameBodyCell} ${styles.userNameCell}`}
-                >
-                  {s.userName}
-                </td>
-                <td
-                  className={`${styles.cell} ${styles.challengeBodyCell} ${styles.challengeCell}`}
-                >
-                  {s.challengeName}
-                </td>
-                <td
-                  className={`${styles.cell} ${styles.submitBodyCell} ${styles.submitCell}`}
-                >
-                  {s.submitTime}
-                </td>
-                <td
-                  className={`${styles.cell} ${styles.solvedBodyCell} ${styles.solvedCell}`}
-                >
-                  {s.solvedAt}
-                </td>
-                <td
-                  className={`${styles.cell} ${styles.correctBodyCell} ${styles.correctCell}`}
-                >
-                  <span
-                    className={
-                      s.correct ? styles.badgeCorrect : styles.badgeIncorrect
-                    }
+                  <td
+                    className={`${styles.cell} ${styles.checkboxBodyCell} ${styles.checkboxCell}`}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    {s.correct ? "correct" : "incorrect"}
-                  </span>
-                </td>
-                <td className={`${styles.cell} ${styles.actionsCell}`}>⋮</td>
-              </tr>
+                    <input
+                      type="checkbox"
+                      className={styles.customCheckbox}
+                      checked={isChecked}
+                      onChange={() => toggleOne(s.id)}
+                    />
+                  </td>
+                  <td className={`${styles.cell} ${styles.userNameCell}`}>
+                    {s.userName}
+                  </td>
+                  <td className={`${styles.cell} ${styles.challengeCell}`}>
+                    {s.challengeName}
+                  </td>
+                  <td className={`${styles.cell} ${styles.submitCell}`}>
+                    {s.submitTime}
+                  </td>
+                  <td className={`${styles.cell} ${styles.solvedCell}`}>
+                    {s.solvedAt}
+                  </td>
+                  <td className={`${styles.cell} ${styles.correctCell}`}>
+                    <span
+                      className={
+                        s.correct ? styles.badgeCorrect : styles.badgeIncorrect
+                      }
+                    >
+                      {s.correct ? "correct" : "incorrect"}
+                    </span>
+                  </td>
+                  <td className={`${styles.cell} ${styles.actionsCell}`}>⋮</td>
+                </tr>
+
+                {isExpanded && (
+                  <tr className={styles.expandedRow}>
+                    <td colSpan={7} className={styles.detailCell}>
+                      <div>
+                        <strong>User Flag:</strong> <code>{s.user_flag}</code>
+                      </div>
+                      <div>
+                        <strong>Real Flag:</strong> <code>{s.real_flag}</code>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             );
           })}
         </tbody>
