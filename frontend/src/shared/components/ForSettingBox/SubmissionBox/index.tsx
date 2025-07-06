@@ -121,7 +121,7 @@ export default function SubmissionBox({
     });
 
     setSortedRows(sortedRow(filtered, ascending, sortKey));
-  }, []);
+  }, [searchString, sortKey, ascending]);
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) setAscending((p) => !p);
