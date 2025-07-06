@@ -310,5 +310,5 @@ export const challenge_get_solve_log = async () => {
     }
   );
 
-  return (await res.json()) as SolveLogSuccess | AuthError | AuthValidateError;
+  return (await res.json()) as SolveLogSuccess;
 };

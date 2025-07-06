@@ -1,12 +1,16 @@
 .footerContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   background-color: #2d2d2d;
   color: #ccc;
-  font-family: 'Share Tech Mono';
-  z-index: 2;
+  font-family: "Share Tech Mono";
+  z-index: 1000;
 }
 
 .copy {

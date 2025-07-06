@@ -41,23 +41,17 @@
       "static/css/app/notifications/page.css",
       "static/chunks/app/notifications/page.js"
     ],
-    "/setting/add/notice/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/setting/add/notice/page.css",
-      "static/chunks/app/setting/add/notice/page.js"
-    ],
     "/setting/add/challenge/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/setting/add/challenge/page.css",
       "static/chunks/app/setting/add/challenge/page.js"
     ],
-    "/mypage/page": [
+    "/setting/add/notification/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/mypage/page.css",
-      "static/chunks/app/mypage/page.js"
+      "static/css/app/setting/add/notification/page.css",
+      "static/chunks/app/setting/add/notification/page.js"
     ]
   }
 }

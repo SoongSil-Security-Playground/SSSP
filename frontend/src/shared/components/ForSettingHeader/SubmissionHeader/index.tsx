@@ -1,14 +1,32 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
 import styles from "@/shared/components/ForSettingHeader/SubmissionHeader/index.module.css";
+import { SolveLogSuccess } from "@/shared/types/forAPI/ChallengeType";
+import { DeleteButton } from "../../DeleteButton";
 
 type ActionBarProps = {
-  onSearchChange?: (value: string) => void;
-  onDelete?: () => void;
+  data: SolveLogSuccess;
+  selectedIds: number[];
+  searchString: string;
+  handleSearchChange: (value: string) => void;
 };
 
 export default function SubmissionHeader({
-  onSearchChange,
-  onDelete,
+  data: submission,
+  selectedIds,
+  searchString,
+  handleSearchChange,
 }: ActionBarProps) {
+  const [localSearch, setLocalSearch] = useState(searchString);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = searchString;
+    }
+  }, [searchString]);
+
   return (
     <div className={styles.toolbar}>
       <div className={styles.searchContainer}>
@@ -27,34 +45,16 @@ export default function SubmissionHeader({
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <input
+          ref={inputRef}
           type="text"
+          value={localSearch}
           className={styles.searchInput}
-          onChange={(e) => onSearchChange?.(e.target.value)}
+          onChange={(e) => setLocalSearch(e.target.value)}
+          onBlur={() => handleSearchChange(localSearch)}
+          placeholder="Search submission..."
         />
       </div>
-
-      <button
-        className={`${styles.button} ${styles.deleteButton}`}
-        onClick={onDelete}
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polyline points="3 6 5 6 21 6" />
-          <path d="M19 6l-2 14H7L5 6" />
-          <path d="M10 11v6" />
-          <path d="M14 11v6" />
-          <path d="M9 6V4h6v2" />
-        </svg>
-        Delete
-      </button>
+      <DeleteButton selectedIds={selectedIds} caseName={"Submission"} />
     </div>
   );
 }

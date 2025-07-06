@@ -1,29 +1,38 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { SolveLogSuccess } from "@/shared/types/forAPI/ChallengeType";
-import {
-  AuthError,
-  AuthValidateError,
-} from "@/shared/types/forAPI/AuthErrorType";
-import { challenge_get_solve_log } from "@/shared/hooks/api/useChallenge";
 import Image from "next/image";
 import styles from "./index.module.css";
-import { dummySubmissions, Submission } from "./dummyData";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
+
+export interface Submission {
+  id: number;
+  userName: string;
+  challengeName: string;
+  submitTime: string;
+  solvedAt: string;
+  correct: boolean;
+}
 
 type SortKey = keyof Pick<
   Submission,
   "userName" | "challengeName" | "submitTime" | "solvedAt" | "correct"
 >;
 
+interface SubmissionProps {
+  data: SolveLogSuccess;
+  searchString: string;
+  selectedIds: number[];
+  handleSelectChange: (ids: number[]) => void;
+}
+
 const columnLabels: Record<SortKey, string> = {
   userName: "User Name",
   challengeName: "Challenge Name",
   submitTime: "Submit Time",
   solvedAt: "Solved At",
-  correct: "Corerct/Incorrect",
+  correct: "Correct/Incorrect",
 };
 
 const cellClassMap: Record<SortKey, string> = {
@@ -34,57 +43,112 @@ const cellClassMap: Record<SortKey, string> = {
   correct: styles.correctCell,
 };
 
-export default function SubmissionBox() {
-  const { data: log } = useQuery<
-    SolveLogSuccess | AuthError | AuthValidateError
-  >({
-    queryKey: ["log_get_all"],
-    queryFn: () => challenge_get_solve_log(),
-    staleTime: 5 * 1000,
+// 데이터에 solvedat, submitTime이 없어서 일단 강제로 생성
+const mapLogToSubmissions = (log: SolveLogSuccess): Submission[] => {
+  const now = Date.now();
+
+  const randomDate = () => {
+    const past = now - Math.random() * 7 * 24 * 60 * 60 * 1000;
+    const d = new Date(past);
+    return d.toISOString().slice(0, 19).replace("T", " ");
+  };
+
+  if (!Array.isArray(log)) return [];
+
+  return log.map((entry, idx) => {
+    const submitTime = randomDate();
+    const solvedAt =
+      entry.comment !== "Wrong Flag!"
+        ? new Date(
+            new Date(submitTime).getTime() + Math.random() * 60 * 60 * 1000
+          )
+            .toISOString()
+            .slice(0, 19)
+            .replace("T", " ")
+        : "";
+
+    return {
+      id: idx,
+      userName: entry.username,
+      challengeName: entry.chall,
+      submitTime,
+      solvedAt,
+      correct: entry.comment !== "Wrong Flag!",
+    };
   });
+};
 
-  // 선택된 row들의 id를 저장
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+const sortedRow = (
+  chall: Submission[],
+  ascending: boolean,
+  sortKey: SortKey
+) => {
+  if (!Array.isArray(chall)) {
+    return [];
+  }
 
+  return [...chall!].sort((a, b) => {
+    const aVal = a[sortKey];
+    const bVal = b[sortKey];
+    if (typeof aVal === "number" && typeof bVal === "number") {
+      return ascending ? aVal - bVal : bVal - aVal;
+    }
+    const aStr = String(aVal).toLowerCase();
+    const bStr = String(bVal).toLowerCase();
+    return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
+  });
+};
+
+export default function SubmissionBox({
+  data: log,
+  searchString,
+  selectedIds,
+  handleSelectChange,
+}: SubmissionProps) {
+  const [sortedRows, setSortedRows] = useState<Submission[]>([]);
   const [sortKey, setSortKey] = useState<SortKey>("userName");
   const [ascending, setAscending] = useState(true);
 
+  const [submissions] = useState<Submission[]>(() => mapLogToSubmissions(log));
+
+  useEffect(() => {
+    const filtered = submissions.filter((item) => {
+      const q = searchString.toLowerCase();
+      return (
+        item.userName.toLowerCase().includes(q) ||
+        item.challengeName.toLowerCase().includes(q)
+      );
+    });
+
+    setSortedRows(sortedRow(filtered, ascending, sortKey));
+  }, []);
+
+  const handleSort = (key: SortKey) => {
+    if (key === sortKey) setAscending((p) => !p);
+    else {
+      setSortKey(key);
+      setAscending(true);
+    }
+  };
+
   const allSelected =
-    dummySubmissions.length > 0 &&
-    selectedIds.length === dummySubmissions.length;
+    submissions &&
+    submissions!.length > 0 &&
+    selectedIds.length === submissions.length;
 
   const toggleAll = () => {
     if (allSelected) {
-      setSelectedIds([]);
+      handleSelectChange([]);
     } else {
-      setSelectedIds(dummySubmissions.map((r) => r.id));
+      handleSelectChange(submissions.map((item) => item.id));
     }
   };
 
   const toggleOne = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
-  };
-
-  const sortedRows = useMemo(() => {
-    return [...dummySubmissions].sort((a, b) => {
-      const aVal = a[sortKey];
-      const bVal = b[sortKey];
-
-      const aStr = String(aVal).toLowerCase();
-      const bStr = String(bVal).toLowerCase();
-      return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
-    });
-  }, [sortKey, ascending]);
-
-  const handleSort = (key: SortKey) => {
-    if (key === sortKey) {
-      setAscending((p) => !p);
-    } else {
-      setSortKey(key);
-      setAscending(true);
-    }
+    const newSelected = selectedIds.includes(id)
+      ? selectedIds.filter((x) => x !== id)
+      : [...selectedIds, id];
+    handleSelectChange(newSelected);
   };
 
   return (

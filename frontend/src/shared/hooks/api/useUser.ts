@@ -26,16 +26,16 @@ export class UserError extends Error {
 }
 
 export const user_list = async (): Promise<UserListSuccess> => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   let res: Response;
   try {
     res = await fetch(
       `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/user/user_list`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       }
@@ -45,19 +45,19 @@ export const user_list = async (): Promise<UserListSuccess> => {
   }
 
   if (res.status === 401) {
-    throw new UserError('Token expired or invalid. Please login again.');
+    throw new UserError("Token expired or invalid. Please login again.");
   }
 
   let payload: unknown;
   try {
     payload = await res.json();
   } catch {
-    throw new UserError('Invalid JSON response from server');
+    throw new UserError("Invalid JSON response from server");
   }
 
   if (!res.ok) {
     const errMsg =
-      typeof payload === 'object' && payload !== null && 'message' in payload
+      typeof payload === "object" && payload !== null && "message" in payload
         ? (payload as any).message
         : `Error ${res.status}`;
     throw new UserError(errMsg);
@@ -73,16 +73,16 @@ export const user_update_password = async (
   cur_password: string,
   new_password: string
 ): Promise<UpdatePasswordSuccess> => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   let res: Response;
 
   try {
     res = await fetch(
       `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/user/update_password`,
       {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
@@ -99,10 +99,10 @@ export const user_update_password = async (
   try {
     payload = await res.json();
   } catch {
-    throw new UserError('Invalid JSON response from server');
+    throw new UserError("Invalid JSON response from server");
   }
 
-  if (typeof payload === 'object' && payload !== null && 'detail' in payload) {
+  if (typeof payload === "object" && payload !== null && "detail" in payload) {
     const { detail } = payload as { detail: string };
     throw new UserError(detail);
   }
@@ -122,22 +122,25 @@ export const user_update_password = async (
 export class UserDeleteError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'UserDeleteError';
+    this.name = "UserDeleteError";
   }
 }
 
 export const user_delete = async (): Promise<DeleteCurUserSuccess> => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   let res: Response;
 
   try {
-    res = await fetch(`${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/user/delete`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    });
+    res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/user/delete`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
   } catch (networkErr: any) {
     throw new UserDeleteError(`Network error: ${networkErr.message}`);
   }
@@ -146,13 +149,13 @@ export const user_delete = async (): Promise<DeleteCurUserSuccess> => {
   try {
     payload = await res.json();
   } catch {
-    throw new UserDeleteError('Invalid JSON response from server');
+    throw new UserDeleteError("Invalid JSON response from server");
   }
 
   if (
-    typeof payload === 'object' &&
+    typeof payload === "object" &&
     payload !== null &&
-    ('detail' in payload || 'message' in payload)
+    ("detail" in payload || "message" in payload)
   ) {
     const err = payload as { detail?: string; message?: string };
     const msg = err.detail ?? err.message ?? `Error ${res.status}`;
@@ -172,15 +175,15 @@ export const user_delete = async (): Promise<DeleteCurUserSuccess> => {
 // Get User Info, {GET}
 
 export const user_get = async (): Promise<GetUserSuccess> => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   let res: Response;
 
   // 1) Network-level errors
   try {
     res = await fetch(`${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/user`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });
@@ -193,13 +196,13 @@ export const user_get = async (): Promise<GetUserSuccess> => {
   try {
     payload = await res.json();
   } catch {
-    throw new UserError('Invalid JSON response from server');
+    throw new UserError("Invalid JSON response from server");
   }
 
   // 3) HTTP errors
   if (!res.ok) {
     const msg =
-      typeof payload === 'object' && payload !== null && 'message' in payload
+      typeof payload === "object" && payload !== null && "message" in payload
         ? (payload as any).message
         : `Error ${res.status}`;
     throw new UserError(msg as string);
@@ -239,16 +242,13 @@ export const user_delete_user = async (user_id: number) => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/delete_user`,
+    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/delete_user?user_id=${user_id}`,
     {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        user_id,
-      } satisfies DeleteUserForRequest),
     }
   );
 

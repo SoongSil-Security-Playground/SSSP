@@ -2,18 +2,36 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
 
 import styles from "./index.module.css";
-import { dummyChallenges, Challenge } from "./dummyData";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
 import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
-import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
+
+export interface Challenge {
+  name: string;
+  description: string;
+  points: number;
+  category: string;
+  id: number;
+  created_at: string;
+  file_path: string;
+  is_user_solved: number;
+  solve_count: number;
+  level: string;
+  flag: string;
+}
 
 type SortKey = keyof Pick<
   Challenge,
   "name" | "points" | "created_at" | "category"
 >;
+
+interface ChallengeBoxProps {
+  data: GetAllChallengeSuccess;
+  searchString: string;
+  selectedIds: number[];
+  handleSelectChange: (ids: number[]) => void;
+}
 
 const columnLabels: Record<SortKey, string> = {
   name: "Name",
@@ -50,22 +68,23 @@ const sortedRow = (
   });
 };
 
-export default function ChallengeBox() {
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+export default function ChallengeBox({
+  data: chall,
+  searchString,
+  selectedIds,
+  handleSelectChange,
+}: ChallengeBoxProps) {
   const [sortedRows, setSortedRows] = useState<GetAllChallengeSuccess>([]);
 
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
 
-  const { data: chall } = useQuery<GetAllChallengeSuccess>({
-    queryKey: ["challenge_get_all"],
-    queryFn: () => challenge_get_all(),
-    staleTime: 5 * 1000,
-  });
-
   useEffect(() => {
-    setSortedRows(sortedRow(chall!, ascending, sortKey));
-  }, [chall, sortKey, ascending]);
+    const filtered = chall.filter((item) =>
+      item.name.toLowerCase().includes(searchString.toLowerCase())
+    );
+    setSortedRows(sortedRow(filtered, ascending, sortKey));
+  }, [chall, searchString, sortKey, ascending]);
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -76,21 +95,26 @@ export default function ChallengeBox() {
     }
   };
 
+  const filteredData = chall.filter((item) =>
+    item.name.toLowerCase().includes(searchString.toLowerCase())
+  );
+
   const allSelected =
-    chall && chall!.length > 0 && selectedIds.length === dummyChallenges.length;
+    chall && chall!.length > 0 && selectedIds.length === chall.length;
 
   const toggleAll = () => {
     if (allSelected) {
-      setSelectedIds([]);
+      handleSelectChange([]);
     } else {
-      setSelectedIds(dummyChallenges.map((r) => r.id));
+      handleSelectChange(filteredData.map((item) => item.id));
     }
   };
 
   const toggleOne = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    const newSelected = selectedIds.includes(id)
+      ? selectedIds.filter((x) => x !== id)
+      : [...selectedIds, id];
+    handleSelectChange(newSelected);
   };
 
   return (

@@ -1,13 +1,14 @@
 .layoutContainer {
   display: flex;
   flex-direction: column;
-  min-width: max-content;
+  width: 100%;
   color: white;
-  font-family: 'Share Tech Mono';
+  font-family: "Share Tech Mono";
 }
 
 .mainContent {
   flex: 1;
+  margin-top: 5rem;
   overflow-y: auto;
 }
 

@@ -1,14 +1,30 @@
+"use client";
+
+import React, { useState, useRef, useEffect } from "react";
 import styles from "@/shared/components/ForSettingHeader/ChallengeHeader/index.module.css";
+import { AddButton } from "../../Add/Button";
+import { GetAllNoticeSuccess } from "@/shared/types/forAPI/NoticeType";
 
 type ActionBarProps = {
-  onSearchChange?: (value: string) => void;
-  onAddChallenge?: () => void;
+  data: GetAllNoticeSuccess;
+  searchString: string;
+  handleSearchChange: (value: string) => void;
 };
 
 export default function NotificationHeader({
-  onSearchChange,
-  onAddChallenge,
+  data: noti,
+  searchString,
+  handleSearchChange,
 }: ActionBarProps) {
+  const [localSearch, setLocalSearch] = useState(searchString);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = searchString;
+    }
+  }, [searchString]);
+
   return (
     <div className={styles.toolbar}>
       <div className={styles.searchContainer}>
@@ -27,18 +43,16 @@ export default function NotificationHeader({
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <input
+          ref={inputRef}
           type="text"
+          value={localSearch}
           className={styles.searchInput}
-          onChange={(e) => onSearchChange?.(e.target.value)}
+          onChange={(e) => setLocalSearch(e.target.value)}
+          onBlur={() => handleSearchChange(localSearch)}
+          placeholder="Search notification..."
         />
       </div>
-
-      <button
-        className={`${styles.button} ${styles.addButton}`}
-        onClick={onAddChallenge}
-      >
-        + Add Notification
-      </button>
+      <AddButton caseName="Notification" />
     </div>
   );
 }

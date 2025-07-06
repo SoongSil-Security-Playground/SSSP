@@ -1,28 +1,80 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+
 import styles from "@/shared/components/ForSettingBox/UsersBox/index.module.css";
-
-import { useQuery } from "@tanstack/react-query";
+import { user_delete_user } from "@/shared/hooks/api/useUser";
 import { UserListSuccess } from "@/shared/types/forAPI/UserType";
-import { user_list } from "@/shared/hooks/api/useUser";
 
-export default function UsersBox() {
-  const { data: users } = useQuery<UserListSuccess>({
-    queryKey: ["user_get_all"],
-    queryFn: () => user_list(),
-    staleTime: 5 * 1000,
+interface UsersBoxProps {
+  data: UserListSuccess;
+  searchString: string;
+}
+
+export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
+  const [filteredUsers, setFilteredUsers] = useState<UserListSuccess>([]);
+  const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
+
+  const router = useRouter();
+  const { mutate: deleteUser } = useMutation({
+    mutationFn: (id: number) => user_delete_user(id),
   });
+
+  useEffect(() => {
+    const q = searchString.toLowerCase();
+    setFilteredUsers(
+      users.filter(
+        (u) =>
+          u.username.toLowerCase().includes(q) ||
+          u.email.toLowerCase().includes(q)
+      )
+    );
+  }, [users, searchString]);
+
+  const toggleExpand = (id: number) => {
+    setExpandedUserId((prev) => (prev === id ? null : id));
+  };
+
+  const handleDelete = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    deleteUser(id);
+    router.refresh();
+  };
 
   return (
     <div className={styles.container}>
-      {users?.map((user) => (
-        <div key={user.id} className={styles.userRow}>
-          <div className={styles.userInfo}>
-            <span className={styles.username}>{user.username}</span>
-            <span className={styles.email}>{user.email}</span>
+      {filteredUsers.map((user) => (
+        <div key={user.id}>
+          <div
+            className={`${styles.userRow} ${
+              expandedUserId === user.id ? styles.active : ""
+            }`}
+            onClick={() => toggleExpand(user.id)}
+          >
+            <div className={styles.userInfo}>
+              <span className={styles.username}>{user.username}</span>
+              <span className={styles.email}>{user.email}</span>
+            </div>
+            <div className={styles.actions}>
+              <button className={styles.adminBtn}>ADMIN</button>
+              <button
+                className={styles.deleteBtn}
+                onClick={(e) => handleDelete(e, user.id)}
+              >
+                DELETE
+              </button>
+            </div>
           </div>
-          <div className={styles.actions}>
-            <button className={styles.adminBtn}>ADMIN</button>
-            <button className={styles.deleteBtn}>DELETE</button>
-          </div>
+
+          {expandedUserId === user.id && (
+            <div className={styles.userContent}>
+              <p className={styles.contentText}>
+                {user.contents || "No additional info."}
+              </p>
+            </div>
+          )}
         </div>
       ))}
     </div>

@@ -58,7 +58,7 @@ export const admin_notice_update = async (
   const token = localStorage.getItem("token");
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice/${notice_id}`,
+    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice?notice_id=${notice_id}`,
     {
       method: "PATCH",
       headers: {
@@ -85,7 +85,7 @@ export const admin_notice_delete = async (notice_id: number) => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice/${notice_id}`,
+    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice?notice_id=${notice_id}`,
     {
       method: "DELETE",
       headers: {
