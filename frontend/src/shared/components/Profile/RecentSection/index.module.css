@@ -8,7 +8,7 @@
     margin-bottom: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #ffffff;
+    color: var(--offwhite);
 }
 
 .activityList {
@@ -47,12 +47,12 @@
 }
 
 .categoryIcon {
-    color: #ffffff;
+    color: var(--offwhite);
 }
 
 .activityName {
     flex: 1;
-    color: #ffffff;
+    color: var(--offwhite);
     font-size: 0.875rem;
 }
 
@@ -69,12 +69,12 @@
 
 .tag {
     background: rgba(255, 255, 255, 0.12);
-    border: 1px solid #ffffff;
+    border: 1px solid var(--offwhite);
     border-radius: 9999px;
     padding: 0.125rem 0.5rem;
     font-size: 0.75rem;
     text-transform: uppercase;
-    color: #ffffff;
+    color: var(--offwhite);
 }
 
 .points {

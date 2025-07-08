@@ -1,8 +1,8 @@
 .layoutContainer {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  color: white;
+  min-width: max-content;
+  color: var(--offwhite);
   font-family: "Share Tech Mono";
 }
 
@@ -17,7 +17,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: white;
+  color: var(--offwhite);
 }
 
 .authPrompt {

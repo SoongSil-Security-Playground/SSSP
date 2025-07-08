@@ -3,10 +3,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "@/shared/components/ForSettingHeader/ChallengeHeader/index.module.css";
 import { AddButton } from "../../Add/Button";
-import { GetAllNoticeSuccess } from "@/shared/types/forAPI/NoticeType";
+import { GetNoticeListSuccess } from "@/shared/types/forAPI/NoticeType";
 
 type ActionBarProps = {
-  data: GetAllNoticeSuccess;
+  data: GetNoticeListSuccess;
   searchString: string;
   handleSearchChange: (value: string) => void;
 };

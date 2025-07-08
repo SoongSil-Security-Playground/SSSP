@@ -6,15 +6,15 @@ import { useRouter } from "next/navigation";
 
 import styles from "@/shared/components/ForSettingBox/UsersBox/index.module.css";
 import { user_delete_user } from "@/shared/hooks/api/useUser";
-import { UserListSuccess } from "@/shared/types/forAPI/UserType";
+import { GetUserListSuccess } from "@/shared/types/forAPI/UserType";
 
 interface UsersBoxProps {
-  data: UserListSuccess;
+  data: GetUserListSuccess;
   searchString: string;
 }
 
 export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
-  const [filteredUsers, setFilteredUsers] = useState<UserListSuccess>([]);
+  const [filteredUsers, setFilteredUsers] = useState<GetUserListSuccess>([]);
   const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
 
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
     const q = searchString.toLowerCase();
     setFilteredUsers(
       users.filter(
-        (u) =>
+        (u: GetUserListSuccess[number]) =>
           u.username.toLowerCase().includes(q) ||
           u.email.toLowerCase().includes(q)
       )

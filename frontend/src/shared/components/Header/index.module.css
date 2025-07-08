@@ -38,7 +38,7 @@
 }
 
 .navItem {
-  color: white;
+  color: var(--offwhite);
   text-decoration: none;
   transition: color 0.2s;
   font-family: "Press Start 2P", system-ui;

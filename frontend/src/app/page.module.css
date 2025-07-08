@@ -15,7 +15,7 @@
 .mainTitle {
   font-family: "Silkscreen";
   font-size: 4rem;
-  color: white;
+  color: var(--offwhite);
   text-shadow: -0.45rem 0 0 #008eaa, 0.45rem 0 0 #008eaa, 0 -0.45rem 0 #008eaa,
     0 0.45rem 0 #008eaa, -0.45rem -0.45rem 0 #008eaa, 0.45rem -0.45rem 0 #008eaa,
     -0.45rem 0.45rem 0 #008eaa, 0.45rem 0.45rem 0 #008eaa;

@@ -19,20 +19,20 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       JWT_ALGORITHM: ${JWT_ALGORITHM}
       JWT_TOKEN_EXPIRE_MINUTES: ${JWT_TOKEN_EXPIRE_MINUTES}
-
+      
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
 
       INITIAL_ADMIN_ID: ${INITIAL_ADMIN_ID}
       INITIAL_ADMIN_PW: ${INITIAL_ADMIN_PW}
-
+      
       GOOGLE_EMAIL_SECRET: ${GOOGLE_EMAIL_SECRET}
       GOOGLE_EMAIL: ${GOOGLE_EMAIL}
 
       USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
       CHALLENGE_DIR: /app/challenge_files
 
-      REACT_APP_BACKEND_URL: ${NEXT_PUBLIC_BACK_SERVER_URL}
+      REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
 
       CORS_ORIGINS: ${CORS_ORIGINS}
     volumes:
@@ -71,7 +71,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DB}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-
+      
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -120,7 +120,7 @@ services:
     ports:
       - "${FRONT_PORT}:3000"
     environment:
-      REACT_APP_BACKEND_URL: ${NEXT_PUBLIC_BACK_SERVER_URL}
+      REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
       REACT_APP_USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
     restart: always
 
@@ -132,3 +132,4 @@ volumes:
 networks:
   sssp_network:
     driver: bridge
+

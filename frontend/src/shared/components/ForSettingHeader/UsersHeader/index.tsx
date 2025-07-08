@@ -2,10 +2,10 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./index.module.css";
-import { UserListSuccess } from "@/shared/types/forAPI/UserType";
+import { GetUserListSuccess } from "@/shared/types/forAPI/UserType";
 
 type UsersHeaderProps = {
-  data: UserListSuccess;
+  data: GetUserListSuccess;
   searchString: string;
   handleSearchChange: (value: string) => void;
 };

@@ -1,7 +1,8 @@
-import styles from "./layout.module.css";
-import { AuthProvider } from "@/shared/utils/AuthProvider";
-import { Layout } from "@/shared/components/Layout";
-import QueryProvider from "@/shared/utils/QueryProvider";
+import styles from './layout.module.css'
+import './global.css'
+import QueryProvider from '@/shared/utils/QueryProvider';
+import { AuthProvider } from '@/shared/utils/AuthProvider';
+import { Layout } from '@/shared/components/Layout';
 
 export const metadata = {
   title: "SSSP",
@@ -31,7 +32,9 @@ export default function RootLayout({
       <body className={styles.body}>
         <AuthProvider>
           <QueryProvider>
-            <Layout>{children}</Layout>
+            <Layout>
+              {children}
+            </Layout>
           </QueryProvider>
         </AuthProvider>
       </body>

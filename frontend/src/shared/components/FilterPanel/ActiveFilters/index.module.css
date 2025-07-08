@@ -10,11 +10,15 @@
     align-items: center;
     gap: 0.25rem;
     background-color: #464646;
-    color: white;
+    color: var(--offwhite);
     padding: 0.25rem 0.5rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
     align-content: center;
+}
+
+.tagIcon {
+    color: #FFD700;
 }
 
 .tagRemove {
@@ -27,6 +31,6 @@
     line-height: 1;
     background: none;
     border: none;
-    color: white;
+    color: var(--offwhite);
     cursor: pointer;
 }

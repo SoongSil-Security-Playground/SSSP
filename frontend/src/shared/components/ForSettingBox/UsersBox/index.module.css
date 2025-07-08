@@ -28,7 +28,7 @@
   min-width: 13rem;
   font-family: "Press Start 2p", monospace;
   font-size: 16px;
-  color: #ffffff;
+  color: var(--offwhite);
 }
 
 .email {
@@ -57,7 +57,7 @@
   border: none;
   font-size: 10px;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--offwhite);
 }
 
 .userContent {

@@ -102,7 +102,7 @@
 }
 
 .userNameBodyCell {
-  color: #ffffff;
+  color: var(--offwhite);
 }
 
 .challengeBodyCell,

@@ -11,7 +11,7 @@ export interface UserListContent {
   authority: string;
 }
 
-export type UserListSuccess = UserListContent[];
+export type GetUserListSuccess = UserListContent[];
 
 // /api/v1/user/update_password
 // Update Password, {PUT}

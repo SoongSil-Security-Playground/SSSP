@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import styles from "./index.module.css";
-import { GetAllNoticeSuccess } from "@/shared/types/forAPI/NoticeType";
+import { GetNoticeListSuccess } from "@/shared/types/forAPI/NoticeType";
 import {
   admin_notice_update,
   admin_notice_delete,
@@ -20,7 +20,7 @@ import {
 } from "@/shared/types/forAPI/AuthErrorType";
 
 interface NotificationBoxProps {
-  data: GetAllNoticeSuccess;
+  data: GetNoticeListSuccess;
   searchString: string;
 }
 
@@ -30,7 +30,7 @@ export default function NotificationBox({
 }: NotificationBoxProps) {
   const router = useRouter();
 
-  const [sortedRows, setSortedRows] = useState<GetAllNoticeSuccess>([]);
+  const [sortedRows, setSortedRows] = useState<GetNoticeListSuccess>([]);
   const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
 
   const { mutate: deleteNotification } = useMutation({
@@ -52,7 +52,7 @@ export default function NotificationBox({
   });
 
   useEffect(() => {
-    const filtered = noti.filter((item) => {
+    const filtered = noti.filter((item: GetNoticeListSuccess[number]) => {
       const q = searchString.toLowerCase();
       return item.title.toLowerCase().includes(q);
     });

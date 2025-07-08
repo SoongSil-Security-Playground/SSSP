@@ -1,13 +1,23 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React,
+{
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    ReactNode,
+} from "react";
+import { toast } from "react-toastify";
 import { auth_logout, auth_check } from "../hooks/api/useAuth";
 import { useRouter } from "next/navigation";
 
 export interface AuthContextType {
     isLoggedIn: boolean;
-    isAdmin: boolean | null;
-    login: (token: string) => void;
+    isAdmin: boolean;
+    login: (token: string) => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -19,40 +29,48 @@ interface AuthProviderProps {
 
 export function useAuth(): AuthContextType {
     const ctx = useContext(AuthContext);
-    if (ctx === undefined) {
-        throw new Error('useAuth must be used within <AuthProvider>');
-    }
+    if (!ctx) throw new Error('useAuth must be used within <AuthProvider>');
     return ctx;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-    const [token, setToken] = useState<string | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const router = useRouter();
 
-    const login = (newToken: string) => {
-        localStorage.setItem('token', newToken);
-        setToken(newToken);
-        setIsLoggedIn(true);
-        router.push('/');
-    };
+    const login = useCallback(async (newToken: string) => {
+        try {
+            localStorage.setItem('token', newToken);
+            setIsLoggedIn(true);
+            const authority = await auth_check();
+            setIsAdmin(authority === 'ADMIN');
+            router.replace('/');
+        } catch (err: any) {
+            const msg = err instanceof Error
+                ? err.message
+                : err.detail || 'Login error';
+            toast.error(msg);
+        }
+    }, [router]);
 
-    const logout = async () => {
+    const logout = useCallback(async () => {
         try {
             await auth_logout();
-        } catch (error: any) {
-            console.error('Logout failed:', error.message);
+        } catch (err: any) {
+            const msg = err instanceof Error
+                ? err.message
+                : err.detail || 'Logout failed';
+            toast.error(msg);
         } finally {
             localStorage.removeItem('token');
-            setToken(null);
             setIsLoggedIn(false);
-            setIsAdmin(null);
-            router.push('/');
+            setIsAdmin(false);
+            router.replace('/');
+            toast.success('Logged out successfully!');
         }
-    };
+    }, [router]);
 
     useEffect(() => {
         const stored = localStorage.getItem('token');
@@ -60,25 +78,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             setLoading(false);
             return;
         }
-        setToken(stored);
+
         setIsLoggedIn(true);
 
         const checkAuthority = async () => {
             try {
                 const authority = await auth_check();
                 setIsAdmin(authority === 'ADMIN');
-            } catch (err: unknown) {
-                const msg =
-                    err instanceof Error && err.message
-                        ? err.message
-                        : 'Unknown error during admin check';
-                console.error('Failed to verify admin status:', msg);
-
-                if (msg.includes('Token expired or invalid')) {
+            } catch (err: any) {
+                const msg = err instanceof Error
+                    ? err.message
+                    : JSON.stringify(err) || 'Unknown admin-check error';
+                toast.error(msg);
+                if (msg.includes('expired') || msg.includes('invalid')) {
                     await logout();
                     return;
                 }
-
                 setIsAdmin(false);
             } finally {
                 setLoading(false);
@@ -88,12 +103,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         checkAuthority();
     }, [logout]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    const value = useMemo(() => ({ isLoggedIn, isAdmin, login, logout }), [isLoggedIn, isAdmin, login, logout]);
+
+    if (loading) return <div>Loading...</div>;
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, isAdmin, login, logout }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

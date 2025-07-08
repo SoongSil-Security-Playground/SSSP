@@ -28,14 +28,14 @@
 }
 
 .icon {
-  color: white;
+  color: var(--offwhite);
   margin-bottom: 0.5rem;
 }
 
 .value {
   font-family: 'Silkscreen';
   font-size: 2rem;
-  color: white;
+  color: var(--offwhite);
 }
 
 .label {

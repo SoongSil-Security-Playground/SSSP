@@ -25,7 +25,7 @@
 }
 
 .message {
-  color: white;
+  color: var(--offwhite);
   font-size: 0.875rem;
   font-family: 'Share Mono Tech';
   text-align: center;
@@ -36,7 +36,7 @@
   border: 1px solid #4d4d4d;
   border-radius: 0.25rem;
   background: transparent;
-  color: white;
+  color: var(--offwhite);
   margin-bottom: 1rem;
 }
 
@@ -44,17 +44,4 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-}
-
-.error {
-  display: flex;
-  width: 100%;
-  gap: 0.5rem;
-  margin: 0;
-  justify-content: center;
-  font-family: 'Share Mono Tech';
-  font-size: 1rem;
-  color: #f87171;
-  align-items: center;
-  align-content: center;
 }

@@ -81,7 +81,7 @@ export default function ChallengeBox({
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   useEffect(() => {
-    const filtered = chall.filter((item) =>
+    const filtered = chall.filter((item: Challenge) =>
       item.name.toLowerCase().includes(searchString.toLowerCase())
     );
     setSortedRows(sortedRow(filtered, ascending, sortKey));
@@ -100,7 +100,7 @@ export default function ChallengeBox({
     setExpandedId((prev) => (prev === id ? null : id));
   };
 
-  const filteredData = chall.filter((item) =>
+  const filteredData = chall.filter((item: Challenge) =>
     item.name.toLowerCase().includes(searchString.toLowerCase())
   );
 
@@ -111,7 +111,7 @@ export default function ChallengeBox({
     if (allSelected) {
       handleSelectChange([]);
     } else {
-      handleSelectChange(filteredData.map((item) => item.id));
+      handleSelectChange(filteredData.map((item: Challenge) => item.id));
     }
   };
 
@@ -172,7 +172,7 @@ export default function ChallengeBox({
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((row) => {
+          {filteredData.map((row: Challenge) => {
             const isChecked = selectedIds.includes(row.id);
             const isExpanded = expandedId === row.id;
             return (
