@@ -6,6 +6,7 @@ import { challenge_get_user_solved } from '@/shared/hooks/api/useChallenge';
 import { get_score, get_my_score } from '@/shared/hooks/api/useScoring';
 import styles from './index.module.css'
 import { Medal, Trophy, Crown } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const iconMap: Record<string, React.FC<any>> = {
   Rank: Crown,

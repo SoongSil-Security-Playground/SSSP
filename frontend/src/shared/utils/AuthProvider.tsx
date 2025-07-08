@@ -12,6 +12,7 @@ import React,
 } from "react";
 import { toast } from "react-toastify";
 import { auth_logout, auth_check } from "../hooks/api/useAuth";
+import { Loading } from "../components/Loading";
 import { useRouter } from "next/navigation";
 
 export interface AuthContextType {
@@ -36,12 +37,13 @@ export function useAuth(): AuthContextType {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const router = useRouter();
 
     const login = useCallback(async (newToken: string) => {
         try {
+            setIsLoading(true);
             localStorage.setItem('token', newToken);
             setIsLoggedIn(true);
             const authority = await auth_check();
@@ -52,11 +54,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 ? err.message
                 : err.detail || 'Login error';
             toast.error(msg);
+        } finally {
+            setIsLoading(false);
         }
     }, [router]);
 
     const logout = useCallback(async () => {
         try {
+            setIsLoading(true);
             await auth_logout();
         } catch (err: any) {
             const msg = err instanceof Error
@@ -69,13 +74,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             setIsAdmin(false);
             router.replace('/');
             toast.success('Logged out successfully!');
+            setIsLoading(false);
         }
     }, [router]);
 
     useEffect(() => {
         const stored = localStorage.getItem('token');
         if (!stored) {
-            setLoading(false);
+            setIsLoading(false);
             return;
         }
 
@@ -83,6 +89,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         const checkAuthority = async () => {
             try {
+                setIsLoading(true);
                 const authority = await auth_check();
                 setIsAdmin(authority === 'ADMIN');
             } catch (err: any) {
@@ -96,7 +103,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 }
                 setIsAdmin(false);
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
         };
 
@@ -105,11 +112,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const value = useMemo(() => ({ isLoggedIn, isAdmin, login, logout }), [isLoggedIn, isAdmin, login, logout]);
 
-    if (loading) return <div>Loading...</div>;
-
     return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
+        isLoading ?
+            <Loading />
+            :
+            <AuthContext.Provider value={value}>
+                {children}
+            </AuthContext.Provider>
     );
 };

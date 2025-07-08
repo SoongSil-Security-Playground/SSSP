@@ -57,7 +57,7 @@ export default function ChallengeBox() {
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
 
-  const { data: chall } = useQuery<GetChallnegeListSucces>({
+  const { data: chall = [] } = useQuery<GetChallnegeListSucces>({
     queryKey: ["challenge_get_all"],
     queryFn: () => challenge_get_all(),
     staleTime: 5 * 1000,

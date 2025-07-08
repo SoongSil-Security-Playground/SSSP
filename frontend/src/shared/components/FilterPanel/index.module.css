@@ -1,7 +1,6 @@
 .sidebar {
     border-radius: 0px 16px 16px 0px;
     background-color: rgb(49, 49, 49);
-    box-shadow: 2px 4px 6px 0px rgba(0, 0, 0, 0.10);
     padding: 2rem 1.5rem 2rem 2rem;
     z-index: 10;
     font-family: 'Share Tech Mono';

@@ -26,7 +26,6 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
       auth_login(username, password),
     onSuccess: (data) => {
       localStorage.setItem('token', data.access_token);
-      toast.success('Logged in successfully!');
       onSuccess(data.access_token);
     },
     onError: (err) => {

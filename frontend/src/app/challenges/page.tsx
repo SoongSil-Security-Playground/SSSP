@@ -9,9 +9,7 @@ import styles from "./page.module.css"
 export default function ChallengesPage() {
   return (
     <div className={styles.container}>
-      <div className={styles.headerWrapper}>
-        <PageTitle text="CHALLENGES" />
-      </div>
+      <PageTitle text="CHALLENGES" />
       <FilterProvider>
         <div className={styles.sidebarWrapper}>
           <FilterPanel />

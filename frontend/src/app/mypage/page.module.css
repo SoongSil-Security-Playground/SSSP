@@ -7,21 +7,27 @@
 
 .contentWrapper {
     display: flex;
-    flex: 1;
+    flex: 1 1;
     overflow: hidden;
     flex-direction: row;
 }
 
 .sidebar {
-    flex: 0 0 280px;
-    overflow-y: auto;
-    padding: 0rem 3rem;
+    padding: 0 4rem 2rem 4rem;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 320px;
+    height: 100%;
+    margin-top: 6rem;
 }
 
 .mainContent {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 1 1;
     padding: 1rem 5rem 1rem 1rem;
     gap: 1rem;
+    margin-left: 320px;
 }

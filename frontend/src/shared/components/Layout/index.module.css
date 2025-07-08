@@ -1,14 +1,21 @@
 .layoutContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   min-width: max-content;
   color: var(--offwhite);
   font-family: 'Share Tech Mono';
+  align-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .mainContent {
-  flex: 1;
-  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 1280px;
 }
 
 .authTitle {

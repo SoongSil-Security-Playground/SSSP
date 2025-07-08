@@ -59,7 +59,7 @@ export const ChallengeDetailModal: React.FC = () => {
     return <div className={styles.container}>Error loading challenge</div>;
   }
 
-  const solved = item.is_user_solved === 1;
+  const isSolved = item.is_user_solved === 1;
 
   const handleDownload = () => {
     if (!item.file_path) return;
@@ -75,7 +75,7 @@ export const ChallengeDetailModal: React.FC = () => {
 
   return (
     <Modal isOpen={true} onClose={handleClose}>
-      <div className={styles.container}>
+      <div className={(isSolved ? styles.solvedContainer : styles.unsolvedContainer)}>
         <button className={styles.closeBtn} onClick={handleClose} aria-label="Close">
           &times;
         </button>
@@ -97,7 +97,7 @@ export const ChallengeDetailModal: React.FC = () => {
             <></>
           )
         }
-        {solved ? (
+        {isSolved ? (
           <>
             <div className={styles.solved}>
               <CheckCircle size={16} className={styles.solvedIcon} />

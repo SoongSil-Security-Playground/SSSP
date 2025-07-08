@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 import { useFilters } from '../../FilterPanel/FilterContext';
 import { ChallengeCard } from '../../Card/ChallengeCard';
 import styles from './index.module.css';
+import { Loading } from '../../Loading';
 
 export const ChallengeList: FC = () => {
   const {
@@ -14,7 +15,7 @@ export const ChallengeList: FC = () => {
     setSelectedId,
   } = useFilters();
 
-  if (isLoading) return <div>Loading…</div>;
+  if (isLoading) return <Loading />;
   if (isError) return <div>Error: {error?.message}</div>;
 
   return (
