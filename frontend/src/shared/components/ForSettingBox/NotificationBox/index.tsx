@@ -14,10 +14,6 @@ import {
   UpdateNoticeSuccess,
   DeleteNoticeSuccess,
 } from "@/shared/types/forAPI/NoticeType";
-import {
-  AuthError,
-  AuthValidateError,
-} from "@/shared/types/forAPI/AuthErrorType";
 
 interface NotificationBoxProps {
   data: GetNoticeListSuccess;
@@ -32,6 +28,10 @@ export default function NotificationBox({
 
   const [sortedRows, setSortedRows] = useState<GetNoticeListSuccess>([]);
   const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
+
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
 
   const { mutate: deleteNotification } = useMutation({
     mutationFn: (selectedIds: number) => admin_notice_delete(selectedIds),

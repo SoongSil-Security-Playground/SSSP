@@ -267,11 +267,11 @@ export default function SubmissionBox({
                 {isExpanded && (
                   <tr className={styles.expandedRow}>
                     <td colSpan={7} className={styles.detailCell}>
-                      <div>
-                        <strong>User Flag:</strong> <code>{s.user_flag}</code>
+                      <div className={styles.userFlag}>
+                        User Flag: {s.user_flag}
                       </div>
-                      <div>
-                        <strong>Real Flag:</strong> <code>{s.real_flag}</code>
+                      <div className={styles.realFlag}>
+                        Real Flag: {s.real_flag}
                       </div>
                     </td>
                   </tr>

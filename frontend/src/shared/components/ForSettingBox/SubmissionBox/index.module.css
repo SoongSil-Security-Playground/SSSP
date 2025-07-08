@@ -210,15 +210,16 @@
   transform: translate(-50%, -50%);
 }
 
-.expandedRow td {
+.expandedRow {
+  display: table-row;
   background: #252525;
 }
 
 .detailCell {
-  justify-content: space-between;
-  padding: 0 10rem;
   font-size: 0.9rem;
-  color: #333;
+  padding: 20px 20px 20px 20px;
+  column-gap: 10px;
+  color: white;
 }
 
 .detailGrid {
@@ -229,4 +230,27 @@
 
 .selected {
   background-color: #686868;
+}
+
+.userFlag {
+  color: white;
+}
+
+.realFlag {
+  margin-top: 10px;
+  color: red;
+}
+
+.editTitleInput {
+  width: 60%;
+  padding: 4px 8px;
+  font-size: 1rem;
+}
+
+.editContentTextarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  font-size: 0.95rem;
+  resize: vertical;
 }
