@@ -75,10 +75,16 @@ export default function ChallengeBox({
   handleSelectChange,
 }: ChallengeBoxProps) {
   const [sortedRows, setSortedRows] = useState<GetAllChallengeSuccess>([]);
-
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  const filteredData = chall.filter((item: Challenge) =>
+    item.name.toLowerCase().includes(searchString.toLowerCase())
+  );
+
+  const allSelected =
+    chall && chall!.length > 0 && selectedIds.length === chall.length;
 
   useEffect(() => {
     const filtered = chall.filter((item: Challenge) =>
@@ -99,13 +105,6 @@ export default function ChallengeBox({
   const handleRowClick = (id: number) => {
     setExpandedId((prev) => (prev === id ? null : id));
   };
-
-  const filteredData = chall.filter((item: Challenge) =>
-    item.name.toLowerCase().includes(searchString.toLowerCase())
-  );
-
-  const allSelected =
-    chall && chall!.length > 0 && selectedIds.length === chall.length;
 
   const toggleAll = () => {
     if (allSelected) {

@@ -9,10 +9,6 @@ import {
   admin_notice_update,
   admin_notice_delete,
 } from "@/shared/hooks/api/useNotice";
-import {
-  UpdateNoticeSuccess,
-  DeleteNoticeSuccess,
-} from "@/shared/types/forAPI/NoticeType";
 
 interface NotificationBoxProps {
   data: GetNoticeListSuccess;
@@ -95,8 +91,9 @@ export default function NotificationBox({
     setExpandedUserId((prev) => (prev === id ? null : id));
   };
 
+  // 수정 중일 때는 collapse도 바로 막고 모달 띄움
   const handleRowClick = (id: number) => {
-    if (editingId !== null && editingId !== id) {
+    if (editingId !== null) {
       setPendingExpandId(id);
       setShowUnsavedModal(true);
       return;

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 import styles from "@/shared/components/ForSettingBox/UsersBox/index.module.css";
 import { user_delete_user } from "@/shared/hooks/api/useUser";
@@ -17,15 +16,6 @@ export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
   const [filteredUsers, setFilteredUsers] = useState<GetUserListSuccess>([]);
   const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
 
-  const router = useRouter();
-  const { mutate: deleteUser } = useMutation({
-    mutationFn: (id: number) => user_delete_user(id),
-    onSuccess: () => {
-      alert("삭제 성공!");
-      window.location.href = "/setting?category=Users";
-    },
-  });
-
   useEffect(() => {
     const q = searchString.toLowerCase();
     setFilteredUsers(
@@ -37,6 +27,14 @@ export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
     );
   }, [users, searchString]);
 
+  const { mutate: deleteUser } = useMutation({
+    mutationFn: (id: number) => user_delete_user(id),
+    onSuccess: () => {
+      alert("삭제 성공!");
+      window.location.href = "/setting?category=Users";
+    },
+  });
+
   const toggleExpand = (id: number) => {
     setExpandedUserId((prev) => (prev === id ? null : id));
   };
@@ -44,7 +42,6 @@ export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
   const handleDelete = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
     deleteUser(id);
-    router.refresh();
   };
 
   return (

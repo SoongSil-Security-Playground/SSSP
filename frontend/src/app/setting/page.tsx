@@ -30,20 +30,19 @@ export default function SettingPage() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const cat = searchParams.get("category") ?? tabs[0];
-  const active = tabs.includes(cat) ? tabs.indexOf(cat) : 0;
-
   const [searchMap, setSearchMap] = useState<Record<string, string>>({});
   const [idsMap, setIdsMap] = useState<Record<string, number[]>>({});
+
+  const cat = searchParams.get("category") ?? tabs[0];
+  const active = tabs.includes(cat) ? tabs.indexOf(cat) : 0;
+  const searchString = searchMap[active] ?? "";
+  const selectedIds = idsMap[active] ?? [];
 
   const setActiveCategory = (index: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("category", tabs[index]);
     router.push(`${pathname}?${params.toString()}`);
   };
-
-  const searchString = searchMap[active] ?? "";
-  const selectedIds = idsMap[active] ?? [];
 
   const handleSearchChange = (value: string) => {
     setSearchMap((prev) => ({ ...prev, [active]: value }));
@@ -158,12 +157,16 @@ export default function SettingPage() {
     <div className={styles.container}>
       <PageTitle text="Settings" />
       <div className={styles.headerWrapper}>
-        <SelectSetting
-          items={tabs}
-          activeIndex={active}
-          onChange={setActiveCategory}
-        />
-        <Header />
+        <div className={styles.moreWrapperv2}>
+          <SelectSetting
+            items={tabs}
+            activeIndex={active}
+            onChange={setActiveCategory}
+          />
+        </div>
+        <div className={styles.moreWrapper}>
+          <Header />
+        </div>
       </div>
       <div className={styles.bodyWrapper}>
         <Content />

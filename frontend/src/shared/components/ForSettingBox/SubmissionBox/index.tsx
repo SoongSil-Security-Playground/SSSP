@@ -113,8 +113,12 @@ export default function SubmissionBox({
   const [sortKey, setSortKey] = useState<SortKey>("userName");
   const [ascending, setAscending] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
-
   const [submissions] = useState<Submission[]>(() => mapLogToSubmissions(log));
+
+  const allSelected =
+    submissions &&
+    submissions!.length > 0 &&
+    selectedIds.length === submissions.length;
 
   useEffect(() => {
     const q = searchString.toLowerCase().trim();
@@ -141,11 +145,6 @@ export default function SubmissionBox({
       setAscending(true);
     }
   };
-
-  const allSelected =
-    submissions &&
-    submissions!.length > 0 &&
-    selectedIds.length === submissions.length;
 
   const toggleAll = () => {
     if (allSelected) {
