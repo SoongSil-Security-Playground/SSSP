@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-width: 1200px;
 }
 
 .headerWrapper {
@@ -23,14 +22,14 @@
 
 .moreWrapper {
   width: 100%;
-  max-width: 800px;
+  max-width: 500px;
   display: flex;
   justify-content: end;
 }
 
 .moreWrapperv2 {
   width: 100%;
-  max-width: 800px;
+  max-width: 400px;
   display: flex;
   justify-content: start;
 }

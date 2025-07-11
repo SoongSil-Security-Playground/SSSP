@@ -1,22 +1,25 @@
 .container {
-  width: 35%;
+  width: 100%;
 }
 
 .searchWrapper {
   position: relative;
-  min-width: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 500px;
+  width: 100%;
+
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
   border-radius: 8px;
-  background-color: transparent;
+  background-color: #1f1f1f;
   overflow: hidden;
 }
 
 .searchInput {
   width: 100%;
   padding: 10px 48px 10px 40px;
+  background-color: #1f1f1f;
+
   border: none;
   outline: none;
-  background: transparent;
   color: #fff;
   font-size: 14px;
 }
