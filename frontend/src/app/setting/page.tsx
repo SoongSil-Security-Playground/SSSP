@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import styles from "@/app/setting/page.module.css";
 
 import ChallengeBox from "@/shared/components/ForSettingBox/ChallengeBox";
@@ -25,9 +26,21 @@ import { notice_get_all } from "@/shared/hooks/api/useNotice";
 const tabs = ["Challenges", "Submissions", "Users", "Notification"];
 
 export default function SettingPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const cat = searchParams.get("category") ?? tabs[0];
+  const active = tabs.includes(cat) ? tabs.indexOf(cat) : 0;
+
   const [searchMap, setSearchMap] = useState<Record<string, string>>({});
   const [idsMap, setIdsMap] = useState<Record<string, number[]>>({});
-  const [active, setActive] = useState(0);
+
+  const setActiveCategory = (index: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("category", tabs[index]);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const searchString = searchMap[active] ?? "";
   const selectedIds = idsMap[active] ?? [];
@@ -145,7 +158,11 @@ export default function SettingPage() {
     <div className={styles.container}>
       <PageTitle text="Settings" />
       <div className={styles.headerWrapper}>
-        <SelectSetting items={tabs} activeIndex={active} onChange={setActive} />
+        <SelectSetting
+          items={tabs}
+          activeIndex={active}
+          onChange={setActiveCategory}
+        />
         <Header />
       </div>
       <div className={styles.bodyWrapper}>

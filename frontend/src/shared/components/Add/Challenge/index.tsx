@@ -35,8 +35,9 @@ export const AddChall = () => {
 
   const { mutate } = useMutation({
     mutationFn: (formData: FormData) => challenge_create(formData),
-    onSuccess: (data) => {
-      router.push("/setting");
+    onSuccess: () => {
+      alert("생성 성공!");
+      window.location.href = "/setting?category=Challenges";
     },
     onError: (err: any) => {
       alert("생성 실패");

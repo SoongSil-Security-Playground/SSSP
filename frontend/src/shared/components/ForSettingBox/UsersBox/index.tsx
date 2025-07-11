@@ -20,6 +20,10 @@ export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
   const router = useRouter();
   const { mutate: deleteUser } = useMutation({
     mutationFn: (id: number) => user_delete_user(id),
+    onSuccess: () => {
+      alert("삭제 성공!");
+      window.location.href = "/setting?category=Users";
+    },
   });
 
   useEffect(() => {

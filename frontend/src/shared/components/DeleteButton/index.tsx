@@ -27,15 +27,17 @@ export const DeleteButton = ({ selectedIds, caseName }: DeleteButtonProps) => {
       selectedIds.forEach((id) => {
         deleteChallenge(id);
       });
+      alert("삭제 성공!");
+      window.location.href = "/setting?category=Challenges";
     } else if (caseName === "Notification") {
       selectedIds.forEach((id) => {
         deleteNotification(id);
       });
+      alert("삭제 성공!");
+      window.location.href = "/setting?category=Notification";
     } else if (caseName === "Submission") {
       alert("아직 없음");
     } else alert("잘못된 접근입니다.");
-
-    router.refresh();
   };
 
   return (
