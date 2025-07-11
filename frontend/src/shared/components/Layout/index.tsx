@@ -52,7 +52,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   }, [isLoggedIn]);
 
   return (
-    <div className={styles.layoutContainer}>
+    <>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -68,48 +68,47 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
         onSignupClick={openSignup}
         onLogoutClick={handleLogout}
       />
+      <div className={styles.layoutContainer}>
+        <main className={styles.mainContent}>{children}</main>
+        <Drawer isOpen={isAuthOpen} onClose={closeAuth}>
+          <h2 className={styles.authTitle}>
+            {authMode === "login" ? "로그인" : "회원가입"}
+          </h2>
 
-      <main className={styles.mainContent}>{children}</main>
-
-      <Drawer isOpen={isAuthOpen} onClose={closeAuth}>
-        <h2 className={styles.authTitle}>
-          {authMode === "login" ? "로그인" : "회원가입"}
-        </h2>
-
-        {authMode === "login" ? (
-          <>
-            <LoginForm onSuccess={handleLoginSuccess} />
-            <p className={styles.authPrompt}>
-              아직 계정이 없으신가요?{" "}
-              <Button
-                type="button"
-                onClick={openSignup}
-                variant="text"
-                className={styles.button}
-              >
-                회원가입
-              </Button>
-            </p>
-          </>
-        ) : (
-          <>
-            <SignupForm onSuccess={handleSignupSuccess} />
-            <p className={styles.authPrompt}>
-              이미 계정이 있으신가요?{" "}
-              <Button
-                type="button"
-                onClick={openLogin}
-                variant="text"
-                className={styles.button}
-              >
-                로그인
-              </Button>
-            </p>
-          </>
-        )}
-      </Drawer>
-
+          {authMode === "login" ? (
+            <>
+              <LoginForm onSuccess={handleLoginSuccess} />
+              <p className={styles.authPrompt}>
+                아직 계정이 없으신가요?{" "}
+                <Button
+                  type="button"
+                  onClick={openSignup}
+                  variant="text"
+                  className={styles.button}
+                >
+                  회원가입
+                </Button>
+              </p>
+            </>
+          ) : (
+            <>
+              <SignupForm onSuccess={handleSignupSuccess} />
+              <p className={styles.authPrompt}>
+                이미 계정이 있으신가요?{" "}
+                <Button
+                  type="button"
+                  onClick={openLogin}
+                  variant="text"
+                  className={styles.button}
+                >
+                  로그인
+                </Button>
+              </p>
+            </>
+          )}
+        </Drawer>
+      </div>
       <Footer />
-    </div>
+    </>
   );
 };

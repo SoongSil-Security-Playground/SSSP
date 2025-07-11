@@ -3,8 +3,10 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { user_list } from '@/shared/hooks/api/useUser';
-import { UserListContent, GetUserListSuccess } from '@/shared/types/forAPI/UserType';
+import { GetUserListSuccess } from '@/shared/types/forAPI/UserType';
 import { UserCard } from '../../Card/UserCard';
+import { toast } from 'react-toastify';
+import { Loading } from '../../Loading';
 import styles from './index.module.css';
 
 export const UserList = () => {
@@ -13,24 +15,18 @@ export const UserList = () => {
       queryKey: ['users'],
       queryFn: user_list,
     }
-  );
+    );
 
-  if (isLoading) {
-    return <div className={styles.container}>Loading...</div>;
-  }
+  if (isLoading) return <Loading />
+
   if (isError) {
-    return <div className={styles.container}>Error: {error?.message}</div>;
+    toast.error(error.message);
   }
 
   return (
     <div className={styles.list}>
-      {items.map((user: UserListContent) => (
-        <div
-          key={user.id}
-          className={styles.cardWrapper}
-        >
-          <UserCard {...user} />
-        </div>
+      {items.map(user => (
+        <UserCard key={user.id} username={user.username} />
       ))}
     </div>
   );

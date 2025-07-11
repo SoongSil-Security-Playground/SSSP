@@ -5,12 +5,6 @@
     height: 100vh;
 }
 
-.headerWrapper {
-    position: relative;
-    top: 0;
-    z-index: 2;
-}
-
 .sidebarWrapper {
     position: fixed;
     top: 8rem;
@@ -25,8 +19,8 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     container-type: inline-size;
-    margin: 0px 280px;
     box-sizing: border-box;
+    height: auto;
 }
 
 /* hide scrollbar in WebKit */

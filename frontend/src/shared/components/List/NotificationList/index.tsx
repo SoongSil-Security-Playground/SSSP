@@ -6,6 +6,7 @@ import { NotificationCard } from "../../Card/NotificationCard";
 import { GetNoticeListSuccess } from "@/shared/types/forAPI/NoticeType";
 import { notice_get_all } from "@/shared/hooks/api/useNotice";
 import styles from './index.module.css'
+import { Loading } from "../../Loading";
 
 export const NotificationList = () => {
   const { data: items = [], isLoading, isError, error } =
@@ -16,7 +17,7 @@ export const NotificationList = () => {
   );
 
   if (isLoading) {
-    return <div className={styles.container}>Loading...</div>;
+    return <Loading />
   }
   if (isError) {
     return <div className={styles.container}>Error: {error?.message}</div>;
