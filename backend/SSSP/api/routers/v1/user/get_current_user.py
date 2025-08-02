@@ -22,6 +22,4 @@ def get_user(
     if find_user_name == None:
         return {'success':0, "detail":"User not found."}
     
-    logging.info(f"[*] GET_CURRENT_USER>> find user {find_user_name}")
-
     return schema_users.UserResponse.from_orm(find_user_name)

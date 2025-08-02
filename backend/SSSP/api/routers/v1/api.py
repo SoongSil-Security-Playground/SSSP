@@ -27,8 +27,6 @@ from SSSP.api.routers.v1.challange import (
     delete_challenge,
     update_challenge,
     submit_challenge,
-    solve_log,
-    get_user_solved_challenges,
     download_challenge_file,
 )
 
@@ -41,12 +39,18 @@ from SSSP.api.routers.v1.notice import (
     delete_notice,
 )
 
+from SSSP.api.routers.v1.submission import (
+    delete_submission,
+    get_all_submission,
+    get_user_submission,
+)
 router = APIRouter()
 
 # User
 ## scoring
 router.include_router(get_all_score.router, tags=["scoring"])
 router.include_router(get_my_score.router, prefix="/score", tags=["scoring"])
+
 ## auth
 router.include_router(login.router, prefix="/auth", tags=["auth"])
 router.include_router(logout.router, prefix="/auth", tags=["auth"])
@@ -67,9 +71,6 @@ router.include_router(download_challenge_file.router, prefix="/challenges/downlo
 router.include_router(get_challenges.router, prefix="/challenges", tags=["challenge"])
 router.include_router(submit_challenge.router, prefix="/challenges", tags=["challenge"])
 router.include_router(
-    get_user_solved_challenges.router, prefix="/challenges", tags=["challenge"]
-)
-router.include_router(
     create_challenge.router, prefix="/admin/challenges", tags=["challenge"]
 )
 router.include_router(
@@ -79,15 +80,18 @@ router.include_router(
     update_challenge.router, prefix="/admin/challenges", tags=["challenge"]
 )
 
-# admin
-router.include_router(solve_log.router, prefix="/admin", tags=["logs"])
+# 4©
+router.include_router(get_all_submission.router, prefix="/submission", tags=["submission"])
+router.include_router(get_user_submission.router, prefix="/submission", tags=["submission"])
+router.include_router(delete_submission.router, prefix="/submission", tags=["submission"])
 
 ## notice
 router.include_router(create_notice.router, prefix="/admin", tags=["notice"])
 router.include_router(update_notice.router, prefix="/admin", tags=["notice"])
-router.include_router(get_all_notice.router, tags=["notice"])
 router.include_router(delete_notice.router, prefix="/admin", tags=["notice"])
+router.include_router(get_all_notice.router, tags=["notice"])
 
-## User
+## Admin Features
 router.include_router(is_admin.router, prefix="/admin", tags=["auth"])
 router.include_router(delete_specific_user.router, prefix="/admin", tags=["user"])
+

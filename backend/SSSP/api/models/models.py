@@ -71,13 +71,13 @@ class Challenge(Base):
 
 
 class Submission(Base):
-    __tablename__ = "submissions"
+    __tablename__ = "submission"
     id = Column(Integer, primary_key=True, index=True)
     submitted_flag = Column(String(255), nullable=False)
-    is_correct = Column(Boolean, default=False)
-    comment = Column(String(255), nullable=False)
+    status = Column(Integer, default=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     challenge_id = Column(Integer, ForeignKey("challenges.id"))
+    submit_time = Column(DateTime, nullable=False)
 
     user = relationship("User", back_populates="submissions")
     challenge = relationship("Challenge", back_populates="submissions")
@@ -119,5 +119,6 @@ try:
     db.add(new_admin)
     db.commit()
     db.refresh(new_admin)
+
 except Exception as e:
     print(f"Error creating initial admin user: {e}")

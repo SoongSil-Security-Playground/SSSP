@@ -9,6 +9,6 @@ RUN npm install
 # now apply changes to the code
 COPY . .
 
-EXPOSE 3000
+EXPOSE 8000
 
 CMD ["npm", "run", "dev"]
