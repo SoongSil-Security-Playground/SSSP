@@ -59,7 +59,7 @@ export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
               <span className={styles.email}>{user.email}</span>
             </div>
             <div className={styles.actions}>
-              <button className={styles.adminBtn}>ADMIN</button>
+              <button className={styles.adminBtn}>{user.authority}</button>
               <button
                 className={styles.deleteBtn}
                 onClick={(e) => handleDelete(e, user.id)}
