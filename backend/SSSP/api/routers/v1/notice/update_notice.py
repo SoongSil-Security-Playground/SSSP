@@ -28,7 +28,7 @@ def update_notice(
 ):
     user = get_current_user_by_jwt(token, db)
     if user.authority != UserRole.ADMIN:
-        logging.warning(f"Unauthorized attempt to update notice by user {user.id}")
+        logging.warning(f"Unauthorized attempt to update notice by user [{user.username}]({user.id})")
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to update notice",

@@ -19,5 +19,4 @@ def get_user_list(
     user = get_current_user_by_jwt(token, db)
     users = db.query(models.User).all()
     user_responses = [schema_users.UserResponse.from_orm(user) for user in users]
-    logging.info(f"[*] USER_LIST>> {user_responses}")
     return user_responses

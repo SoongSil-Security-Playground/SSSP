@@ -20,7 +20,6 @@ def update_current_user(
     db: Session = Depends(get_db),
 ):
     find_user_name = get_current_user_by_jwt(token, db)
-    logging.info(f"[*] UPDATE_CURRENT_USER>> find user {find_user_name}")
 
     if user_update.contents is not None:
         find_user_name.contents = user_update.contents
