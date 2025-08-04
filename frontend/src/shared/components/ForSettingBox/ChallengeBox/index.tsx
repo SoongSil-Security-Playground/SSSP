@@ -1,19 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
 
 import styles from "./index.module.css";
-import { dummyChallenges, Challenge } from "./dummyData";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
-import { GetChallnegeListSucces } from "@/shared/types/forAPI/ChallengeType";
-import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
+import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
+
+export interface Challenge {
+  name: string;
+  description: string;
+  points: number;
+  category: string;
+  id: number;
+  created_at: string;
+  file_path: string;
+  is_user_solved: number;
+  solve_count: number;
+  level: string;
+  flag: string;
+}
 
 type SortKey = keyof Pick<
   Challenge,
   "name" | "points" | "created_at" | "category"
 >;
+
+interface ChallengeBoxProps {
+  data: GetAllChallengeSuccess;
+  searchString: string;
+  selectedIds: number[];
+  handleSelectChange: (ids: number[]) => void;
+}
 
 const columnLabels: Record<SortKey, string> = {
   name: "Name",
@@ -30,7 +48,7 @@ const cellClassMap: Record<SortKey, string> = {
 };
 
 const sortedRow = (
-  chall: GetChallnegeListSucces,
+  chall: GetAllChallengeSuccess,
   ascending: boolean,
   sortKey: SortKey
 ) => {
@@ -50,22 +68,30 @@ const sortedRow = (
   });
 };
 
-export default function ChallengeBox() {
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [sortedRows, setSortedRows] = useState<GetChallnegeListSucces>([]);
-
+export default function ChallengeBox({
+  data: chall,
+  searchString,
+  selectedIds,
+  handleSelectChange,
+}: ChallengeBoxProps) {
+  const [sortedRows, setSortedRows] = useState<GetAllChallengeSuccess>(chall);
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [ascending, setAscending] = useState(true);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const { data: chall = [] } = useQuery<GetChallnegeListSucces>({
-    queryKey: ["challenge_get_all"],
-    queryFn: () => challenge_get_all(),
-    staleTime: 5 * 1000,
-  });
+  const filteredData = chall.filter((item: Challenge) =>
+    item.name.toLowerCase().includes(searchString.toLowerCase())
+  );
+
+  const allSelected =
+    chall && chall!.length > 0 && selectedIds.length === chall.length;
 
   useEffect(() => {
-    setSortedRows(sortedRow(chall!, ascending, sortKey));
-  }, [chall, sortKey, ascending]);
+    const filtered = sortedRows.filter((item: Challenge) =>
+      item.name.toLowerCase().includes(searchString.toLowerCase())
+    );
+    setSortedRows(sortedRow(filtered, ascending, sortKey));
+  }, [chall, searchString, sortKey, ascending]);
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -76,21 +102,23 @@ export default function ChallengeBox() {
     }
   };
 
-  const allSelected =
-    chall && chall!.length > 0 && selectedIds.length === dummyChallenges.length;
+  const handleRowClick = (id: number) => {
+    setExpandedId((prev) => (prev === id ? null : id));
+  };
 
   const toggleAll = () => {
     if (allSelected) {
-      setSelectedIds([]);
+      handleSelectChange([]);
     } else {
-      setSelectedIds(dummyChallenges.map((r) => r.id));
+      handleSelectChange(sortedRows.map((item: Challenge) => item.id));
     }
   };
 
   const toggleOne = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    const newSelected = selectedIds.includes(id)
+      ? selectedIds.filter((x) => x !== id)
+      : [...selectedIds, id];
+    handleSelectChange(newSelected);
   };
 
   return (
@@ -143,30 +171,96 @@ export default function ChallengeBox() {
           </tr>
         </thead>
         <tbody>
-          {sortedRows.map((row) => {
+          {sortedRows.map((row: Challenge) => {
             const isChecked = selectedIds.includes(row.id);
+            const isExpanded = expandedId === row.id;
             return (
-              <tr key={row.id} className={styles.row}>
-                <td
-                  className={`${styles.checkboxBodyCell} ${styles.checkboxCell}`}
+              <Fragment key={row.id}>
+                <tr
+                  className={`${styles.row} ${
+                    isExpanded ? styles.selected : ""
+                  }`}
+                  onClick={() => handleRowClick(row.id)}
                 >
-                  <input
-                    type="checkbox"
-                    className={styles.customCheckbox}
-                    checked={isChecked}
-                    onChange={() => toggleOne(row.id)}
-                  />
-                </td>
-                <td className={`${styles.titleBodyCell} ${styles.title}`}>
-                  {row.name}
-                </td>
-                <td className={styles.scoreBodyCell}>{row.points}</td>
-                <td className={styles.updatedBodyCell}>{row.created_at}</td>
-                <td className={styles.categoryBodyCell}>
-                  <span className={styles.badge}>{row.category}</span>
-                </td>
-                <td className={`${styles.cell} ${styles.actionsCell}`}>⋮</td>
-              </tr>
+                  <td
+                    className={`${styles.checkboxBodyCell} ${styles.checkboxCell}`}
+                  >
+                    <input
+                      type="checkbox"
+                      className={styles.customCheckbox}
+                      checked={isChecked}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        toggleOne(row.id);
+                      }}
+                    />
+                  </td>
+                  <td className={`${styles.titleBodyCell} ${styles.title}`}>
+                    {row.name}
+                  </td>
+                  <td className={styles.scoreBodyCell}>{row.points}</td>
+                  <td className={styles.updatedBodyCell}>{row.created_at}</td>
+                  <td className={styles.categoryBodyCell}>
+                    <div className={styles.categoryArrange}>
+                      <span className={styles.badge}>{row.category}</span>
+                    </div>
+                  </td>
+                  <td className={`${styles.actionsCell}`}>⋮</td>
+                </tr>
+
+                {isExpanded && (
+                  <tr className={styles.expandedRow}>
+                    <td colSpan={6} className={styles.detailCell}>
+                      <div className={styles.detailGrid}>
+                        <div className={styles.detailItem}>
+                          <span className={styles.detailLabel}>Solved?</span>
+                          <span className={styles.detailValue}>
+                            {row.is_user_solved ? "✅" : "❌"}
+                          </span>
+                        </div>
+                        <div className={styles.detailItem}>
+                          <span className={styles.detailLabel}>
+                            Solve Count
+                          </span>
+                          <span className={styles.detailValue}>
+                            {row.solve_count}
+                          </span>
+                        </div>
+                        <div className={styles.detailItem}>
+                          <span className={styles.detailLabel}>Level</span>
+                          <span className={styles.detailValue}>
+                            {row.level}
+                          </span>
+                        </div>
+                        <div className={styles.detailItemFull}>
+                          <span className={styles.detailLabel}>Flag</span>
+                          <code className={styles.detailFlag}>{row.flag}</code>
+                        </div>
+                      </div>
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Description</span>
+                        <span className={styles.detailValue}>
+                          {row.description}
+                        </span>
+                      </div>
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>File:</span>
+                        {row.file_path ? (
+                          <a
+                            href={row.file_path}
+                            download
+                            className={styles.downloadLink}
+                          >
+                            {row.file_path.split("/").pop()}
+                          </a>
+                        ) : (
+                          "No file provided"
+                        )}
+                      </div>{" "}
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             );
           })}
         </tbody>

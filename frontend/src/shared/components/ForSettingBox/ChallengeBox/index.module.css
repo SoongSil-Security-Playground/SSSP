@@ -90,7 +90,7 @@
 } */
 
 .selected {
-  background-color: #e6f7ff;
+  background-color: #686868;
 }
 
 .checkboxBodyCell {
@@ -140,7 +140,6 @@
   background-color: #64b5bf;
   color: black;
 }
-
 
 .customCheckbox {
   -webkit-appearance: none;
@@ -213,4 +212,65 @@
   height: 2px;
   background-color: #2cb1cc;
   transform: translate(-50%, -50%);
+}
+
+.categoryArragnge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  background-color: black;
+}
+
+.expandedRow td {
+  background: #252525;
+  padding: 10px 20px 30px 20px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.detailItem,
+.detailItemFull {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.detailItemFull {
+  grid-column: span 2;
+  justify-self: start;
+}
+
+.detailLabel {
+  font-size: 0.75rem;
+  color: #8a8a8a;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.detailValue {
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.detailFlag {
+  display: inline-block;
+  width: fit-content;
+  white-space: nowrap;
+
+  background: #333;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #8afc8a;
+}
+
+.downloadLink {
+  color: #686868;
+  text-decoration: underline;
+  margin-left: 4px;
+  font-weight: 500;
 }

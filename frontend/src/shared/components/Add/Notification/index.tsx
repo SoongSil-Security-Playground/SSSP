@@ -43,6 +43,7 @@ export const AddNotice = () => {
     },
     onSuccess: () => {
       alert("생성 성공!");
+      window.location.href = "/setting?category=Notification";
     },
   });
 

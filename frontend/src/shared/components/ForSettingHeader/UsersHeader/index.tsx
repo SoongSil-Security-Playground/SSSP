@@ -1,16 +1,29 @@
-import styles from "@/shared/components/ForSettingHeader/UsersHeader/index.module.css";
+"use client";
+
+import React, { useState, useRef, useEffect } from "react";
+import styles from "./index.module.css";
+import { GetUserListSuccess } from "@/shared/types/forAPI/UserType";
 
 type UsersHeaderProps = {
-  placeholder?: string;
-  searchValue?: string;
-  onSearchChange?: (v: string) => void;
+  data: GetUserListSuccess;
+  searchString: string;
+  handleSearchChange: (value: string) => void;
 };
 
 export default function UsersHeader({
-  placeholder = "Search...",
-  searchValue = "",
-  onSearchChange = () => {},
+  data: users,
+  searchString,
+  handleSearchChange,
 }: UsersHeaderProps) {
+  const [localSearch, setLocalSearch] = useState(searchString);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = searchString;
+    }
+  }, [searchString]);
+
   return (
     <div className={styles.container}>
       <div className={styles.searchWrapper}>
@@ -26,11 +39,13 @@ export default function UsersHeader({
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <input
+          ref={inputRef}
           type="text"
+          value={localSearch}
           className={styles.searchInput}
-          placeholder={placeholder}
-          value={searchValue}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e) => setLocalSearch(e.target.value)}
+          onBlur={() => handleSearchChange(localSearch)}
+          placeholder="Search users..."
         />
       </div>
     </div>

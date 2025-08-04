@@ -8,7 +8,7 @@ import {
   CreateChallengeSuccess,
   DeleteChallengeSuccess,
   DonwloadFileSuccess,
-  GetChallnegeListSucces,
+  GetAllChallengeSuccess,
   GetSpecChallengeSuccess,
   GetUserSolvedChallengeSuccess,
   SolveLogSuccess,
@@ -47,8 +47,8 @@ export const challenge_download_file = async (file_path: string) => {
 // /api/v1/challenges/get_all_challenge
 // Get All Challenges, {GET}
 
-export const challenge_get_all = async (): Promise<GetChallnegeListSucces> => {
-  const token = localStorage.getItem('token');
+export const challenge_get_all = async (): Promise<GetAllChallengeSuccess> => {
+  const token = localStorage.getItem("token");
   let res: Response;
 
   try {
@@ -91,7 +91,7 @@ export const challenge_get_all = async (): Promise<GetChallnegeListSucces> => {
     throw new ChallengeError(`Error ${res.status}`);
   }
 
-  return payload as GetChallnegeListSucces;
+  return payload as GetAllChallengeSuccess;
 };
 
 // /api/v1/challenges/{challenge_id}
@@ -310,5 +310,5 @@ export const challenge_get_solve_log = async () => {
     }
   );
 
-  return (await res.json()) as SolveLogSuccess | AuthError | AuthValidateError;
+  return (await res.json()) as SolveLogSuccess;
 };

@@ -1,31 +1,31 @@
 "use client";
 
-import React, { FC, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-import { FloatingInput } from '../../Input/FloatingInput';
-import { Button } from '../../Button';
-import styles from './index.module.css';
-import { auth_login } from '@/shared/hooks/api/useAuth';
-import type { LoginSuccess } from '@/shared/types/forAPI/AuthType';
+import React, { FC, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { FloatingInput } from "../../Input/FloatingInput";
+import { Button } from "../../Button";
+import styles from "./index.module.css";
+import { auth_login } from "@/shared/hooks/api/useAuth";
+import type { LoginSuccess } from "@/shared/types/forAPI/AuthType";
 
 type LoginFormProps = {
   onSuccess: (token: string) => void;
 };
 
 export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const mutation = useMutation<
     LoginSuccess,
     Error,
     { username: string; password: string }
   >({
-    mutationFn: ({ username, password }) =>
-      auth_login(username, password),
+    mutationFn: ({ username, password }) => auth_login(username, password),
     onSuccess: (data) => {
-      localStorage.setItem('token', data.access_token);
+      localStorage.setItem("token", data.access_token);
+      toast.success("Logged in successfully!");
       onSuccess(data.access_token);
     },
     onError: (err) => {
@@ -46,7 +46,7 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
         name="username"
         type="text"
         value={username}
-        onChange={e => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
         disabled={mutation.isPending}
         required
       />
@@ -57,7 +57,7 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
         name="password"
         type="password"
         value={password}
-        onChange={e => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
         disabled={mutation.isPending}
         required
       />
@@ -68,7 +68,7 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
         className={styles.submitBtn}
         disabled={mutation.isPending}
       >
-        {mutation.isPending ? 'Logging in…' : 'Log In'}
+        {mutation.isPending ? "Logging in…" : "Log In"}
       </Button>
     </form>
   );

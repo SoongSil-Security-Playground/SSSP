@@ -26,7 +26,7 @@ export type DonwloadFileSuccess = string;
 // /api/v1/challenges/get_all_challenge
 // Get All Challenges, {GET}
 
-export type GetChallnegeListSucces = DefaultChallengeContent[];
+export type GetAllChallengeSuccess = DefaultChallengeContent[];
 
 // /api/v1/challenges/{challenge_id}
 // Get Challenge, {GET}
@@ -63,15 +63,15 @@ export type GetUserSolvedChallengeSuccess = DefaultChallengeContent[];
 
 export interface CreateChallengeForRequest {
   name: string;
-  description: string;
-  points: string;
   category: string;
-  file?: string | (string | null);
+  description: string;
   flag: string;
-  level: string;
+  scoring: string;
+  points: string;
   decay: string;
-  minimum_point: string;
-  is_dynamic: boolean;
+  minimumPoints: string;
+  is_dynamic: string;
+  files: FileList;
 }
 
 export interface CreateChallengeSuccess extends DefaultChallengeContent {}

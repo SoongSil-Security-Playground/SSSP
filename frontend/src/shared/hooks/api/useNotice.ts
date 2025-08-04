@@ -56,21 +56,24 @@ export const admin_notice_update = async (
   content: string
 ) => {
   const token = localStorage.getItem("token");
+  const form = new URLSearchParams({
+    title,
+    content,
+  }).toString();
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice/${notice_id}`,
+    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice?notice_id=${notice_id}`,
     {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        title,
-        content,
-      } satisfies UpdateNoticeForRequest),
+      body: form,
     }
   );
+
+  console.log(res);
 
   return (await res.json()) as
     | UpdateNoticeSuccess
@@ -85,7 +88,7 @@ export const admin_notice_delete = async (notice_id: number) => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice/${notice_id}`,
+    `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/notice?notice_id=${notice_id}`,
     {
       method: "DELETE",
       headers: {
@@ -105,7 +108,7 @@ export const admin_notice_delete = async (notice_id: number) => {
 // Get All Notice, {GET}
 
 export const notice_get_all = async (): Promise<GetNoticeListSuccess> => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   let res: Response;
 
   try {

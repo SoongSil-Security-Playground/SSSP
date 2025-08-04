@@ -2,31 +2,24 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+
 import Image from "next/image";
-import FileUpload from "/public/fileUpload.svg";
-
-import styles from "./index.module.css";
+import { useRouter } from "next/navigation";
 import { challenge_create } from "@/shared/hooks/api/useChallenge";
+import { CreateChallengeForRequest } from "@/shared/types/forAPI/ChallengeType";
 
-interface FormValues {
-  name: string;
-  category: string;
-  description: string;
-  flag: string;
-  scoring: string;
-  points: string;
-  decay: string;
-  minimumPoints: string;
-  files: FileList;
-}
+import FileUpload from "/public/fileUpload.svg";
+import styles from "./index.module.css";
 
 export const AddChall = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<CreateChallengeForRequest>({
     defaultValues: {
       name: "",
       category: "",
@@ -42,15 +35,16 @@ export const AddChall = () => {
 
   const { mutate } = useMutation({
     mutationFn: (formData: FormData) => challenge_create(formData),
-    onSuccess: (data) => {
-      console.log("챌린지 생성 성공:", data);
+    onSuccess: () => {
+      alert("생성 성공!");
+      window.location.href = "/setting?category=Challenges";
     },
     onError: (err: any) => {
-      console.error("챌린지 생성 실패:", err);
+      alert("생성 실패");
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<CreateChallengeForRequest> = (data) => {
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("category", data.category);
