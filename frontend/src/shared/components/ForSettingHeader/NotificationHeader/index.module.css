@@ -58,3 +58,13 @@
   border-radius: 8px;
   color: #fff;
 }
+
+.searchButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

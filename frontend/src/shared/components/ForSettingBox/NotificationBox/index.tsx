@@ -72,13 +72,6 @@ export default function NotificationBox({
     setShowEditModal(true);
   };
 
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditTitle("");
-    setEditContent("");
-    setShowEditModal(false);
-  };
-
   const handleSave = () => {
     if (editingId !== null) {
       updateNotification({
@@ -103,14 +96,6 @@ export default function NotificationBox({
       return;
     }
     toggleExpand(id);
-  };
-
-  const confirmUnsaved = () => {
-    setShowUnsavedModal(false);
-    if (pendingExpandId !== null) {
-      toggleExpand(pendingExpandId);
-      setPendingExpandId(null);
-    }
   };
 
   return (
