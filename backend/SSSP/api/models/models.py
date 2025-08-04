@@ -9,26 +9,17 @@ from sqlalchemy import (
     Text,
     JSON,
 )
-from sqlalchemy.ext.declarative import declarative_base, as_declarative
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Enum as SQLEnum
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from SSSP.api.core.database import engine
 
 # directory dependency
 from SSSP.api.models.enums.user_role import UserRole
-
-
-@as_declarative()
-class Base:
-    __name__: str
-    created_at = Column(DateTime, default=lambda: datetime.now(ZoneInfo("Asia/Seoul")))
-    updated_at = Column(
-        DateTime,
-        default=lambda: datetime.now(ZoneInfo("Asia/Seoul")),
-        onupdate=lambda: datetime.now(ZoneInfo("Asia/Seoul")),
-    )
+from SSSP.api.core.database import Base, SessionLocal
+from SSSP.config import settings
+from SSSP.api.core.auth import get_password_hash
 
 
 class User(Base):
@@ -98,27 +89,3 @@ class AuthUserList(Base):
     useremail = Column(String(255), nullable=False)
 
 
-from SSSP.config import settings
-from sqlalchemy.orm import Session
-from SSSP.api.core.database import get_db
-from SSSP.api.core.auth import get_password_hash
-
-try:
-    Base.metadata.create_all(engine)
-    new_admin = User(
-        username=settings.initial_account.INITIAL_ADMIN_ID,
-        email="admin@example.com",
-        hashed_password=get_password_hash(
-            settings.initial_account.INITIAL_ADMIN_PW
-        ),
-        contents="hihi",
-        authority="ADMIN",
-    )
-
-    db: Session = next(get_db())
-    db.add(new_admin)
-    db.commit()
-    db.refresh(new_admin)
-
-except Exception as e:
-    print(f"Error creating initial admin user: {e}")

@@ -23,7 +23,7 @@ def get_all_submission(
     user = get_current_user_by_jwt(token, db)
 
     submission_list = db.query(models.Submission).all()
-    submission_response == [
+    submission_response = [
         schema_submission.SubmissionResponse.from_orm(submission) for submission in submission_list
     ]
 

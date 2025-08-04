@@ -17,6 +17,7 @@ from SSSP.api.exception.global_exception_handler import (
     sqlalchemy_integrity_error_handler,
     pydantic_validation_exception_handler,
 )
+from SSSP.api.core.database import init_db_connection
 
 # Router
 from SSSP.api.routers.v1.api import router as v1api
@@ -26,7 +27,14 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-apimain = FastAPI(docs_url="/docs", redoc_url="/redoc", openapi_url="/openapi.json")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Application startup...")
+    init_db_connection()
+    yield
+    print("Application shutdown...")
+
+apimain = FastAPI(docs_url="/docs", redoc_url="/redoc", openapi_url="/openapi.json", lifespan=lifespan)
 # apimain = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 apimain.include_router(v1api, prefix="/api/v1")
 apimain.add_exception_handler(DataError, sqlalchemy_data_error_handler)
