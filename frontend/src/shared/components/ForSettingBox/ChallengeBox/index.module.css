@@ -121,10 +121,12 @@
 }
 
 .categoryBodyCell {
+  display: flex;
   padding: 12px;
   padding-right: 5.5%;
   vertical-align: middle;
-  text-align: right;
+  align-items: center;
+  justify-content: end;
 }
 
 .title {
@@ -139,6 +141,14 @@
   border-radius: 9999px;
   background-color: #64b5bf;
   color: black;
+}
+
+.categoryArrange {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: right;
+  width: 80px;
 }
 
 .customCheckbox {
