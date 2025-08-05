@@ -150,6 +150,7 @@ export const AddChall = () => {
             {...register("files")}
             id="files"
             type="file"
+            accept=".zip"
             multiple
             className={styles.hiddenFileInput}
           />

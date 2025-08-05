@@ -15,4 +15,7 @@
   padding: 10px 16px;
   border-radius: 8px;
   color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
