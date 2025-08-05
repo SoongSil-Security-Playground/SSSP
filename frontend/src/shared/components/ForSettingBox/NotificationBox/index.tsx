@@ -21,6 +21,7 @@ export default function NotificationBox({
 }: NotificationBoxProps) {
   const [sortedRows, setSortedRows] = useState<GetNoticeListSuccess>([]);
   const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState("");
@@ -68,13 +69,7 @@ export default function NotificationBox({
     setEditingId(id);
     setEditTitle(title);
     setEditContent(content || "");
-    setExpandedUserId(id);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditTitle("");
-    setEditContent("");
+    setShowEditModal(true);
   };
 
   const handleSave = () => {
@@ -84,6 +79,8 @@ export default function NotificationBox({
         title: editTitle,
         content: editContent,
       });
+      setShowEditModal(false);
+      setEditingId(null);
     }
   };
 
@@ -101,14 +98,6 @@ export default function NotificationBox({
     toggleExpand(id);
   };
 
-  const confirmUnsaved = () => {
-    setShowUnsavedModal(false);
-    if (pendingExpandId !== null) {
-      toggleExpand(pendingExpandId);
-      setPendingExpandId(null);
-    }
-  };
-
   return (
     <div className={styles.container}>
       {sortedRows.map((n) => (
@@ -120,46 +109,25 @@ export default function NotificationBox({
             }`}
           >
             <div className={styles.info}>
-              {editingId === n.id ? (
-                <input
-                  className={styles.editTitle}
-                  value={editTitle}
-                  onChange={(e) => setEditTitle(e.target.value)}
-                />
-              ) : (
-                <span className={styles.title}>{n.title}</span>
-              )}
+              <span className={styles.title}>{n.title}</span>
               <span className={styles.date}>{n.created_at}</span>
             </div>
             <div
               className={styles.actions}
               onClick={(e) => e.stopPropagation()}
             >
-              {editingId === n.id ? (
-                <>
-                  <button onClick={handleSave} className={styles.button}>
-                    SAVE
-                  </button>
-                  <button onClick={handleCancelEdit} className={styles.button}>
-                    CANCEL
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => startEdit(n.id, n.title, n.content)}
-                    className={styles.button}
-                  >
-                    EDIT
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClick(n.id)}
-                    className={`${styles.button} ${styles.delete}`}
-                  >
-                    DELETE
-                  </button>
-                </>
-              )}
+              <button
+                onClick={() => startEdit(n.id, n.title, n.content)}
+                className={styles.button}
+              >
+                EDIT
+              </button>
+              <button
+                onClick={() => handleDeleteClick(n.id)}
+                className={`${styles.button} ${styles.delete}`}
+              >
+                DELETE
+              </button>
             </div>
           </div>
           {expandedUserId === n.id && (
@@ -167,37 +135,44 @@ export default function NotificationBox({
               className={styles.userContent}
               onClick={(e) => e.stopPropagation()}
             >
-              {editingId === n.id ? (
-                <textarea
-                  className={styles.editContent}
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                />
-              ) : (
-                <p className={styles.contentText}>
-                  {n.content || "No additional info."}
-                </p>
-              )}
+              <p className={styles.contentText}>
+                {n.content || "No additional info."}
+              </p>
             </div>
           )}
         </div>
       ))}
-
-      {showUnsavedModal && (
+      {showEditModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContainer}>
-            <p className={styles.modalMessage}>
-              수정한 사항이 저장되지 않습니다.
-            </p>
+            <h3 className={styles.modalTitle}>Edit Notice</h3>
+
+            <label className={styles.modalLabel}>Title</label>
+            <input
+              className={styles.modalInput}
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+            />
+
+            <label className={styles.modalLabel}>Content</label>
+            <textarea
+              className={styles.modalTextarea}
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+            />
+
             <div className={styles.modalActions}>
               <button
-                onClick={() => setShowUnsavedModal(false)}
+                onClick={() => {
+                  setShowEditModal(false);
+                  setEditingId(null);
+                }}
                 className={styles.cancelButton}
               >
                 취소
               </button>
-              <button onClick={confirmUnsaved} className={styles.confirmButton}>
-                확인
+              <button onClick={handleSave} className={styles.confirmButton}>
+                수정
               </button>
             </div>
           </div>

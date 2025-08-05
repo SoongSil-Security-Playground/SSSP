@@ -1,7 +1,6 @@
 /* 전체 컨테이너 */
 .container {
-  background-color: #242424;
-  color: var(--offwhite);
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

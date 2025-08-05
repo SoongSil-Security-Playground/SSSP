@@ -79,10 +79,6 @@ export default function ChallengeBox({
   const [ascending, setAscending] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const filteredData = chall.filter((item: Challenge) =>
-    item.name.toLowerCase().includes(searchString.toLowerCase())
-  );
-
   const allSelected =
     chall && chall!.length > 0 && selectedIds.length === chall.length;
 
