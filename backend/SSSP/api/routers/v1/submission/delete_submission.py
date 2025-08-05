@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 # directory dependency
@@ -15,6 +15,10 @@ import logging
 logging.basicConfig(level=logging.INFO) 
 
 router = APIRouter()
+
+STATUS_CORRECT = 0
+STATUS_WRONG = 1
+STATUS_ALREADY_SOLVE = 2
 
 @router.delete("/delete/{submission_id}")
 def delete_submission(
@@ -42,6 +46,14 @@ def delete_submission(
             status_code=status.HTTP_404_NOT_FOUND, detail="Submission not found"
         )
     
+    if submission.status == STATUS_CORRECT:
+        challenge = db.query(models.Challenge).filter(models.Challenge.id == submission.challenge_id).first()
+        if challenge and challenge.solve_count > 0:
+            challenge.solve_count -= 1
+            db.add(challenge)
+            db.commit()
+            logging.info(f"[-] Decreased solve count for Challenge ID {challenge.id} to {challenge.solve_count}")
+
     db.delete(submission)
     db.commit()
 
