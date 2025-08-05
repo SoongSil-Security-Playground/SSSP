@@ -1,3 +1,15 @@
+from fastapi import APIRouter, Depends, HTTPException, status, Form
+from sqlalchemy.orm import Session
+
+# directory dependency
+from SSSP.api.models import models
+from SSSP.api.models.enums.user_role import UserRole
+
+from SSSP.api.core.database import *
+from SSSP.api.core.auth import get_current_user_by_jwt
+
+from SSSP.api.schemas import schema_notice
+
 import docker
 import os
 import uuid
@@ -19,8 +31,23 @@ def get_docker_client():
             logging.error(f"Failed to connect docker socket: {e}")
             raise
     return client
-    
-def start_docker_container(image_id, command=None, ports=None, environment=None, volumes=None):
+
+router = APIRouter()
+
+# TODO
+# Port Randomization
+# Volume Off
+# Command Regex
+@router.post("/start/{image_id}", response_model=dict)
+def start_docker_container(
+    command: str = None,
+    ports: dict = None,
+    environment: dict = None,
+    volumes: dict = None,
+    token: str = Depends(settings.oauth2_scheme),
+    db: Session = Depends(get_db),
+    ):
+
     client = get_docker_client()
     try:
         logging.info(f"Starting container from image {image_id}")

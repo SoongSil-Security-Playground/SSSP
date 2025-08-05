@@ -44,6 +44,15 @@ from SSSP.api.routers.v1.submission import (
     get_all_submission,
     get_user_submission,
 )
+
+from SSSP.api.routers.v1.docker import (
+    create_docker,
+    remove_docker,
+    start_docker,
+    stop_docker,
+)
+# docker
+
 router = APIRouter()
 
 # User
@@ -95,3 +104,8 @@ router.include_router(get_all_notice.router, tags=["notice"])
 router.include_router(is_admin.router, prefix="/admin", tags=["auth"])
 router.include_router(delete_specific_user.router, prefix="/admin", tags=["user"])
 
+# docker 
+router.include_router(create_docker.router, prefix="/docker", tags=["docker"])
+router.include_router(remove_docker.router, prefix="/docker", tags=["docker"])
+router.include_router(start_docker.router, prefix="/docker", tags=["docker"])
+router.include_router(stop_docker.router, prefix="/docker", tags=["docker"])

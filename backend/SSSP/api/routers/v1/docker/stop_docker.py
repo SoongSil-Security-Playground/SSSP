@@ -1,3 +1,15 @@
+from fastapi import APIRouter, Depends, HTTPException, status, Form
+from sqlalchemy.orm import Session
+
+# directory dependency
+from SSSP.api.models import models
+from SSSP.api.models.enums.user_role import UserRole
+
+from SSSP.api.core.database import *
+from SSSP.api.core.auth import get_current_user_by_jwt
+
+from SSSP.api.schemas import schema_notice
+
 import docker
 import os
 import uuid
@@ -20,7 +32,15 @@ def get_docker_client():
             raise
     return client
 
-def stop_docker_container(container_id):
+router = APIRouter()
+
+@router.post("/stop/{container_id}", response_model=dict)
+def stop_docker_container(
+    container_id: int,
+    token: str = Depends(settings.oauth2_scheme),
+    db: Session = Depends(get_db),
+    ):
+
     client = get_docker_client()
     try:
         logging.info(f"Stopping container {container_id}")

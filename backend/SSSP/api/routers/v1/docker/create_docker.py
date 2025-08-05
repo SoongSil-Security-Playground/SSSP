@@ -1,3 +1,15 @@
+from fastapi import APIRouter, Depends, HTTPException, status, Form
+from sqlalchemy.orm import Session
+
+# directory dependency
+from SSSP.api.models import models
+from SSSP.api.models.enums.user_role import UserRole
+
+from SSSP.api.core.database import *
+from SSSP.api.core.auth import get_current_user_by_jwt
+
+from SSSP.api.schemas import schema_notice
+
 import docker
 import os
 import uuid
@@ -20,7 +32,15 @@ def get_docker_client():
             raise
     return client
 
-def create_docker_image(dockerfile_directory):
+router = APIRouter()
+
+@router.post("/create", response_model=dict)
+def create_docker_image(
+    dockerfile_directory: str,
+    token: str = Depends(settings.oauth2_scheme),
+    db: Session = Depends(get_db),
+    ):
+
     client = get_docker_client()
     image_tag = f"challenge-{uuid.uuid4().hex[:8]}:latest"
     
