@@ -19,10 +19,10 @@ class ChallengeResponse(ChallengeBase):
     created_at: datetime
     file_path: Optional[str] = None
     category: str
-    is_user_solved: Optional[int] = None
     solve_count: int
     level: str
     flag: str
+    is_user_solved: Optional[int] = 0  # 0: not solved, 1: solved
     
     class Config:
         from_attributes = True

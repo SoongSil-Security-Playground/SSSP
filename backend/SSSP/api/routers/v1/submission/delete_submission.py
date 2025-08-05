@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 
 router = APIRouter()
 
-@router.get("/delete/{submission_id}", response_model=list[schema_submission.SubmissionResponse])
+@router.delete("/delete/{submission_id}")
 def delete_submission(
     submission_id: int,
     token: str = Depends(settings.oauth2_scheme),

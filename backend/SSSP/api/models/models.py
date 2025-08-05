@@ -9,7 +9,7 @@ from sqlalchemy import (
     Text,
     JSON,
 )
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import as_declarative
 from sqlalchemy.orm import relationship
 from sqlalchemy import Enum as SQLEnum
 from datetime import datetime
@@ -21,6 +21,15 @@ from SSSP.api.core.database import Base, SessionLocal
 from SSSP.config import settings
 from SSSP.api.core.auth import get_password_hash
 
+@as_declarative()
+class Base:
+    __name__: str
+    created_at = Column(DateTime, default=lambda: datetime.now(ZoneInfo("Asia/Seoul")))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(ZoneInfo("Asia/Seoul")),
+        onupdate=lambda: datetime.now(ZoneInfo("Asia/Seoul")),
+    )
 
 class User(Base):
     __tablename__ = "users"
