@@ -15,7 +15,7 @@ export const ChallengeList: FC = () => {
 
   return (
     <div className={styles.gridContainer}>
-      {filteredItems.map((item) => (
+      {filteredItems.map((item: any) => (
         <div
           key={item.id}
           className={styles.cardWrapper}

@@ -8,10 +8,10 @@ import React, {
 } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { challenge_get_all } from '@/shared/hooks/api/useChallenge';
-import type { GetChallnegeListSucces } from '@/shared/types/forAPI/ChallengeType';
+import type { GetAllChallengeSuccess } from '@/shared/types/forAPI/ChallengeType';
 
 interface FilterState {
-  items: GetChallnegeListSucces;
+  items: GetAllChallengeSuccess;
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
@@ -29,7 +29,7 @@ interface FilterState {
 
   categories: string[];
   difficulties: number[];
-  filteredItems: GetChallnegeListSucces;
+  filteredItems: GetAllChallengeSuccess;
 
   selectedId: number | null;
   setSelectedId: (id: number | null) => void;
@@ -45,7 +45,7 @@ const FilterContext = createContext<FilterState | null>(null);
 
 export function FilterProvider({ children }: { children: React.ReactNode }) {
   const { data: items = [], isLoading, isError, error } =
-    useQuery<GetChallnegeListSucces, Error>({
+    useQuery<GetAllChallengeSuccess, Error>({
       queryKey: ['challenges'],
       queryFn: challenge_get_all,
     });

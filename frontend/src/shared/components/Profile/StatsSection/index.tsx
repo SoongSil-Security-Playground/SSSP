@@ -2,7 +2,8 @@
 
 import React, { type FC } from 'react';
 import { useQueries } from '@tanstack/react-query';
-import { challenge_get_user_solved } from '@/shared/hooks/api/useChallenge';
+// import { challenge_get_user_solved } from '@/shared/hooks/api/useChallenge';
+import { fetch_my_submissions } from '@/shared/hooks/api/useSubmission';
 import { get_score, get_my_score } from '@/shared/hooks/api/useScoring';
 import styles from './index.module.css'
 import { Medal, Trophy, Crown } from 'lucide-react';
@@ -17,23 +18,23 @@ const iconMap: Record<string, React.FC<any>> = {
 type Stat = { label: string; value: string | number };
 
 export const StatsSection: FC = () => {
-  const [solvedQ, allScoresQ, myScoreQ] = useQueries({
+  const [submissionQ, allScoresQ, myScoreQ] = useQueries({
     queries: [
-      { queryKey: ['solvedList'], queryFn: challenge_get_user_solved },
+      { queryKey: ['submissionList'], queryFn: fetch_my_submissions },
       { queryKey: ['allScores'], queryFn: get_score },
       { queryKey: ['myScore'], queryFn: get_my_score },
     ],
   });
 
-  if (solvedQ.isLoading || allScoresQ.isLoading || myScoreQ.isLoading)
+  if (submissionQ.isLoading || allScoresQ.isLoading || myScoreQ.isLoading)
     return <div>Loading stats…</div>;
-  if (solvedQ.isError || allScoresQ.isError || myScoreQ.isError)
+  if (submissionQ.isError || allScoresQ.isError || myScoreQ.isError)
     return <div>Error loading stats</div>;
 
-  const solvedList = solvedQ.data!;
+  const submissionList = submissionQ.data!;
   const allScores = allScoresQ.data!;
   const myScore = myScoreQ.data!;
-  const solvedCount = solvedList.length;
+  const solvedCount = Array.isArray(submissionList) ? submissionList.filter(sub => sub.status === 0).length : 0;
   const sortedScores = [...allScores].sort((a, b) => b.total_score - a.total_score);
   const myRankIdx = sortedScores.findIndex(s => s.username === myScore.username);
   const rankLabel = myRankIdx >= 0 ? `#${myRankIdx + 1}` : '-';

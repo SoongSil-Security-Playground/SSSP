@@ -8,7 +8,7 @@ import { Modal } from '../Modal';
 import { FloatingInput } from '../../Input/FloatingInput';
 import { Button } from '../../Button';
 import { StarRating } from '../../Rating';
-import { CheckCircle, AlertCircle } from 'lucide-react';
+import { CheckCircle, Play, Square } from 'lucide-react';
 import { toast } from 'react-toastify';
 import styles from './index.module.css';
 import type { SubmitChallengeSuccess, DefaultChallengeContent } from '@/shared/types/forAPI/ChallengeType';
@@ -31,6 +31,7 @@ export const ChallengeDetailModal: React.FC = () => {
 
   const [flagInput, setFlagInput] = useState('');
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [dockerWindow, setDockerWindow] = useState<Window | null>(null);
 
   const mutation = useMutation<SubmitChallengeSuccess, Error, string>({
     mutationFn: (flag) => challenge_submit(item!.id, flag),
@@ -49,17 +50,36 @@ export const ChallengeDetailModal: React.FC = () => {
   useEffect(() => {
     if (item) setFlagInput('');
   }, [item]);
-
+  
+  useEffect(() => {
+    if (!dockerWindow) return;
+    const timer = setInterval(() => {
+      if (dockerWindow.closed) {
+        setDockerWindow(null);
+        clearInterval(timer);
+      }
+    }, 500);
+    return () => clearInterval(timer);
+  }, [dockerWindow]);
+  
   const handleClose = () => setSelectedId(null);
+  
+  const handleDockerButton = () => {
+    if (dockerWindow && !dockerWindow.closed) {
+      dockerWindow.close();
+      setDockerWindow(null);
+    } else {
+      const win = window.open('_blank');
+      setDockerWindow(win);
+    }
+  };
 
-  if (!item) return null;
   if (listLoading) return <div className={styles.container}>Loading...</div>;
   if (listError) {
     toast.error(listErrorObj?.message || 'Failed to load challenges');
     return <div className={styles.container}>Error loading challenge</div>;
   }
-
-  const isSolved = item.is_user_solved === 1;
+  if (!item) return null;
 
   const handleDownload = () => {
     if (!item.file_path) return;
@@ -72,6 +92,8 @@ export const ChallengeDetailModal: React.FC = () => {
     link.click();
     document.body.removeChild(link);
   };
+  
+  const isSolved = item.is_user_solved === 1;
 
   return (
     <Modal isOpen={true} onClose={handleClose}>
@@ -105,11 +127,21 @@ export const ChallengeDetailModal: React.FC = () => {
             </div>
           </>
         ) : (
+          <>
+          <Button
+              className={styles.dockerBtn}
+              onClick={handleDockerButton}
+              icon={dockerWindow && !dockerWindow.closed ? <Square size={16} /> : <Play size={16} />}
+              iconPosition="left"
+          >
+            {dockerWindow && !dockerWindow.closed ? 'Close Docker' : 'Run Docker'}
+          </Button>
           <form className={styles.flagForm} onSubmit={(e) => {
             e.preventDefault();
             setSubmitError(null);
             mutation.mutate(flagInput);
           }}>
+            
             <FloatingInput
               type="text"
               label="FLAG"
@@ -127,6 +159,7 @@ export const ChallengeDetailModal: React.FC = () => {
               {mutation.isPending ? 'Submitting…' : 'Submit'}
             </Button>
           </form>
+          </>
         )}
       </div>
     </Modal>
