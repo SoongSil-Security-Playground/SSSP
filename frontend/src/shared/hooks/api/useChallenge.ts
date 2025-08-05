@@ -265,28 +265,33 @@ export const challenge_update = async (
   points: number,
   level: string,
   category: string,
-  file: string,
+  file: File | null,
   flag: string
 ) => {
   const token = localStorage.getItem("token");
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("description", description);
+  formData.append("points", points.toString());
+  formData.append("level", level);
+  formData.append("category", category);
+  formData.append("flag", flag);
+
+  // 파일이 선택되었을 경우에만 전송
+  if (file) {
+    formData.append("file", file);
+  }
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/challenges/${challenge_id}`,
     {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        name,
-        description,
-        points,
-        level,
-        category,
-        file,
-        flag,
-      } satisfies UpdateChallengeForRequest),
+      body: formData,
     }
   );
 

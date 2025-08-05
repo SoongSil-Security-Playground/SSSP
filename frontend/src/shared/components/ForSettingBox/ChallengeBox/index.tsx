@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from "./index.module.css";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
 import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
+import { EditChallengeModal } from "../../Modal/EditChallengeModal";
 
 export interface Challenge {
   name: string;
@@ -79,6 +80,10 @@ export default function ChallengeBox({
   const [ascending, setAscending] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const editingChallenge = sortedRows.find((item) => item.id === editingId);
+
   const allSelected =
     chall && chall!.length > 0 && selectedIds.length === chall.length;
 
@@ -117,150 +122,177 @@ export default function ChallengeBox({
     handleSelectChange(newSelected);
   };
 
+  const handleOpen = (id: number) => {
+    setShowEditModal(true);
+    setEditingId(id);
+  };
+
+  const handleClose = () => {
+    setShowEditModal(false);
+    setEditingId(null);
+  };
+
   return (
-    <div className={styles.container}>
-      <table className={styles.table}>
-        <thead className={styles.header}>
-          <tr>
-            <th className={`${styles.headerCell} ${styles.checkboxCell}`}>
-              <input
-                type="checkbox"
-                className={styles.headerCheckbox}
-                checked={allSelected}
-                onChange={toggleAll}
-              />
-            </th>
+    <>
+      <div className={styles.container}>
+        <table className={styles.table}>
+          <thead className={styles.header}>
+            <tr>
+              <th className={`${styles.headerCell} ${styles.checkboxCell}`}>
+                <input
+                  type="checkbox"
+                  className={styles.headerCheckbox}
+                  checked={allSelected}
+                  onChange={toggleAll}
+                />
+              </th>
 
-            {(["name", "points", "created_at", "category"] as SortKey[]).map(
-              (key) => (
-                <th
-                  key={key}
-                  className={`${styles.headerCell} ${cellClassMap[key]}`}
-                  onClick={() => handleSort(key)}
-                  style={{ cursor: "pointer", userSelect: "none" }}
-                >
-                  <span className="flex items-center">
-                    {columnLabels[key]}
-                    <Image
-                      src={arrowDown}
-                      alt=""
-                      width={12}
-                      height={12}
-                      className={[
-                        styles.arrowIcon,
-                        sortKey === key && !ascending
-                          ? styles.arrowIconRotated
-                          : "",
-                        sortKey !== key
-                          ? styles.arrowIconDimmed
-                          : styles.arrowIconVisible,
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                    />
-                  </span>
-                </th>
-              )
-            )}
-
-            <th className={`${styles.headerCell} ${styles.actionsCell}`}></th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedRows.map((row: Challenge) => {
-            const isChecked = selectedIds.includes(row.id);
-            const isExpanded = expandedId === row.id;
-            return (
-              <Fragment key={row.id}>
-                <tr
-                  className={`${styles.row} ${
-                    isExpanded ? styles.selected : ""
-                  }`}
-                  onClick={() => handleRowClick(row.id)}
-                >
-                  <td
-                    className={`${styles.checkboxBodyCell} ${styles.checkboxCell}`}
+              {(["name", "points", "created_at", "category"] as SortKey[]).map(
+                (key) => (
+                  <th
+                    key={key}
+                    className={`${styles.headerCell} ${cellClassMap[key]}`}
+                    onClick={() => handleSort(key)}
+                    style={{ cursor: "pointer", userSelect: "none" }}
                   >
-                    <input
-                      type="checkbox"
-                      className={styles.customCheckbox}
-                      checked={isChecked}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        toggleOne(row.id);
-                      }}
-                    />
-                  </td>
-                  <td className={`${styles.titleBodyCell} ${styles.title}`}>
-                    {row.name}
-                  </td>
-                  <td className={styles.scoreBodyCell}>{row.points}</td>
-                  <td className={styles.updatedBodyCell}>{row.created_at}</td>
-                  <td className={styles.categoryBodyCell}>
-                    <div className={styles.categoryArrange}>
-                      <span className={styles.badge}>{row.category}</span>
-                    </div>
-                  </td>
-                  <td className={`${styles.actionsCell}`}>⋮</td>
-                </tr>
+                    <span className="flex items-center">
+                      {columnLabels[key]}
+                      <Image
+                        src={arrowDown}
+                        alt=""
+                        width={12}
+                        height={12}
+                        className={[
+                          styles.arrowIcon,
+                          sortKey === key && !ascending
+                            ? styles.arrowIconRotated
+                            : "",
+                          sortKey !== key
+                            ? styles.arrowIconDimmed
+                            : styles.arrowIconVisible,
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      />
+                    </span>
+                  </th>
+                )
+              )}
 
-                {isExpanded && (
-                  <tr className={styles.expandedRow}>
-                    <td colSpan={6} className={styles.detailCell}>
-                      <div className={styles.detailGrid}>
-                        <div className={styles.detailItem}>
-                          <span className={styles.detailLabel}>Solved?</span>
-                          <span className={styles.detailValue}>
-                            {row.is_user_solved ? "✅" : "❌"}
-                          </span>
+              <th className={`${styles.headerCell} ${styles.actionsCell}`}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedRows.map((row: Challenge) => {
+              const isChecked = selectedIds.includes(row.id);
+              const isExpanded = expandedId === row.id;
+              return (
+                <Fragment key={row.id}>
+                  <tr
+                    className={`${styles.row} ${
+                      isExpanded ? styles.selected : ""
+                    }`}
+                    onClick={() => handleRowClick(row.id)}
+                  >
+                    <td
+                      className={`${styles.checkboxBodyCell} ${styles.checkboxCell}`}
+                    >
+                      <input
+                        type="checkbox"
+                        className={styles.customCheckbox}
+                        checked={isChecked}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          toggleOne(row.id);
+                        }}
+                      />
+                    </td>
+                    <td className={`${styles.titleBodyCell} ${styles.title}`}>
+                      {row.name}
+                    </td>
+                    <td className={styles.scoreBodyCell}>{row.points}</td>
+                    <td className={styles.updatedBodyCell}>{row.created_at}</td>
+                    <td className={styles.categoryBodyCell}>
+                      <div className={styles.categoryArrange}>
+                        <span className={styles.badge}>{row.category}</span>
+                      </div>
+                    </td>
+                    <td
+                      className={`${styles.actionsCell}`}
+                      onClick={() => handleOpen(row.id)}
+                    >
+                      ⋮
+                    </td>
+                  </tr>
+
+                  {isExpanded && (
+                    <tr className={styles.expandedRow}>
+                      <td colSpan={6} className={styles.detailCell}>
+                        <div className={styles.detailGrid}>
+                          <div className={styles.detailItem}>
+                            <span className={styles.detailLabel}>Solved?</span>
+                            <span className={styles.detailValue}>
+                              {row.is_user_solved ? "✅" : "❌"}
+                            </span>
+                          </div>
+                          <div className={styles.detailItem}>
+                            <span className={styles.detailLabel}>
+                              Solve Count
+                            </span>
+                            <span className={styles.detailValue}>
+                              {row.solve_count}
+                            </span>
+                          </div>
+                          <div className={styles.detailItem}>
+                            <span className={styles.detailLabel}>Level</span>
+                            <span className={styles.detailValue}>
+                              {row.level}
+                            </span>
+                          </div>
+                          <div className={styles.detailItemFull}>
+                            <span className={styles.detailLabel}>Flag</span>
+                            <code className={styles.detailFlag}>
+                              {row.flag}
+                            </code>
+                          </div>
                         </div>
                         <div className={styles.detailItem}>
                           <span className={styles.detailLabel}>
-                            Solve Count
+                            Description
                           </span>
                           <span className={styles.detailValue}>
-                            {row.solve_count}
+                            {row.description}
                           </span>
                         </div>
                         <div className={styles.detailItem}>
-                          <span className={styles.detailLabel}>Level</span>
-                          <span className={styles.detailValue}>
-                            {row.level}
-                          </span>
-                        </div>
-                        <div className={styles.detailItemFull}>
-                          <span className={styles.detailLabel}>Flag</span>
-                          <code className={styles.detailFlag}>{row.flag}</code>
-                        </div>
-                      </div>
-                      <div className={styles.detailItem}>
-                        <span className={styles.detailLabel}>Description</span>
-                        <span className={styles.detailValue}>
-                          {row.description}
-                        </span>
-                      </div>
-                      <div className={styles.detailItem}>
-                        <span className={styles.detailLabel}>File:</span>
-                        {row.file_path ? (
-                          <a
-                            href={row.file_path}
-                            download
-                            className={styles.downloadLink}
-                          >
-                            {row.file_path.split("/").pop()}
-                          </a>
-                        ) : (
-                          "No file provided"
-                        )}
-                      </div>{" "}
-                    </td>
-                  </tr>
-                )}
-              </Fragment>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                          <span className={styles.detailLabel}>File:</span>
+                          {row.file_path ? (
+                            <a
+                              href={row.file_path}
+                              download
+                              className={styles.downloadLink}
+                            >
+                              {row.file_path.split("/").pop()}
+                            </a>
+                          ) : (
+                            "No file provided"
+                          )}
+                        </div>{" "}
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {showEditModal && editingId && (
+        <EditChallengeModal
+          handleModal={handleClose}
+          editingChallenge={editingChallenge!}
+        />
+      )}
+    </>
   );
 }
