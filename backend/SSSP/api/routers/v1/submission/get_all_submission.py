@@ -23,9 +23,24 @@ def get_all_submission(
     user = get_current_user_by_jwt(token, db)
 
     submission_list = db.query(models.Submission).all()
-    submission_response = [
-        schema_submission.SubmissionResponse.from_orm(submission) for submission in submission_list
-    ]
+    submission_response = []
+    for submission in submission_list:
+        username = submission.user.username if submission.user else None
+        challenge_name = None
+        if submission.challenge_id:
+            challenge = db.query(models.Challenge).filter(models.Challenge.id == submission.challenge_id).first()
+            challenge_name = challenge.name if challenge else None
+        resp = schema_submission.SubmissionResponse(
+            id=submission.id,
+            user_id=submission.user_id,
+            username=username,
+            challenge_id=submission.challenge_id,
+            challenge_name=challenge_name,
+            submitted_flag=submission.submitted_flag,
+            submit_time=submission.submit_time,
+            status=submission.status,
+        )
+        submission_response.append(resp)
 
     logging.info(f"[*] Submission list >> {submission_response}")
 

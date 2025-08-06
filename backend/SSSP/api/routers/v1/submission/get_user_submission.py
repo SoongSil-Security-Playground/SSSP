@@ -25,4 +25,19 @@ def get_user_submission(
     # [TODO] Solve Speed Issue
     # 1. N+1 Query Problem
     submissions = db.query(models.Submission).filter(models.Submission.user_id == user.id).all()
-    return [schema_submission.SubmissionResponse.from_orm(submission) for submission in submissions][::-1]
+    response = []
+    for submission in submissions:
+        username = submission.user.username if submission.user else None
+        challenge_name = submission.challenge.name if submission.challenge else None
+        resp = schema_submission.SubmissionResponse(
+            id=submission.id,
+            user_id=submission.user_id,
+            username=username,
+            challenge_id=submission.challenge_id,
+            challenge_name=challenge_name,
+            submitted_flag=submission.submitted_flag,
+            submit_time=submission.submit_time,
+            status=submission.status,
+        )
+        response.append(resp)
+    return response[::-1]
