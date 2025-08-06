@@ -46,7 +46,7 @@ export const DeleteButton = ({ selectedIds, caseName }: DeleteButtonProps) => {
         deleteSubmission(id);
       });
       alert("삭제 성공!");
-      window.location.href = "/setting?category=Submission";
+      window.location.href = "/setting?category=Submissions";
     } else alert("잘못된 접근입니다.");
   };
 
