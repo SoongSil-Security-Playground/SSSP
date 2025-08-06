@@ -203,11 +203,11 @@ export default function SubmissionBox({
                       onChange={() => toggleOne(s.id)}
                     />
                   </td>
-                  <td className={styles.cell}>{s.user_id}</td>
-                  <td className={styles.cell}>{s.challenge_id}</td>
-                  <td className={styles.cell}>{submitTime}</td>
-                  <td className={styles.cell}>{solvedAt}</td>
-                  <td className={styles.cell}>
+                  <td className={styles.userNameCell}>{s.user_id}</td>
+                  <td className={styles.challengeCell}>{s.challenge_id}</td>
+                  <td className={styles.submitCell}>{submitTime}</td>
+                  <td className={styles.solvedCell}>{solvedAt}</td>
+                  <td className={styles.correctCell}>
                     <span className={getCorrectClass(s.status)}>
                       {getCorrectStatus(s.status)}
                     </span>

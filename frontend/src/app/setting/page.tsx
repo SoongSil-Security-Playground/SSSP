@@ -89,7 +89,7 @@ export default function SettingPage() {
       case 1:
         return (
           <SubmissionHeader
-            data={submissionQuery.data ?? ""}
+            data={submissionQuery.data ?? []}
             selectedIds={selectedIds}
             searchString={searchString}
             handleSearchChange={handleSearchChange}
@@ -131,7 +131,7 @@ export default function SettingPage() {
       case 1:
         return (
           <SubmissionBox
-            data={submissionQuery.data ?? ""}
+            data={submissionQuery.data ?? []}
             searchString={searchString}
             selectedIds={selectedIds}
             handleSelectChange={handleSelectChange}
