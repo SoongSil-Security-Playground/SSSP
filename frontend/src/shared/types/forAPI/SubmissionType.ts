@@ -1,7 +1,9 @@
 export interface SubmissionType {
   id: number;
   user_id: number;
+  username: string;
   challenge_id: number;
+  challenge_name: string;
   submitted_flag: string;
   submit_time: string;
   status: number;

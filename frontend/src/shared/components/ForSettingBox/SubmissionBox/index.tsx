@@ -7,8 +7,8 @@ import arrowDown from "/public/Table/Tags/arrow-down.svg";
 import type { SubmissionType } from "@/shared/types/forAPI/SubmissionType";
 
 type SortKey =
-  | "user_id"
-  | "challenge_id"
+  | "username"
+  | "challenge_name"
   | "submit_time"
   | "solvedAt"
   | "status";
@@ -21,16 +21,16 @@ interface SubmissionProps {
 }
 
 const columnLabels: Record<SortKey, string> = {
-  user_id: "User Name",
-  challenge_id: "Challenge Name",
+  username: "User Name",
+  challenge_name: "Challenge Name",
   submit_time: "Submit Time",
   solvedAt: "Solved At",
   status: "Correct/Incorrect",
 };
 
 const cellClassMap: Record<SortKey, string> = {
-  user_id: styles.userNameCell,
-  challenge_id: styles.challengeCell,
+  username: styles.userNameCell,
+  challenge_name: styles.challengeCell,
   submit_time: styles.submitCell,
   solvedAt: styles.solvedCell,
   status: styles.correctCell,
@@ -68,7 +68,7 @@ export default function SubmissionBox({
   handleSelectChange,
 }: SubmissionProps) {
   const [sortedRows, setSortedRows] = useState<SubmissionType[]>([]);
-  const [sortKey, setSortKey] = useState<SortKey>("user_id");
+  const [sortKey, setSortKey] = useState<SortKey>("username");
   const [ascending, setAscending] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
@@ -139,8 +139,8 @@ export default function SubmissionBox({
             </th>
             {(
               [
-                "user_id",
-                "challenge_id",
+                "username",
+                "challenge_name",
                 "submit_time",
                 "solvedAt",
                 "status",
@@ -203,8 +203,8 @@ export default function SubmissionBox({
                       onChange={() => toggleOne(s.id)}
                     />
                   </td>
-                  <td className={styles.userNameCell}>{s.user_id}</td>
-                  <td className={styles.challengeCell}>{s.challenge_id}</td>
+                  <td className={styles.userNameCell}>{s.username}</td>
+                  <td className={styles.challengeCell}>{s.challenge_name}</td>
                   <td className={styles.submitCell}>{submitTime}</td>
                   <td className={styles.solvedCell}>{solvedAt}</td>
                   <td className={styles.correctCell}>
@@ -221,7 +221,6 @@ export default function SubmissionBox({
                       <div className={styles.userFlag}>
                         User Flag: {s.submitted_flag}
                       </div>
-                      <div className={styles.realFlag}>Real Flag: {""}</div>
                     </td>
                   </tr>
                 )}
