@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/shared/components/ForSettingHeader/SubmissionHeader/index.module.css";
-import { SolveLogSuccess } from "@/shared/types/forAPI/ChallengeType";
+import { type GetSubmissionListSuccess } from "@/shared/types/forAPI/SubmissionType";
 import { DeleteButton } from "../../DeleteButton";
 
 type ActionBarProps = {
-  data: SolveLogSuccess;
+  data: GetSubmissionListSuccess;
   selectedIds: number[];
   searchString: string;
   handleSearchChange: (value: string) => void;

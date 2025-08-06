@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import styles from "./index.module.css";
 import { challenge_delete } from "@/shared/hooks/api/useChallenge";
 import { admin_notice_delete } from "@/shared/hooks/api/useNotice";
+import { delete_submission } from "@/shared/hooks/api/useSubmission";
 
 interface DeleteButtonProps {
   selectedIds: number[];
@@ -18,6 +19,10 @@ export const DeleteButton = ({ selectedIds, caseName }: DeleteButtonProps) => {
 
   const { mutate: deleteNotification } = useMutation({
     mutationFn: (selectedIds: number) => admin_notice_delete(selectedIds),
+  });
+
+  const { mutate: deleteSubmission } = useMutation({
+    mutationFn: (selectedIds: number) => delete_submission(selectedIds),
   });
 
   const handleDeleteClick = () => {
@@ -36,7 +41,12 @@ export const DeleteButton = ({ selectedIds, caseName }: DeleteButtonProps) => {
       alert("삭제 성공!");
       window.location.href = "/setting?category=Notification";
     } else if (caseName === "Submission") {
-      alert("아직 없음");
+      console.log(selectedIds);
+      selectedIds.forEach((id) => {
+        deleteSubmission(id);
+      });
+      alert("삭제 성공!");
+      window.location.href = "/setting?category=Submissions";
     } else alert("잘못된 접근입니다.");
   };
 

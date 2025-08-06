@@ -19,9 +19,9 @@ import SubmissionHeader from "@/shared/components/ForSettingHeader/SubmissionHea
 import { PageTitle } from "@/shared/components/Title";
 
 import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
-import { challenge_get_solve_log } from "@/shared/hooks/api/useChallenge";
 import { user_list } from "@/shared/hooks/api/useUser";
 import { notice_get_all } from "@/shared/hooks/api/useNotice";
+import { fetch_all_submissions } from "@/shared/hooks/api/useSubmission";
 
 const tabs = ["Challenges", "Submissions", "Users", "Notification"];
 
@@ -60,7 +60,7 @@ export default function SettingPage() {
   });
   const submissionQuery = useQuery({
     queryKey: ["submission_get_all"],
-    queryFn: () => challenge_get_solve_log(),
+    queryFn: () => fetch_all_submissions(),
     enabled: active === 1,
   });
   const usersQuery = useQuery({
@@ -89,7 +89,7 @@ export default function SettingPage() {
       case 1:
         return (
           <SubmissionHeader
-            data={submissionQuery.data ?? ""}
+            data={submissionQuery.data ?? []}
             selectedIds={selectedIds}
             searchString={searchString}
             handleSearchChange={handleSearchChange}
@@ -131,7 +131,7 @@ export default function SettingPage() {
       case 1:
         return (
           <SubmissionBox
-            data={submissionQuery.data ?? ""}
+            data={submissionQuery.data ?? []}
             searchString={searchString}
             selectedIds={selectedIds}
             handleSelectChange={handleSelectChange}

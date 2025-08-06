@@ -288,7 +288,6 @@ export const challenge_update = async (
     {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${token}`,
       },
       body: formData,
