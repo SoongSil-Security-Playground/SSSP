@@ -104,13 +104,13 @@ export const EditChallengeModal = ({
             onClick={() =>
               updateChallenge({
                 id: item.id,
-                title: item.name,
-                desc: item.description,
-                point: item.points,
-                level: item.level,
-                category: item.category,
+                title: editTitle,
+                desc: editDesc,
+                point: editPoint,
+                level: editLevel,
+                category: editCategory,
                 file: null,
-                flag: item.flag,
+                flag: editFlag,
               })
             }
             className={styles.confirmButton}
