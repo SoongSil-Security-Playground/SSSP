@@ -76,7 +76,7 @@ class Submission(Base):
     submitted_flag = Column(String(255), nullable=False)
     status = Column(Integer, default=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    challenge_id = Column(Integer, ForeignKey("challenges.id"))
+    challenge_id = Column(Integer, ForeignKey("challenges.id", ondelete="SET NULL"), nullable=True)
     submit_time = Column(DateTime, nullable=False)
 
     user = relationship("User", back_populates="submissions")
