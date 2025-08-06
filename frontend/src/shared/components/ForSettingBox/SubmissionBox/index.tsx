@@ -1,102 +1,60 @@
 "use client";
 
 import { useEffect, useState, Fragment } from "react";
-import { SolveLogSuccess } from "@/shared/types/forAPI/ChallengeType";
 import Image from "next/image";
 import styles from "./index.module.css";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
+import type { SubmissionType } from "@/shared/types/forAPI/SubmissionType";
 
-export interface Submission {
-  id: number;
-  userName: string;
-  challengeName: string;
-  submitTime: string;
-  solvedAt: string;
-  correct: boolean;
-  user_flag: string;
-  real_flag: string;
-}
-
-type SortKey = keyof Pick<
-  Submission,
-  "userName" | "challengeName" | "submitTime" | "solvedAt" | "correct"
->;
+type SortKey =
+  | "user_id"
+  | "challenge_id"
+  | "submit_time"
+  | "solvedAt"
+  | "status";
 
 interface SubmissionProps {
-  data: SolveLogSuccess;
+  data: SubmissionType[];
   searchString: string;
   selectedIds: number[];
   handleSelectChange: (ids: number[]) => void;
 }
 
 const columnLabels: Record<SortKey, string> = {
-  userName: "User Name",
-  challengeName: "Challenge Name",
-  submitTime: "Submit Time",
+  user_id: "User Name",
+  challenge_id: "Challenge Name",
+  submit_time: "Submit Time",
   solvedAt: "Solved At",
-  correct: "Correct/Incorrect",
+  status: "Correct/Incorrect",
 };
 
 const cellClassMap: Record<SortKey, string> = {
-  userName: styles.userNameCell,
-  challengeName: styles.challengeCell,
-  submitTime: styles.submitCell,
+  user_id: styles.userNameCell,
+  challenge_id: styles.challengeCell,
+  submit_time: styles.submitCell,
   solvedAt: styles.solvedCell,
-  correct: styles.correctCell,
-};
-
-// 데이터에 solvedat, submitTime이 없어서 일단 강제로 생성
-const mapLogToSubmissions = (log: SolveLogSuccess): Submission[] => {
-  const now = Date.now();
-
-  const randomDate = () => {
-    const past = now - Math.random() * 7 * 24 * 60 * 60 * 1000;
-    const d = new Date(past);
-    return d.toISOString().slice(0, 19).replace("T", " ");
-  };
-
-  if (!Array.isArray(log)) return [];
-
-  return log.map((entry, idx) => {
-    const submitTime = randomDate();
-    const solvedAt =
-      entry.comment !== "Wrong Flag!"
-        ? new Date(
-            new Date(submitTime).getTime() + Math.random() * 60 * 60 * 1000
-          )
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " ")
-        : "";
-
-    return {
-      id: idx,
-      userName: entry.username,
-      challengeName: entry.chall,
-      submitTime,
-      solvedAt,
-      correct: entry.comment !== "Wrong Flag!",
-      user_flag: entry.user_flag,
-      real_flag: entry.real_flag,
-    };
-  });
+  status: styles.correctCell,
 };
 
 const sortedRow = (
-  chall: Submission[],
+  chall: SubmissionType[],
   ascending: boolean,
   sortKey: SortKey
 ) => {
-  if (!Array.isArray(chall)) {
-    return [];
-  }
+  return [...chall].sort((a, b) => {
+    const aVal =
+      sortKey === "solvedAt"
+        ? a.status === 0
+          ? a.submit_time
+          : ""
+        : a[sortKey];
+    const bVal =
+      sortKey === "solvedAt"
+        ? b.status === 0
+          ? b.submit_time
+          : ""
+        : b[sortKey];
 
-  return [...chall!].sort((a, b) => {
-    const aVal = a[sortKey];
-    const bVal = b[sortKey];
-    if (typeof aVal === "number" && typeof bVal === "number") {
-      return ascending ? aVal - bVal : bVal - aVal;
-    }
     const aStr = String(aVal).toLowerCase();
     const bStr = String(bVal).toLowerCase();
     return ascending ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
@@ -104,35 +62,30 @@ const sortedRow = (
 };
 
 export default function SubmissionBox({
-  data: log,
+  data,
   searchString,
   selectedIds,
   handleSelectChange,
 }: SubmissionProps) {
-  const [sortedRows, setSortedRows] = useState<Submission[]>([]);
-  const [sortKey, setSortKey] = useState<SortKey>("userName");
+  const [sortedRows, setSortedRows] = useState<SubmissionType[]>([]);
+  const [sortKey, setSortKey] = useState<SortKey>("user_id");
   const [ascending, setAscending] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [submissions] = useState<Submission[]>(() => mapLogToSubmissions(log));
 
-  const allSelected =
-    submissions &&
-    submissions!.length > 0 &&
-    selectedIds.length === submissions.length;
+  const allSelected = data.length > 0 && selectedIds.length === data.length;
 
   useEffect(() => {
     const q = searchString.toLowerCase().trim();
-
     const filtered = q
-      ? submissions.filter(
+      ? data.filter(
           (item) =>
-            item.userName.toLowerCase().includes(q) ||
-            item.challengeName.toLowerCase().includes(q)
+            String(item.user_id).includes(q) ||
+            String(item.challenge_id).includes(q)
         )
-      : submissions;
+      : data;
 
     setSortedRows(sortedRow(filtered, ascending, sortKey));
-  }, [searchString, submissions, ascending, sortKey]);
+  }, [searchString, data, ascending, sortKey]);
 
   const handleRowClick = (id: number) => {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -150,7 +103,7 @@ export default function SubmissionBox({
     if (allSelected) {
       handleSelectChange([]);
     } else {
-      handleSelectChange(submissions.map((item) => item.id));
+      handleSelectChange(data.map((item) => item.id));
     }
   };
 
@@ -160,6 +113,16 @@ export default function SubmissionBox({
       : [...selectedIds, id];
     handleSelectChange(newSelected);
   };
+
+  const getCorrectStatus = (status: number) =>
+    status === 0 ? "correct" : status === 1 ? "incorrect" : "unknown";
+
+  const getCorrectClass = (status: number) =>
+    status === 0
+      ? styles.badgeCorrect
+      : status === 1
+      ? styles.badgeIncorrect
+      : styles.badgeUnknown;
 
   return (
     <div className={styles.container}>
@@ -176,11 +139,11 @@ export default function SubmissionBox({
             </th>
             {(
               [
-                "userName",
-                "challengeName",
-                "submitTime",
+                "user_id",
+                "challenge_id",
+                "submit_time",
                 "solvedAt",
-                "correct",
+                "status",
               ] as SortKey[]
             ).map((key) => (
               <th
@@ -211,14 +174,15 @@ export default function SubmissionBox({
                 </span>
               </th>
             ))}
-
             <th className={`${styles.headerCell} ${styles.actionsCell}`}></th>
           </tr>
         </thead>
         <tbody>
-          {sortedRows.map((s: Submission) => {
+          {sortedRows.map((s) => {
             const isChecked = selectedIds.includes(s.id);
             const isExpanded = expandedId === s.id;
+            const submitTime = s.submit_time.replace("T", " ").slice(0, 19);
+            const solvedAt = s.status === 0 ? submitTime : "";
 
             return (
               <Fragment key={s.id}>
@@ -239,25 +203,13 @@ export default function SubmissionBox({
                       onChange={() => toggleOne(s.id)}
                     />
                   </td>
-                  <td className={`${styles.cell} ${styles.userNameCell}`}>
-                    {s.userName}
-                  </td>
-                  <td className={`${styles.cell} ${styles.challengeCell}`}>
-                    {s.challengeName}
-                  </td>
-                  <td className={`${styles.cell} ${styles.submitCell}`}>
-                    {s.submitTime}
-                  </td>
-                  <td className={`${styles.cell} ${styles.solvedCell}`}>
-                    {s.solvedAt}
-                  </td>
-                  <td className={`${styles.cell} ${styles.correctCell}`}>
-                    <span
-                      className={
-                        s.correct ? styles.badgeCorrect : styles.badgeIncorrect
-                      }
-                    >
-                      {s.correct ? "correct" : "incorrect"}
+                  <td className={styles.cell}>{s.user_id}</td>
+                  <td className={styles.cell}>{s.challenge_id}</td>
+                  <td className={styles.cell}>{submitTime}</td>
+                  <td className={styles.cell}>{solvedAt}</td>
+                  <td className={styles.cell}>
+                    <span className={getCorrectClass(s.status)}>
+                      {getCorrectStatus(s.status)}
                     </span>
                   </td>
                   <td className={`${styles.cell} ${styles.actionsCell}`}>⋮</td>
@@ -267,11 +219,9 @@ export default function SubmissionBox({
                   <tr className={styles.expandedRow}>
                     <td colSpan={7} className={styles.detailCell}>
                       <div className={styles.userFlag}>
-                        User Flag: {s.user_flag}
+                        User Flag: {s.submitted_flag}
                       </div>
-                      <div className={styles.realFlag}>
-                        Real Flag: {s.real_flag}
-                      </div>
+                      <div className={styles.realFlag}>Real Flag: {""}</div>
                     </td>
                   </tr>
                 )}
