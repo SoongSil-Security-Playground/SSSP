@@ -32,11 +32,12 @@ services:
       USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
       CHALLENGE_DIR: /app/challenge_files
 
-      REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
+      NEXT_PUBLIC_BACK_SERVER_URL: ${NEXT_PUBLIC_BACK_SERVER_URL}
 
       CORS_ORIGINS: ${CORS_ORIGINS}
     volumes:
       - sssp_backend_challenge_files:/app/challenge_files
+      - /var/run/docker.sock:/var/run/docker.sock
       # - /etc/letsencrypt:/etc/letsencrypt:ro
 
     depends_on:
@@ -118,9 +119,9 @@ services:
       context: frontend/
       dockerfile: Dockerfile
     ports:
-      - "${FRONT_PORT}:3000"
+      - "${FRONT_PORT}:8000"
     environment:
-      REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
+      NEXT_PUBLIC_BACK_SERVER_URL: ${NEXT_PUBLIC_BACK_SERVER_URL}
       REACT_APP_USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
     restart: always
 

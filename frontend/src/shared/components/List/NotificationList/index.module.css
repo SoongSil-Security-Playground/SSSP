@@ -1,0 +1,18 @@
+.gridContainer {
+  display: grid;
+  column-gap: 1rem;
+  row-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, 320px);
+  justify-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cardWrapper {
+  width: 100%;
+}
+
+.cardWrapper>* {
+  margin: 0 auto;
+}

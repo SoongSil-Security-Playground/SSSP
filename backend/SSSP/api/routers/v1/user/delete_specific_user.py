@@ -21,11 +21,11 @@ def delete_specific_user(
     token: str = Depends(settings.oauth2_scheme),
     db: Session = Depends(get_db)
 ):
-    logging.info(f"[*] DELETE_SPECIFIC_USER >> Request with {token}")
 
     user = auth.get_current_user_by_jwt(token, db)
+
     if user.authority != UserRole.ADMIN:
-        logging.warning(f"Unauthorized attempt to delete specific user by user {user.id}")
+        logging.warning(f"Unauthorized attempt to delete specific user by user [{user.username}]({user.id})")
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to delete user",
@@ -39,5 +39,4 @@ def delete_specific_user(
     db.delete(specific_user)
     db.commit()
 
-    logging.info(f"User deleted successfully: ID {user_id}")
     return {"success": 1}

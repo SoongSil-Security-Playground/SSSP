@@ -9,16 +9,17 @@ from sqlalchemy import (
     Text,
     JSON,
 )
-from sqlalchemy.ext.declarative import declarative_base, as_declarative
+from sqlalchemy.ext.declarative import as_declarative
 from sqlalchemy.orm import relationship
 from sqlalchemy import Enum as SQLEnum
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from SSSP.api.core.database import engine
 
 # directory dependency
 from SSSP.api.models.enums.user_role import UserRole
-
+from SSSP.api.core.database import Base, SessionLocal
+from SSSP.config import settings
+from SSSP.api.core.auth import get_password_hash
 
 @as_declarative()
 class Base:
@@ -29,7 +30,6 @@ class Base:
         default=lambda: datetime.now(ZoneInfo("Asia/Seoul")),
         onupdate=lambda: datetime.now(ZoneInfo("Asia/Seoul")),
     )
-
 
 class User(Base):
     __tablename__ = "users"
@@ -71,13 +71,13 @@ class Challenge(Base):
 
 
 class Submission(Base):
-    __tablename__ = "submissions"
+    __tablename__ = "submission"
     id = Column(Integer, primary_key=True, index=True)
     submitted_flag = Column(String(255), nullable=False)
-    is_correct = Column(Boolean, default=False)
-    comment = Column(String(255), nullable=False)
+    status = Column(Integer, default=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    challenge_id = Column(Integer, ForeignKey("challenges.id"))
+    challenge_id = Column(Integer, ForeignKey("challenges.id", ondelete="SET NULL"), nullable=True)
+    submit_time = Column(DateTime, nullable=False)
 
     user = relationship("User", back_populates="submissions")
     challenge = relationship("Challenge", back_populates="submissions")
@@ -98,26 +98,3 @@ class AuthUserList(Base):
     useremail = Column(String(255), nullable=False)
 
 
-from SSSP.config import settings
-from sqlalchemy.orm import Session
-from SSSP.api.core.database import get_db
-from SSSP.api.core.auth import get_password_hash
-
-try:
-    Base.metadata.create_all(engine)
-    new_admin = User(
-        username=settings.initial_account.INITIAL_ADMIN_ID,
-        email="admin@example.com",
-        hashed_password=get_password_hash(
-            settings.initial_account.INITIAL_ADMIN_PW
-        ),
-        contents="hihi",
-        authority="ADMIN",
-    )
-
-    db: Session = next(get_db())
-    db.add(new_admin)
-    db.commit()
-    db.refresh(new_admin)
-except Exception as e:
-    print(f"Error creating initial admin user: {e}")

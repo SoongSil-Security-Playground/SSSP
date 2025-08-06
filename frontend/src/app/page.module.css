@@ -1,0 +1,28 @@
+.mainContainer {
+  display: flex;
+  width: 100%;
+}
+
+.mainContent {
+  flex: 1;
+  overflow-y: hidden;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 8rem;
+}
+
+.mainTitle {
+  font-family: "Silkscreen";
+  font-size: 4rem;
+  color: var(--offwhite);
+  text-shadow: -0.45rem 0 0 #008eaa, 0.45rem 0 0 #008eaa, 0 -0.45rem 0 #008eaa,
+    0 0.45rem 0 #008eaa, -0.45rem -0.45rem 0 #008eaa, 0.45rem -0.45rem 0 #008eaa,
+    -0.45rem 0.45rem 0 #008eaa, 0.45rem 0.45rem 0 #008eaa;
+  font-weight: 700;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+}

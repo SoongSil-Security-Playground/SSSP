@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.userRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3a3a3a;
+  padding: 15px 30px;
+  border-radius: 8px;
+}
+
+.active {
+  background-color: #686868;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.username {
+  min-width: 13rem;
+  font-family: "Press Start 2p", monospace;
+  font-size: 16px;
+  color: var(--offwhite);
+}
+
+.email {
+  font-family: "Press Start 2p", monospace;
+  font-size: 12px;
+  color: #888888;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.saveBtn {
+  font-family: "Press Start 2p", monospace;
+  background-color: transparent;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.adminBtn,
+.deleteBtn {
+  font-family: "Press Start 2p", monospace;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  color: var(--offwhite);
+}
+
+.userContent {
+  background: #3f3e3a;
+  border: 1px solid #56524f;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.textarea {
+  width: 90%;
+  height: 80px;
+  background: #2e2e2e;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  resize: none;
+}

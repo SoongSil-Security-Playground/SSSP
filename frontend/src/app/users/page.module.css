@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.contentWrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.contentWrapper {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.contentWrapper::-webkit-scrollbar {
+    display: none;
+}

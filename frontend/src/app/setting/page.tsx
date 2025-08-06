@@ -1,0 +1,176 @@
+"use client";
+
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import styles from "@/app/setting/page.module.css";
+
+import ChallengeBox from "@/shared/components/ForSettingBox/ChallengeBox";
+import UsersBox from "@/shared/components/ForSettingBox/UsersBox";
+import NotificationBox from "@/shared/components/ForSettingBox/NotificationBox";
+import SubmissionBox from "@/shared/components/ForSettingBox/SubmissionBox";
+
+import SelectSetting from "@/shared/components/SelectSetting";
+
+import ChallengeHeader from "@/shared/components/ForSettingHeader/ChallengeHeader";
+import UsersHeader from "@/shared/components/ForSettingHeader/UsersHeader";
+import NotificationHeader from "@/shared/components/ForSettingHeader/NotificationHeader";
+import SubmissionHeader from "@/shared/components/ForSettingHeader/SubmissionHeader";
+import { PageTitle } from "@/shared/components/Title";
+
+import { challenge_get_all } from "@/shared/hooks/api/useChallenge";
+import { user_list } from "@/shared/hooks/api/useUser";
+import { notice_get_all } from "@/shared/hooks/api/useNotice";
+import { fetch_all_submissions } from "@/shared/hooks/api/useSubmission";
+
+const tabs = ["Challenges", "Submissions", "Users", "Notification"];
+
+export default function SettingPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [searchMap, setSearchMap] = useState<Record<string, string>>({});
+  const [idsMap, setIdsMap] = useState<Record<string, number[]>>({});
+
+  const cat = searchParams.get("category") ?? tabs[0];
+  const active = tabs.includes(cat) ? tabs.indexOf(cat) : 0;
+  const searchString = searchMap[active] ?? "";
+  const selectedIds = idsMap[active] ?? [];
+
+  const setActiveCategory = (index: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("category", tabs[index]);
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchMap((prev) => ({ ...prev, [active]: value }));
+  };
+
+  const handleSelectChange = (ids: number[]) => {
+    setIdsMap((prev) => ({ ...prev, [active]: ids }));
+  };
+
+  // 데이터 받기
+  const challengeQuery = useQuery({
+    queryKey: ["challenge_get_all"],
+    queryFn: () => challenge_get_all(),
+    enabled: active === 0,
+  });
+  const submissionQuery = useQuery({
+    queryKey: ["submission_get_all"],
+    queryFn: () => fetch_all_submissions(),
+    enabled: active === 1,
+  });
+  const usersQuery = useQuery({
+    queryKey: ["users_get_all"],
+    queryFn: () => user_list(),
+    enabled: active === 2,
+  });
+  const notificationQuery = useQuery({
+    queryKey: ["notification_get_all"],
+    queryFn: () => notice_get_all(),
+    enabled: active === 3,
+  });
+
+  // 오른쪽 헤더 분기
+  const Header = () => {
+    switch (active) {
+      case 0:
+        return (
+          <ChallengeHeader
+            data={challengeQuery.data ?? []}
+            selectedIds={selectedIds}
+            searchString={searchString}
+            handleSearchChange={handleSearchChange}
+          />
+        );
+      case 1:
+        return (
+          <SubmissionHeader
+            data={submissionQuery.data ?? []}
+            selectedIds={selectedIds}
+            searchString={searchString}
+            handleSearchChange={handleSearchChange}
+          />
+        );
+      case 2:
+        return (
+          <UsersHeader
+            data={usersQuery.data ?? []}
+            searchString={searchString}
+            handleSearchChange={handleSearchChange}
+          />
+        );
+      case 3:
+        return (
+          <NotificationHeader
+            data={notificationQuery.data ?? []}
+            searchString={searchString}
+            handleSearchChange={handleSearchChange}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  // 본문 분기
+  const Content = () => {
+    switch (active) {
+      case 0:
+        return (
+          <ChallengeBox
+            data={challengeQuery.data ?? []}
+            searchString={searchString}
+            selectedIds={selectedIds}
+            handleSelectChange={handleSelectChange}
+          />
+        );
+      case 1:
+        return (
+          <SubmissionBox
+            data={submissionQuery.data ?? []}
+            searchString={searchString}
+            selectedIds={selectedIds}
+            handleSelectChange={handleSelectChange}
+          />
+        );
+      case 2:
+        return (
+          <UsersBox data={usersQuery.data ?? []} searchString={searchString} />
+        );
+      case 3:
+        return (
+          <NotificationBox
+            data={notificationQuery.data ?? []}
+            searchString={searchString}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <PageTitle text="Settings" />
+      <div className={styles.headerWrapper}>
+        <div className={styles.moreWrapperv2}>
+          <SelectSetting
+            items={tabs}
+            activeIndex={active}
+            onChange={setActiveCategory}
+          />
+        </div>
+        <div className={styles.moreWrapper}>
+          <Header />
+        </div>
+      </div>
+      <div className={styles.bodyWrapper}>
+        <Content />
+      </div>
+    </div>
+  );
+}

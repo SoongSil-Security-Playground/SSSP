@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.sidebarWrapper {
+    position: fixed;
+    top: 8rem;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 8rem);
+    z-index: 3;
+}
+
+.mainWrapper {
+    flex: 1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    container-type: inline-size;
+    box-sizing: border-box;
+    height: auto;
+}
+
+/* hide scrollbar in WebKit */
+.mainWrapper::-webkit-scrollbar {
+    display: none;
+}

@@ -1,0 +1,21 @@
+.starContainer {
+  display: flex;
+  gap: 0.25rem;
+  background: transparent;
+}
+
+.starButton {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.starFilled {
+  color: #fbc02d;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+}
+
+.starOutline {
+  color: #ccc;
+}

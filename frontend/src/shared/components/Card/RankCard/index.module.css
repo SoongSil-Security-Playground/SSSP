@@ -1,0 +1,72 @@
+.wrapper {
+    background-color: #323232;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.wrapper:hover {
+    transform: translateY(-2px);
+}
+
+.gold {
+    border-color: #FFD700;
+}
+
+.silver {
+    border-color: #C0C0C0;
+}
+
+.bronze {
+    border-color: #CD7F32;
+}
+
+
+.rank {
+    font-family: 'Silkscreen';
+}
+
+/* .profile img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    object-fit: cover;
+} */
+
+.profile {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    background-color: #464646;
+    justify-content: center;
+}
+
+.username {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--offwhite);
+    font-size: 1rem;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--offwhite);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.875rem;
+    margin-left: auto;
+}

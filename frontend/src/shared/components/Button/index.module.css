@@ -1,0 +1,55 @@
+.primary {
+  padding: 0.5rem 1rem;
+  background-color: #457588;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  font-family: 'Share Tech Mono';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+  transition: .2s;
+}
+
+.primary:hover {
+  opacity: 0.8;
+}
+
+.text {
+  padding: 0.5rem 1rem;
+  background: none;
+  color: #6AD1E3;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Share Tech Mono';
+  transition: color 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+  transition: .2s;
+}
+
+.text:hover {
+  opacity: 0.8;
+}
+
+.btnIcon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--offwhite);
+}
+
+.iconLeft {
+  margin-right: 0.5rem;
+}
+
+.iconRight {
+  margin-left: 0.5rem;
+}

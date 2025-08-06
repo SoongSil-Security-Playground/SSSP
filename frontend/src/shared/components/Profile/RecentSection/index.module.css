@@ -1,0 +1,83 @@
+.recentSection {
+    color: #e5e7eb;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.recentTitle {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--offwhite);
+}
+
+.activityList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.activityItem {
+    background-color: rgba(255, 255, 255, 0.02);
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.activityItem:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translate(1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.activityHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.categoryIcon {
+    color: var(--offwhite);
+}
+
+.activityName {
+    flex: 1;
+    color: var(--offwhite);
+    font-size: 0.875rem;
+}
+
+.activityDate {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.activityMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--offwhite);
+    border-radius: 9999px;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--offwhite);
+}
+
+.points {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
