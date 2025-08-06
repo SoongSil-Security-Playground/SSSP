@@ -21,7 +21,7 @@ export const EditChallengeModal = ({
   const [editPoint, setEditPoint] = useState<number>(item.points);
   const [editLevel, setEditLevel] = useState(item.level);
   const [editCategory, setEditCategory] = useState(item.category);
-  const [editFile, setEditFile] = useState<File>();
+  // const [editFile, setEditFile] = useState<File>();
 
   const { mutate: updateChallenge } = useMutation({
     mutationFn: ({
