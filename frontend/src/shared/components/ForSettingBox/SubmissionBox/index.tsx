@@ -79,8 +79,8 @@ export default function SubmissionBox({
     const filtered = q
       ? data.filter(
           (item) =>
-            String(item.user_id).includes(q) ||
-            String(item.challenge_id).includes(q)
+            String(item.username).includes(q) ||
+            String(item.challenge_name).includes(q)
         )
       : data;
 
