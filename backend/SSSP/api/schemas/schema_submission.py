@@ -4,6 +4,7 @@ from datetime import datetime
 class SubmissionResponse(BaseModel):
     id: int
     user_id: int
+    challenge_id: int
     submitted_flag: str
     submit_time: datetime
     status: int

@@ -91,7 +91,7 @@
   border: 1px solid var(--offwhite);
   border-radius: 9999px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--offwhite);
   background: rgba(255, 255, 255, 0.12);
 }
@@ -140,7 +140,7 @@
   border: 1.5px solid var(--offwhite);
   background: none;
   color: var(--offwhite);
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   width: fit-content;
   height: 2.5rem;
