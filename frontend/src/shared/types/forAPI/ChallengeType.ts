@@ -72,6 +72,7 @@ export interface CreateChallengeForRequest {
   minimumPoints: string;
   is_dynamic: string;
   files: FileList;
+  useDocker?: boolean;
 }
 
 export interface CreateChallengeSuccess extends DefaultChallengeContent {}

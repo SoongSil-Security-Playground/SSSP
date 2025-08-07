@@ -25,11 +25,12 @@ export const AddChall = () => {
       category: "",
       description: "",
       flag: "",
-      scoring: "",
+      scoring: "dynamic",
       points: "1000",
       decay: "20",
       minimumPoints: "500",
       files: undefined,
+      useDocker: false,
     },
   });
 
@@ -108,27 +109,9 @@ export const AddChall = () => {
 
       <div className={styles.formDoubleGroup}>
         <div className={styles.formGroup}>
-          <label className={styles.label}>SCORING</label>
-          <input
-            {...register("scoring")}
-            placeholder="Select the Scoring"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.formGroup}>
           <label className={styles.label}>POINTS</label>
           <input
             {...register("points", { valueAsNumber: true })}
-            className={styles.input}
-          />
-        </div>
-      </div>
-
-      <div className={styles.formDoubleGroup}>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>DECAY</label>
-          <input
-            {...register("decay", { valueAsNumber: true })}
             className={styles.input}
           />
         </div>
@@ -141,6 +124,45 @@ export const AddChall = () => {
         </div>
       </div>
 
+      <div className={styles.formTripleGroup}>
+        {/* Drop down & Select for scoring
+        But same design with different card Z*/}
+        <div className={styles.formGroup}>
+          <label className={styles.label}>SCORING</label>
+          <select
+            {...register("scoring")}
+            className={styles.select}
+            defaultValue="dynamic"
+          >
+            <option value="" disabled>Select Scoring Method
+            </option>
+            <option value="dynamic">Dynamic</option>
+            <option value="static">Static</option>
+          </select>
+
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>DECAY</label>
+          <input
+            {...register("decay", { valueAsNumber: true })}
+            className={styles.input}
+          />
+        </div>
+        
+        <div className={styles.formGroup}>
+          <label className={styles.label}>USE Docker?</label>
+          <select
+            {...register("useDocker")}
+            className={styles.select}
+            defaultValue="false"
+          >
+            <option value="" disabled>Select Docker Usage
+            </option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+      </div>
       <div className={styles.formFooter}>
         <div className={styles.formGroup} style={{ position: "relative" }}>
           <label className={styles.fileLabel} htmlFor="files">
