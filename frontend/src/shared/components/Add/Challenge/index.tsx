@@ -31,6 +31,7 @@ export const AddChall = () => {
       minimumPoints: "500",
       files: undefined,
       useDocker: false,
+      level: 1,
     },
   });
 
@@ -53,7 +54,7 @@ export const AddChall = () => {
     formData.append("flag", data.flag);
     formData.append("scoring", data.scoring);
     formData.append("points", data.points);
-    formData.append("level", "level-1");
+    formData.append("level", data.level);
     formData.append("is_dynamic", "true");
     formData.append("decay", data.decay);
     formData.append("minimum_point", data.minimumPoints);
@@ -124,7 +125,7 @@ export const AddChall = () => {
         </div>
       </div>
 
-      <div className={styles.formTripleGroup}>
+      <div className={styles.formDoubleGroup}>
         {/* Drop down & Select for scoring
         But same design with different card Z*/}
         <div className={styles.formGroup}>
@@ -148,7 +149,25 @@ export const AddChall = () => {
             className={styles.input}
           />
         </div>
-        
+        </div>
+        <div className={styles.formDoubleGroup}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>LEVEL</label>
+          <select
+            {...register("level")}
+            className={styles.select}
+            defaultValue="level-1"
+          >
+            <option value="" disabled>Select Level
+            </option>
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5</option>
+            </select>
+        </div>
+
         <div className={styles.formGroup}>
           <label className={styles.label}>USE Docker?</label>
           <select
@@ -156,11 +175,12 @@ export const AddChall = () => {
             className={styles.select}
             defaultValue="false"
           >
-            <option value="" disabled>Select Docker Usage
+            <option value="" disabled>Select Scoring Method
             </option>
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
+
         </div>
       </div>
       <div className={styles.formFooter}>

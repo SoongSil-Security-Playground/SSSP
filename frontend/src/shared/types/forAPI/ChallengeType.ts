@@ -73,6 +73,7 @@ export interface CreateChallengeForRequest {
   is_dynamic: string;
   files: FileList;
   useDocker?: boolean;
+  level: number;
 }
 
 export interface CreateChallengeSuccess extends DefaultChallengeContent {}
