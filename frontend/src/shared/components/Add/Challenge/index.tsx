@@ -27,8 +27,8 @@ export const AddChall = () => {
       flag: "",
       scoring: "",
       points: "1000",
-      decay: "0",
-      minimumPoints: "0",
+      decay: "20",
+      minimumPoints: "500",
       files: undefined,
     },
   });
