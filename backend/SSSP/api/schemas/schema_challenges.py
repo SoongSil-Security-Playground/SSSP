@@ -23,6 +23,7 @@ class ChallengeResponse(ChallengeBase):
     level: str
     flag: str
     is_user_solved: Optional[int] = 0  # 0: not solved, 1: solved
-    
+    useDocker: bool
+
     class Config:
         from_attributes = True

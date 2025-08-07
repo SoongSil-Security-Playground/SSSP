@@ -128,7 +128,9 @@ export const ChallengeDetailModal: React.FC = () => {
           </>
         ) : (
           <>
-          <Button
+
+          {item.useDocker && (
+            <Button
               className={styles.dockerBtn}
               onClick={handleDockerButton}
               icon={dockerWindow && !dockerWindow.closed ? <Square size={16} /> : <Play size={16} />}
@@ -136,6 +138,8 @@ export const ChallengeDetailModal: React.FC = () => {
           >
             {dockerWindow && !dockerWindow.closed ? 'Close Docker' : 'Run Docker'}
           </Button>
+          )}
+          
           <form className={styles.flagForm} onSubmit={(e) => {
             e.preventDefault();
             setSubmitError(null);

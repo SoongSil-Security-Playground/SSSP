@@ -12,6 +12,7 @@ export interface DefaultChallengeContent {
   solve_count: number;
   level: string;
   flag: string;
+  useDocker: boolean;
 }
 
 // /api/v1/challenges/download/{file_path}
