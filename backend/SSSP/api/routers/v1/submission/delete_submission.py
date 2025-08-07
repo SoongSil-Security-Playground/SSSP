@@ -53,6 +53,17 @@ def delete_submission(
             challenge.solve_count -= 1
             logging.info(f"[-] Decreased solve count for Challenge ID {challenge.id} to {challenge.solve_count}")
 
+
+            if challenge.is_dynamic == True:
+                minimum = challenge.minimum_points
+                initial = challenge.initial_points
+                decay   = challenge.decay
+                solve_count = challenge.solve_count
+
+                new_point = int((((minimum - initial) / (decay ** 2)) * (solve_count ** 2)) + initial)
+                logging.info("New Dynamic Point! : " + str(new_point))
+                challenge.points = new_point
+
         # delete solved_challenge from user
         submission_user = db.query(models.User).filter(models.User.id == submission.user_id).first()
         if submission_user and submission_user.solved_challenge:
