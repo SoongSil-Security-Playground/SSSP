@@ -39,7 +39,7 @@ export const Header: FC<HeaderProps> = ({
           NOTIFICATION
         </a>
         {isAdmin && (
-          <a href="/setting?category=Challenges" className={styles.navItem}>
+          <a href="/setting?category=Challenges" className={styles.navItem} style={{ color: "black", backgroundColor: "#e57373" }}>
             SETTING
           </a>
         )}
