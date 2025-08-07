@@ -33,6 +33,7 @@ def create_challenge(
     decay: str = Form(...),
     minimum_point: str = Form(...),
     is_dynamic: bool = Form(...),
+    useDocker: bool = Form(...),
     token: str = Depends(settings.oauth2_scheme),
     db: Session = Depends(get_db),
 ):
@@ -85,6 +86,7 @@ def create_challenge(
         initial_points=points_int,
         minimum_points=minimum_point_int,
         is_dynamic=is_dynamic,
+        useDocker=useDocker,
     )
     db.add(db_challenge)
     db.commit()

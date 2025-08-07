@@ -38,8 +38,8 @@ export const ChallengeDetailModal: React.FC = () => {
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ['challenges'] });
       setSelectedId(null);
-      if (data.detail) {
-        toast.success(data.detail);
+      if (data.status == 0) {
+        toast.success("Correct Flag!");
       }
     },
     onError: (err) => {

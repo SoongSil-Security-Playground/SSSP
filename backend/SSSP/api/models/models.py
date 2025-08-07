@@ -65,6 +65,7 @@ class Challenge(Base):
     minimum_points = Column(Integer, nullable=False)
     decay = Column(Integer, nullable=False, default=100)
     is_dynamic = Column(Boolean, nullable=False)
+    useDocker = Column(Boolean, nullable=False, default=False)
     solve_count = Column(Integer, default=0)
 
     submissions = relationship("Submission", back_populates="challenge")

@@ -25,7 +25,7 @@ export const AddChall = () => {
       category: "",
       description: "",
       flag: "",
-      scoring: "dynamic",
+      scoring: true,
       points: "1000",
       decay: "20",
       minimumPoints: "500",
@@ -52,12 +52,12 @@ export const AddChall = () => {
     formData.append("category", data.category);
     formData.append("description", data.description);
     formData.append("flag", data.flag);
-    formData.append("scoring", data.scoring);
+    formData.append("is_dynamic", String(data.scoring));
     formData.append("points", data.points);
-    formData.append("level", data.level);
-    formData.append("is_dynamic", "true");
-    formData.append("decay", data.decay);
-    formData.append("minimum_point", data.minimumPoints);
+    formData.append("level", String(data.level));
+    formData.append("decay", String(data.decay));
+    formData.append("useDocker", String(data.useDocker));
+    formData.append("minimum_point", String(data.minimumPoints));
 
     if (data.files && data.files.length > 0) {
       formData.append("file", data.files[0]);
@@ -137,8 +137,8 @@ export const AddChall = () => {
           >
             <option value="" disabled>Select Scoring Method
             </option>
-            <option value="dynamic">Dynamic</option>
-            <option value="static">Static</option>
+            <option value="true">Dynamic</option>
+            <option value="false">Static</option>
           </select>
 
         </div>

@@ -153,15 +153,16 @@ export const challenge_submit = async (
   }
 
   if (!res.ok) {
-    const errObj = payload as { detail?: string; message?: string };
-    const msg = errObj.detail ?? errObj.message ?? `Error ${res.status}`;
+    const msg = `Error ${res.status}`;
     throw new ChallengeError(msg);
   }
 
   const result = payload as SubmitChallengeSuccess;
 
-  if (!result.is_correct) {
-    throw new ChallengeError(result.detail);
+  if (result.status == 1) { // Incorrect
+    throw new ChallengeError("Incorrect Flag");
+  } else if (result.status == 2) { // Already Solved
+    throw new ChallengeError("Challenge Already Solved");
   }
 
   return result;

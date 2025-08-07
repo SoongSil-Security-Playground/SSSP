@@ -49,8 +49,7 @@ export interface SubmitChallengeForRequest {
 }
 
 export interface SubmitChallengeSuccess {
-  is_correct: Boolean;
-  detail: string;
+  status: number;
 }
 
 // /api/v1/challenges/solved/me
@@ -66,13 +65,12 @@ export interface CreateChallengeForRequest {
   category: string;
   description: string;
   flag: string;
-  scoring: string;
+  scoring: boolean;
   points: string;
   decay: string;
   minimumPoints: string;
-  is_dynamic: string;
   files: FileList;
-  useDocker?: boolean;
+  useDocker: boolean;
   level: number;
 }
 
