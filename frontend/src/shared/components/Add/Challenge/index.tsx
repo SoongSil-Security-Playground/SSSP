@@ -10,10 +10,9 @@ import { CreateChallengeForRequest } from "@/shared/types/forAPI/ChallengeType";
 
 import FileUpload from "/public/fileUpload.svg";
 import styles from "./index.module.css";
+import { toast } from "react-toastify";
 
 export const AddChall = () => {
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -38,11 +37,13 @@ export const AddChall = () => {
   const { mutate } = useMutation({
     mutationFn: (formData: FormData) => challenge_create(formData),
     onSuccess: () => {
-      alert("생성 성공!");
-      window.location.href = "/setting?category=Challenges";
+      toast.success("문제가 생성되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Challenges";
+      }, 1000);
     },
     onError: (err: any) => {
-      alert("생성 실패");
+      toast.error("문제 생성이 실패하였습니다.");
     },
   });
 
@@ -135,12 +136,12 @@ export const AddChall = () => {
             className={styles.select}
             defaultValue="dynamic"
           >
-            <option value="" disabled>Select Scoring Method
+            <option value="" disabled>
+              Select Scoring Method
             </option>
             <option value="true">Dynamic</option>
             <option value="false">Static</option>
           </select>
-
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>DECAY</label>
@@ -149,8 +150,8 @@ export const AddChall = () => {
             className={styles.input}
           />
         </div>
-        </div>
-        <div className={styles.formDoubleGroup}>
+      </div>
+      <div className={styles.formDoubleGroup}>
         <div className={styles.formGroup}>
           <label className={styles.label}>LEVEL</label>
           <select
@@ -158,14 +159,15 @@ export const AddChall = () => {
             className={styles.select}
             defaultValue="level-1"
           >
-            <option value="" disabled>Select Level
+            <option value="" disabled>
+              Select Level
             </option>
             <option value="1">Level 1</option>
             <option value="2">Level 2</option>
             <option value="3">Level 3</option>
             <option value="4">Level 4</option>
             <option value="5">Level 5</option>
-            </select>
+          </select>
         </div>
 
         <div className={styles.formGroup}>
@@ -175,12 +177,12 @@ export const AddChall = () => {
             className={styles.select}
             defaultValue="false"
           >
-            <option value="" disabled>Select Scoring Method
+            <option value="" disabled>
+              Select Scoring Method
             </option>
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
-
         </div>
       </div>
       <div className={styles.formFooter}>

@@ -9,6 +9,7 @@ import {
   admin_notice_update,
   admin_notice_delete,
 } from "@/shared/hooks/api/useNotice";
+import { toast } from "react-toastify";
 
 interface NotificationBoxProps {
   data: GetNoticeListSuccess;
@@ -33,8 +34,10 @@ export default function NotificationBox({
   const { mutate: deleteNotification } = useMutation({
     mutationFn: (selectedId: number) => admin_notice_delete(selectedId),
     onSuccess: () => {
-      alert("삭제 성공!");
-      window.location.href = "/setting?category=Notification";
+      toast.success("삭제가 완료되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Notification";
+      }, 1000);
     },
   });
 
@@ -49,8 +52,10 @@ export default function NotificationBox({
       content: string;
     }) => admin_notice_update(selectId, title, content),
     onSuccess: () => {
-      alert("수정 성공!");
-      window.location.href = "/setting?category=Notification";
+      toast.success("수정이 완료되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Notification";
+      }, 1000);
     },
   });
 

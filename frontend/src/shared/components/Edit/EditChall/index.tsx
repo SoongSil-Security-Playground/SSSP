@@ -17,6 +17,7 @@ import {
 
 import FileUpload from "/public/fileUpload.svg";
 import styles from "./index.module.css";
+import { toast } from "react-toastify";
 
 export const EditChall = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,8 +74,13 @@ export const EditChall = () => {
       challengeId: number;
     }) => challenge_update(formData, challengeId),
     onSuccess: () => {
-      alert("수정 성공!");
-      window.location.href = "/setting?category=Challenge";
+      toast.success("수정이 완료되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Challenge";
+      }, 1000);
+    },
+    onError: () => {
+      toast.error("수정이 취소되었습니다!");
     },
   });
 
