@@ -1,0 +1,249 @@
+"use client";
+
+import { useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+
+import Image from "next/image";
+import {
+  challenge_get_spec,
+  challenge_update,
+} from "@/shared/hooks/api/useChallenge";
+import {
+  type GetSpecChallengeSuccess,
+  type CreateChallengeForRequest,
+} from "@/shared/types/forAPI/ChallengeType";
+
+import FileUpload from "/public/fileUpload.svg";
+import styles from "./index.module.css";
+
+export const EditChall = () => {
+  const { id } = useParams<{ id: string }>();
+  const numId = parseInt(id, 10);
+
+  const { data } = useQuery<GetSpecChallengeSuccess>({
+    queryKey: ["challenge_detail", numId],
+    queryFn: () => challenge_get_spec(numId),
+  });
+
+  const { register, handleSubmit, watch, reset } =
+    useForm<CreateChallengeForRequest>({
+      defaultValues: {
+        name: "",
+        category: "",
+        description: "",
+        flag: "",
+        scoring: true,
+        points: "0",
+        decay: "0",
+        minimumPoints: "0",
+        files: undefined,
+        useDocker: false,
+        level: 1,
+      },
+    });
+
+  useEffect(() => {
+    if (!data) return;
+
+    const src = (data as any).result ?? (data as any).data ?? data;
+
+    reset({
+      name: src.name ?? "",
+      category: src.category ?? "",
+      description: src.description ?? "",
+      flag: src.flag ?? "",
+      scoring: Boolean(src.is_dynamic),
+      points: String(src.points ?? "0"),
+      decay: String(src.decay ?? "0"),
+      minimumPoints: String(src.minimum_point ?? "0"),
+      files: undefined,
+      useDocker: Boolean(src.useDocker),
+      level: Number(src.level ?? 1),
+    });
+  }, [data, reset]);
+
+  const { mutate: updateChallenge } = useMutation({
+    mutationFn: ({
+      formData,
+      challengeId,
+    }: {
+      formData: FormData;
+      challengeId: number;
+    }) => challenge_update(formData, challengeId),
+    onSuccess: () => {
+      alert("수정 성공!");
+      window.location.href = "/setting?category=Challenge";
+    },
+  });
+
+  const onSubmit: SubmitHandler<CreateChallengeForRequest> = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("category", data.category);
+    formData.append("description", data.description);
+    formData.append("flag", data.flag);
+    formData.append("is_dynamic", String(data.scoring));
+    formData.append("points", data.points);
+    formData.append("level", String(data.level));
+    formData.append("decay", String(data.decay));
+    formData.append("useDocker", String(data.useDocker));
+    formData.append("minimum_point", String(data.minimumPoints));
+
+    if (data.files && data.files.length > 0) {
+      formData.append("file", data.files[0]);
+    }
+
+    updateChallenge({ formData, challengeId: numId });
+  };
+
+  const files = watch("files");
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <div className={styles.formDoubleGroup}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>NAME</label>
+          <input
+            {...register("name", { required: "이름이 필요합니다" })}
+            placeholder="Type the Challenge's Name"
+            className={styles.input}
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label className={styles.label}>CATEGORY</label>
+          <input
+            {...register("category", { required: "카테고리가 필요합니다" })}
+            placeholder="Type the Category"
+            className={styles.input}
+          />
+        </div>
+      </div>
+
+      <div className={styles.formSingleGroup}>
+        <label className={styles.label}>DESCRIPTION</label>
+        <textarea
+          {...register("description", { required: "설명이 필요합니다" })}
+          placeholder="Type the description of the challenge"
+          className={styles.textarea}
+        />
+      </div>
+
+      <div className={styles.formSingleGroup}>
+        <label className={styles.label}>FLAG</label>
+        <input
+          {...register("flag", { required: "FLAG를 입력하세요" })}
+          placeholder="Type the Flag"
+          className={styles.input}
+        />
+      </div>
+
+      <div className={styles.formDoubleGroup}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>POINTS</label>
+          <input
+            {...register("points", { valueAsNumber: true })}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>MINIMUM POINTS</label>
+          <input
+            {...register("minimumPoints", { valueAsNumber: true })}
+            className={styles.input}
+          />
+        </div>
+      </div>
+
+      <div className={styles.formDoubleGroup}>
+        {/* Drop down & Select for scoring
+        But same design with different card Z*/}
+        <div className={styles.formGroup}>
+          <label className={styles.label}>SCORING</label>
+          <select
+            {...register("scoring")}
+            className={styles.select}
+            defaultValue="dynamic"
+          >
+            <option value="" disabled>
+              Select Scoring Method
+            </option>
+            <option value="true">Dynamic</option>
+            <option value="false">Static</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>DECAY</label>
+          <input
+            {...register("decay", { valueAsNumber: true })}
+            className={styles.input}
+          />
+        </div>
+      </div>
+      <div className={styles.formDoubleGroup}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>LEVEL</label>
+          <select
+            {...register("level")}
+            className={styles.select}
+            defaultValue="level-1"
+          >
+            <option value="" disabled>
+              Select Level
+            </option>
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5</option>
+          </select>
+        </div>
+
+        <div className={styles.formGroup}>
+          <label className={styles.label}>USE Docker?</label>
+          <select
+            {...register("useDocker")}
+            className={styles.select}
+            defaultValue="false"
+          >
+            <option value="" disabled>
+              Select Scoring Method
+            </option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+      </div>
+      <div className={styles.formFooter}>
+        <div className={styles.formGroup} style={{ position: "relative" }}>
+          <label className={styles.fileLabel} htmlFor="files">
+            FILES
+          </label>
+          <input
+            {...register("files")}
+            id="files"
+            type="file"
+            accept=".zip"
+            multiple
+            className={styles.hiddenFileInput}
+          />
+          <label htmlFor="files" className={styles.uploadButton}>
+            <Image src={FileUpload} alt="파일 업로드" width={20} height={20} />
+            {!files || files.length === 0 ? (
+              <span className={styles.uploadText}>upload files</span>
+            ) : (
+              <span className={styles.fileCount}>
+                {files.length}개 파일 선택됨
+              </span>
+            )}
+          </label>
+        </div>
+        <button type="submit" className={styles.submitButton}>
+          SUBMIT
+        </button>
+      </div>
+    </form>
+  );
+};
