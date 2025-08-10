@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get upgrade
 RUN apt-get update
-RUN apt-get install tini ttyd curl wget net-tools procps bash -y
+RUN apt-get install tini ttyd curl wget net-tools procps bash file -y
 RUN apt-get install git vim zsh gdb python3 python3-pip netcat unzip -y
 
 ########### tools

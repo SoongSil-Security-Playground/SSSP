@@ -10,6 +10,10 @@ from SSSP.api.core.auth import get_current_user_by_jwt
 
 from SSSP.api.schemas import schema_notice
 
+from pathlib import Path
+from io import BytesIO
+
+import tarfile
 import docker
 import os
 import uuid
@@ -78,6 +82,52 @@ def start_docker_container(
         db.commit()
         db.refresh(docker_container)
 
+        # Copy Challenge & Flag
+        chall_db = db.query(models.Challenge).filter(models.Challenge.id == chall_id).first()
+        chall_flag = chall_db.flag
+        chall_filepath = chall_db.file_path
+        chall_filename = chall_db.original_filename
+        chall_filecontent = None
+        
+        UPLOAD_DIR = Path(settings.challenge_file_path)
+        real_file_path = UPLOAD_DIR / chall_filepath.split("/")[-1]
+
+        if not real_file_path.exists():
+            logging.error(f"Challenge file not found: {real_file_path}")
+            raise HTTPException(status_code=404, detail="Challenge file not found")
+
+        with open(real_file_path, "rb") as f:
+            chall_filecontent = f.read()
+
+        logging.info("get file success")
+
+        tar_stream = BytesIO()
+        with tarfile.open(fileobj=tar_stream, mode='w') as tar:
+            tarinfo = tarfile.TarInfo(name=chall_filename)
+            tarinfo.size = len(chall_filecontent)
+            tar.addfile(tarinfo, BytesIO(chall_filecontent))
+
+            logging.info("Added challenge file to tar")
+            tarinfo = tarfile.TarInfo(name='flag')
+            tarinfo.size = len(chall_flag)
+            tar.addfile(tarinfo, BytesIO(chall_flag.encode()))
+            logging.info("Added flag file to tar")
+
+        tar_stream.seek(0)
+
+        destination_path = "/home/ctfuser"
+        container.put_archive(path=destination_path, data=tar_stream)
+
+        # change owner
+        command = []
+        command.append(f"chmod 700 {destination_path}/flag")
+        
+        # add sid & execute permission
+        command.append(f"chmod 555 {destination_path}/{chall_filename}")
+        command.append(f"chmod +s {destination_path}/{chall_filename}")
+        for cmd in command:
+            exit_code, output = container.exec_run(cmd, user='root')
+
         url = f'http://{settings.public_ip}:{docker_container.port}'
         logging.info(f"Service URL: {url}")
         return url
@@ -90,4 +140,5 @@ def start_docker_container(
         return ""
     except Exception as e:
         logging.error(f"Unknown Error: {e}")
+        
         return ""
