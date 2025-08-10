@@ -19,17 +19,20 @@ export const LoginForm: FC<LoginFormProps> = ({ onSuccess }) => {
 
   const mutation = useMutation<
     LoginSuccess,
-    Error,
+    unknown,
     { username: string; password: string }
   >({
     mutationFn: ({ username, password }) => auth_login(username, password),
     onSuccess: (data) => {
-      localStorage.setItem("token", data.access_token);
-      toast.success("Logged in successfully!");
       onSuccess(data.access_token);
     },
-    onError: (err) => {
-      toast.error(err.message);
+    onError: (err: any) => {
+      const msg =
+        err?.message ||
+        err?.response?.data?.detail ||
+        err?.detail ||
+        "로그인에 실패했어요.";
+      toast.error(msg);
     },
   });
 
