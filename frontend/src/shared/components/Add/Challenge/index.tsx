@@ -42,7 +42,7 @@ export const AddChall = () => {
       window.location.href = "/setting?category=Challenges";
     },
     onError: (err: any) => {
-      alert("생성 실패");
+      alert("생성 실패 : " + err.message);
     },
   });
 
@@ -192,7 +192,7 @@ export const AddChall = () => {
             {...register("files")}
             id="files"
             type="file"
-            accept=".zip"
+            accept="*"
             multiple
             className={styles.hiddenFileInput}
           />
