@@ -65,6 +65,12 @@ if CORS_ORIGINS:
 else:
     CORS_ORIGINS = []
 
+CORS_ORIGINS += [
+    "http://localhost:8000", 
+    "http://localhost:443", 
+    "http://127.0.0.1:8000", 
+    "http://127.0.0.1:443"
+]
 print(CORS_ORIGINS)
     
 origins = CORS_ORIGINS

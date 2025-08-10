@@ -28,12 +28,12 @@ def remove_docker_image(
 
     client = get_docker_client()
     try:
-        logging.info(f"Removing image {image_id}")
-        client.images.remove(image=image_id, force=True)
-        logging.info("Successfully removed image")
+        # logging.info(f"Removing image {image_id}")
+        # client.images.remove(image=image_id, force=True)
+        # logging.info("Successfully removed image")
 
-        db.query(models.DockerImage).filter(models.DockerImage.id == image_id).delete()
-        db.commit()
+        # db.query(models.DockerImage).filter(models.DockerImage.id == image_id).delete()
+        # db.commit()
         return True
     except docker.errors.ImageNotFound:
         logging.warning(f"Image ID[{image_id}] not found")

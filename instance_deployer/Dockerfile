@@ -1,6 +1,5 @@
 # docker build -t my-challenge .
-# docker run -d --rm -P --name web-challenge my-challenge
-# docker run -d --rm -P --name ttycontainer ttytest
+# docker run -d --rm -P --name cont1 img1
 
 FROM ubuntu:22.04
 
@@ -23,7 +22,7 @@ WORKDIR /home/ctfuser
 RUN git clone https://github.com/hugsy/gef.git
 RUN git clone https://github.com/scwuaptx/Pwngdb.git
 
-RUN echo "source /root/tools/gef/gef.py\\nsource /root/tools/Pwngdb/pwngdb.py\\nsource /root/tools/Pwngdb/angelheap/gdbinit.py\\n\\ndefine hook-run\\npython\\nimport angelheap\\nangelheap.init_angelheap()\\nend\\nend" >> ~/.gdbinit
+RUN echo "source /home/ctfuser/gef/gef.py\\nsource /home/ctfuser/Pwngdb/pwngdb.py\\nsource /home/ctfuser/Pwngdb/angelheap/gdbinit.py\\n\\ndefine hook-run\\npython\\nimport angelheap\\nangelheap.init_angelheap()\\nend\\nend" >> ~/.gdbinit
 
 ########### vim setup
 RUN echo "set nu" >> ~/.vimrc

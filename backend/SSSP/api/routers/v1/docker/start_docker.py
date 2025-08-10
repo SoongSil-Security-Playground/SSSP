@@ -35,50 +35,59 @@ def get_docker_client():
 router = APIRouter()
 
 # TODO
-# Port Randomization
-# Volume Off
-# Command Regex
-@router.post("/start/{chall_id}", response_model=dict)
+@router.post("/start/{chall_id}", response_model=str)
 def start_docker_container(
-    command: str = None,
-    ports: dict = None,
-    environment: dict = None,
-    volumes: dict = None,
+    chall_id: int,
     token: str = Depends(settings.oauth2_scheme),
     db: Session = Depends(get_db),
     ):
 
+    # chall_id & user_id
+    user = get_current_user_by_jwt(token, db)
+
+    cont_name = f'cont-{user.id}-{chall_id}-{uuid.uuid4().hex[:4]}'
     client = get_docker_client()
     try:
-        image_id = db.query(models.DockerImage).filter(models.DockerImage.id == chall_id).first()
-        logging.info(f"Starting container from image {image_id}")
+
+        port_info = '7681/tcp'
         container = client.containers.run(
-            image=image_id,
-            command=command,
-            ports=ports,
-            environment=environment,
-            volumes=volumes,
-            detach=True
+            image="sssp-instance_deployer",
+            detach=True,       # -d (background)
+            auto_remove=True,  # --rm (auto remove)
+            ports={
+                port_info: None
+            },
+            name=cont_name       # --name (container name)
         )
+
+        container.reload()
         logging.info(f"Successfully started container {container.id}")
 
+        port_mapping = container.ports[port_info]
+        random_host_port = port_mapping[0]['HostPort']
+        logging.info(f"Port Mapping to {random_host_port}")
+        
         docker_container = models.DockerContainer(
             container_name=container.name,
-            image_id=docker_image.id,
-            created_at=datetime.now(),
-            updated_at=datetime.now()
+            # port = container.ports,
+            port = random_host_port,
+            chall_id = chall_id,
+            user_id = user.id
         )
         db.add(docker_container)
         db.commit()
         db.refresh(docker_container)
 
-        return container.id
+        url = f'http://{settings.public_ip}:{docker_container.port}'
+        logging.info(f"Service URL: {url}")
+        return url
+
     except docker.errors.ImageNotFound:
         logging.error(f"Image ID[{image_id}] not found")
-        return None
+        return ""
     except docker.errors.APIError as e:
         logging.error(f"Docker API Error: {e}")
-        return None
+        return ""
     except Exception as e:
         logging.error(f"Unknown Error: {e}")
-        return None
+        return ""

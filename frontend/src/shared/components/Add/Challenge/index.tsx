@@ -43,11 +43,7 @@ export const AddChall = () => {
       }, 1000);
     },
     onError: (err: any) => {
-<<<<<<< HEAD
-      alert("생성 실패 : " + err.message);
-=======
-      toast.error("문제 생성이 실패하였습니다.");
->>>>>>> 8ac306e704c9fc9388e277de8c0a9a32e2ebd0ab
+      toast.error("문제 생성이 실패하였습니다. " + err.message);
     },
   });
 

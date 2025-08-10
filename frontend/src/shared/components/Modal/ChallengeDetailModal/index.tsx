@@ -67,15 +67,44 @@ export const ChallengeDetailModal: React.FC = () => {
 
   const handleClose = () => setSelectedId(null);
 
-  const handleDockerButton = () => {
-    if (dockerWindow && !dockerWindow.closed) {
-      dockerWindow.close();
-      setDockerWindow(null);
-    } else {
-      const win = window.open("_blank");
-      setDockerWindow(win);
+  const handleDockerButton = async () => {
+  if (dockerWindow && !dockerWindow.closed) {
+    dockerWindow.close();
+    setDockerWindow(null);
+  } else {
+    const token = localStorage.getItem("token");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/docker/start/${item!.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
+
+    if (res.status === 401) {
+      alert("ERR");
+      return;
     }
-  };
+
+    let url: string | null = null;
+    try {
+      url = await res.json();
+    } catch {
+      alert("ERR2");
+      return;
+    }
+
+    if (typeof url === "string" && url.startsWith("http")) {
+      const win = window.open(url, "_blank");
+      setDockerWindow(win);
+    } else {
+      alert("Docker URL 생성 실패");
+    }
+  }
+};
 
   if (listLoading) return <div className={styles.container}>Loading...</div>;
   if (listError) {

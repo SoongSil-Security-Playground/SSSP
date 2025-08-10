@@ -117,32 +117,32 @@ def create_challenge(
 
         logging.info(f"Challenge ID {db_challenge.id} requires Docker. Proceed to create Docker image.")
 
-        # setup Docker path in /tmp/uuid-4 & create challenge docker image
-        temp_dir = f"/tmp/{uuid.uuid4().hex}"
-        os.makedirs(temp_dir, exist_ok=True)
+        # # setup Docker path in /tmp/uuid-4 & create challenge docker image
+        # temp_dir = f"/tmp/{uuid.uuid4().hex}"
+        # os.makedirs(temp_dir, exist_ok=True)
 
-        # copy file => /tmp/uuid-4
-        temp_file_path = Path(temp_dir) / file.filename
-        with open(temp_file_path, "wb") as f:
-            f.write(file.file.read())
+        # # copy file => /tmp/uuid-4
+        # temp_file_path = Path(temp_dir) / file.filename
+        # with open(temp_file_path, "wb") as f:
+        #     f.write(file.file.read())
 
         # copy dockerfile
-        with open("./SSSP/util/Dockerfile", "r") as f:
-            DOCKERFILE = f.read()
+        # with open("./SSSP/util/Dockerfile", "r") as f:
+        #     DOCKERFILE = f.read()
 
-        dockerfile_path = Path(temp_dir) / "Dockerfile"
-        with open(dockerfile_path, "w") as f:
-            f.write(DOCKERFILE.format(dist_file=temp_file_path))
+        # dockerfile_path = Path(temp_dir) / "Dockerfile"
+        # with open(dockerfile_path, "w") as f:
+        #     f.write(DOCKERFILE.format(dist_file=temp_file_path))
 
-        image_id = create_docker_image(temp_dir)
+        # image_id = create_docker_image(temp_dir)
 
-        docker_image = models.DockerImage(
-            image_name=image_id,
-            chall_id=db_challenge.id
-        )
-        db.add(docker_image)
-        db.commit()
-        db.refresh(docker_image)
+        # docker_image = models.DockerImage(
+        #     image_name=image_id,
+        #     chall_id=db_challenge.id
+        # )
+        # db.add(docker_image)
+        # db.commit()
+        # db.refresh(docker_image)
 
         
     return schema_challenges.ChallengeResponse.from_orm(db_challenge)
