@@ -121,10 +121,10 @@ def start_docker_container(
         # change owner
         command = []
         command.append(f"chmod 700 {destination_path}/flag")
-        
+
         # add sid & execute permission
-        command.append(f"chmod 555 {destination_path}/{chall_filename}")
-        command.append(f"chmod +s {destination_path}/{chall_filename}")
+        command.append(f"chmod 555 '{destination_path}/{chall_filename}'")
+        command.append(f"chmod +s '{destination_path}/{chall_filename}'")
         for cmd in command:
             exit_code, output = container.exec_run(cmd, user='root')
 

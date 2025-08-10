@@ -17,6 +17,7 @@ RUN pip3 install pwntools
 RUN useradd -m -s /bin/bash ctfuser
 USER ctfuser
 WORKDIR /home/ctfuser
+RUN export LC_CTYPE=C.UTF-8
 
 ########### gdb setup
 RUN git clone https://github.com/hugsy/gef.git
