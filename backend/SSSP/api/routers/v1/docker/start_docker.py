@@ -38,7 +38,7 @@ router = APIRouter()
 # Port Randomization
 # Volume Off
 # Command Regex
-@router.post("/start/{image_id}", response_model=dict)
+@router.post("/start/{chall_id}", response_model=dict)
 def start_docker_container(
     command: str = None,
     ports: dict = None,
@@ -50,6 +50,7 @@ def start_docker_container(
 
     client = get_docker_client()
     try:
+        image_id = db.query(models.DockerImage).filter(models.DockerImage.id == chall_id).first()
         logging.info(f"Starting container from image {image_id}")
         container = client.containers.run(
             image=image_id,
@@ -60,6 +61,17 @@ def start_docker_container(
             detach=True
         )
         logging.info(f"Successfully started container {container.id}")
+
+        docker_container = models.DockerContainer(
+            container_name=container.name,
+            image_id=docker_image.id,
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
+        db.add(docker_container)
+        db.commit()
+        db.refresh(docker_container)
+
         return container.id
     except docker.errors.ImageNotFound:
         logging.error(f"Image ID[{image_id}] not found")

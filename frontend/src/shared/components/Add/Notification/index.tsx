@@ -12,6 +12,7 @@ import {
   AuthError,
   AuthValidateContent,
 } from "@/shared/types/forAPI/AuthErrorType";
+import { toast } from "react-toastify";
 
 export const AddNotice = () => {
   const [title, setTitle] = useState("");
@@ -39,11 +40,13 @@ export const AddNotice = () => {
       throw new Error("Failed to create notice");
     },
     onError: (err: any) => {
-      alert(JSON.stringify(err, null, 2));
+      toast.error("공지 생성에 실패하였습니다.");
     },
     onSuccess: () => {
-      alert("생성 성공!");
-      window.location.href = "/setting?category=Notification";
+      toast.success("공지가 생성되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Notification";
+      }, 1000);
     },
   });
 
@@ -53,7 +56,7 @@ export const AddNotice = () => {
 
   const handleSubmit = (e: FormEvent) => {
     if (title && content) mutate({ title, content });
-    else alert("내용을 입력해주세요");
+    else toast.error("내용을 입력해주세요.");
   };
 
   return (

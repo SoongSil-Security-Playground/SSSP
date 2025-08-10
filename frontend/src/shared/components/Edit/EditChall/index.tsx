@@ -1,53 +1,86 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { challenge_create } from "@/shared/hooks/api/useChallenge";
-import { CreateChallengeForRequest } from "@/shared/types/forAPI/ChallengeType";
+import {
+  challenge_get_spec,
+  challenge_update,
+} from "@/shared/hooks/api/useChallenge";
+import {
+  type GetSpecChallengeSuccess,
+  type CreateChallengeForRequest,
+} from "@/shared/types/forAPI/ChallengeType";
 
 import FileUpload from "/public/fileUpload.svg";
 import styles from "./index.module.css";
 import { toast } from "react-toastify";
 
-export const AddChall = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<CreateChallengeForRequest>({
-    defaultValues: {
-      name: "",
-      category: "",
-      description: "",
-      flag: "",
-      scoring: true,
-      points: "1000",
-      decay: "20",
-      minimumPoints: "500",
-      files: undefined,
-      useDocker: false,
-      level: 1,
-    },
+export const EditChall = () => {
+  const { id } = useParams<{ id: string }>();
+  const numId = parseInt(id, 10);
+
+  const { data } = useQuery<GetSpecChallengeSuccess>({
+    queryKey: ["challenge_detail", numId],
+    queryFn: () => challenge_get_spec(numId),
   });
 
-  const { mutate } = useMutation({
-    mutationFn: (formData: FormData) => challenge_create(formData),
+  const { register, handleSubmit, watch, reset } =
+    useForm<CreateChallengeForRequest>({
+      defaultValues: {
+        name: "",
+        category: "",
+        description: "",
+        flag: "",
+        scoring: true,
+        points: "0",
+        decay: "0",
+        minimumPoints: "0",
+        files: undefined,
+        useDocker: false,
+        level: 1,
+      },
+    });
+
+  useEffect(() => {
+    if (!data) return;
+
+    const src = (data as any).result ?? (data as any).data ?? data;
+
+    reset({
+      name: src.name ?? "",
+      category: src.category ?? "",
+      description: src.description ?? "",
+      flag: src.flag ?? "",
+      scoring: Boolean(src.is_dynamic),
+      points: String(src.points ?? "0"),
+      decay: String(src.decay ?? "0"),
+      minimumPoints: String(src.minimum_point ?? "0"),
+      files: undefined,
+      useDocker: Boolean(src.useDocker),
+      level: Number(src.level ?? 1),
+    });
+  }, [data, reset]);
+
+  const { mutate: updateChallenge } = useMutation({
+    mutationFn: ({
+      formData,
+      challengeId,
+    }: {
+      formData: FormData;
+      challengeId: number;
+    }) => challenge_update(formData, challengeId),
     onSuccess: () => {
-      toast.success("문제가 생성되었습니다!");
+      toast.success("수정이 완료되었습니다!");
       setTimeout(() => {
-        window.location.href = "/setting?category=Challenges";
+        window.location.href = "/setting?category=Challenge";
       }, 1000);
     },
-    onError: (err: any) => {
-<<<<<<< HEAD
-      alert("생성 실패 : " + err.message);
-=======
-      toast.error("문제 생성이 실패하였습니다.");
->>>>>>> 8ac306e704c9fc9388e277de8c0a9a32e2ebd0ab
+    onError: () => {
+      toast.error("수정이 취소되었습니다!");
     },
   });
 
@@ -68,7 +101,7 @@ export const AddChall = () => {
       formData.append("file", data.files[0]);
     }
 
-    mutate(formData);
+    updateChallenge({ formData, challengeId: numId });
   };
 
   const files = watch("files");
@@ -198,7 +231,7 @@ export const AddChall = () => {
             {...register("files")}
             id="files"
             type="file"
-            accept="*"
+            accept=".zip"
             multiple
             className={styles.hiddenFileInput}
           />

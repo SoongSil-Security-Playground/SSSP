@@ -69,6 +69,6 @@ class Settings(BaseSettings):
 
     use_email_auth: bool = os.getenv("USE_EMAIL_AUTH", '').lower() == "true"
     challenge_file_path: str = os.getenv("CHALLENGE_DIR", "")
-    backend_url: str = os.getenv("NEXT_PUBLIC_BACK_SERVER_URL")
+    backend_url: str = "http://localhost:443"
 
 settings = Settings()

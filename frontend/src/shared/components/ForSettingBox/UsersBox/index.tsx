@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import styles from "@/shared/components/ForSettingBox/UsersBox/index.module.css";
 import { user_delete_user } from "@/shared/hooks/api/useUser";
 import { GetUserListSuccess } from "@/shared/types/forAPI/UserType";
+import { toast } from "react-toastify";
 
 interface UsersBoxProps {
   data: GetUserListSuccess;
@@ -30,8 +31,10 @@ export default function UsersBox({ data: users, searchString }: UsersBoxProps) {
   const { mutate: deleteUser } = useMutation({
     mutationFn: (id: number) => user_delete_user(id),
     onSuccess: () => {
-      alert("삭제 성공!");
-      window.location.href = "/setting?category=Users";
+      toast.success("삭제가 완료되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Users";
+      }, 1000);
     },
   });
 

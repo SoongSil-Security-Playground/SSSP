@@ -63,8 +63,8 @@ def verify_token(token: str):
         logging.debug(token)
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
-        logging.info(f"[*] AUTH>> Decoded payload: {payload}")
-        logging.info(f"[*] AUTH>> sub from payload: {username}")
+        # logging.info(f"[*] AUTH>> Decoded payload: {payload}")
+        # logging.info(f"[*] AUTH>> sub from payload: {username}")
         return username
     except JWTError as e:
         logging.debug(e)

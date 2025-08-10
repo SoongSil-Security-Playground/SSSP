@@ -71,7 +71,7 @@ def update_challenge(
                     detail="Failed to save or update file",
                 )   
             
-            download_url = f"{settings.backend_url}/api/v1/challenges/download/{new_filename}"
+            download_url = f"{settings.backend_url}/challenges/download/{new_filename}"
             filetype=file.content_type
             logging.info(f"File {download_url} uploaded to Storage")
             

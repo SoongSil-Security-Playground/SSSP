@@ -83,6 +83,17 @@ class Submission(Base):
     user = relationship("User", back_populates="submissions")
     challenge = relationship("Challenge", back_populates="submissions")
 
+class DockerImage(Base):
+    __tablename__ = "docker_images"
+    id = Column(Integer, primary_key=True, index=True)
+    image_name = Column(String(255), nullable=False)
+    chall_id = Column(Integer, nullable=False)
+
+class DockerContainer(Base):
+    __tablename__ = "docker_containers"
+    id = Column(Integer, primary_key=True, index=True)
+    container_name = Column(String(255), nullable=False)
+    image_id = Column(Integer, ForeignKey("docker_images.id"), nullable=False)
 
 class Notice(Base):
     __tablename__ = "notices"
