@@ -1,18 +1,17 @@
 .mainContainer {
-  display: flex;
   width: 100%;
 }
 
 .mainContent {
-  flex: 1;
-  overflow-y: hidden;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 8rem;
+  gap: 3rem;
 }
 
 .mainTitle {
+  margin-top: 8rem;
   font-family: "Silkscreen";
   font-size: 4rem;
   color: var(--offwhite);
@@ -25,4 +24,148 @@
   justify-content: center;
   text-align: center;
   line-height: 1;
+  min-height: 480px;
+}
+
+.floatingImageRight {
+  display: block;
+  margin: 0.2rem auto 0 auto;
+  animation: floatRight 4.6s cubic-bezier(.45, .05, .55, .95) infinite alternate;
+  filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.22));
+  will-change: transform, filter;
+}
+
+.floatingImageLeft {
+  display: block;
+  margin: 0 auto 0.2rem auto;
+  animation: floatLeft 3.8s cubic-bezier(.4, .1, .2, 1) infinite alternate;
+  animation-delay: .35s;
+  /* 시작 타이밍 어긋나게 */
+  filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.22));
+  will-change: transform, filter;
+}
+
+@keyframes floatRight {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    filter: drop-shadow(0 6px 16px rgba(255, 255, 255, .22));
+  }
+
+  25% {
+    transform: translate(6px, -8px) rotate(1.2deg);
+    filter: drop-shadow(0 9px 20px rgba(255, 255, 255, .28));
+  }
+
+  50% {
+    transform: translate(0, -16px) rotate(0.4deg);
+    filter: drop-shadow(0 12px 26px rgba(255, 255, 255, .34));
+  }
+
+  75% {
+    transform: translate(8px, -8px) rotate(1.6deg);
+    filter: drop-shadow(0 9px 20px rgba(255, 255, 255, .28));
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    filter: drop-shadow(0 6px 16px rgba(255, 255, 255, .22));
+  }
+}
+
+@keyframes floatLeft {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    filter: drop-shadow(0 6px 16px rgba(255, 255, 255, .22));
+  }
+
+  25% {
+    transform: translate(-6px, -9px) rotate(-1.2deg);
+    filter: drop-shadow(0 9px 20px rgba(255, 255, 255, .28));
+  }
+
+  50% {
+    transform: translate(0, -14px) rotate(-0.5deg);
+    filter: drop-shadow(0 12px 26px rgba(255, 255, 255, .34));
+  }
+
+  75% {
+    transform: translate(-8px, -7px) rotate(-1.7deg);
+    filter: drop-shadow(0 9px 20px rgba(255, 255, 255, .28));
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    filter: drop-shadow(0 6px 16px rgba(255, 255, 255, .22));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .floatingImageRight,
+  .floatingImageLeft {
+    animation: none;
+  }
+}
+
+/* 스크롤 유도 화살표 */
+.scrollHint {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .25rem;
+  text-decoration: none;
+  color: var(--offwhite);
+  opacity: .85;
+  animation: bounceY 1.8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.scrollHint:hover {
+  opacity: 1;
+}
+
+.scrollIcon {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  /* 아래로 살짝 떨어지는 느낌 주기 위해 시작 위치를 올려 둠 */
+  transform: translateY(-2px);
+}
+
+.scrollText {
+  font-size: .9rem;
+  opacity: .8;
+}
+
+/* 프로모 섹션 상단 여백(타이틀과 시각적으로 여유) */
+.promoSection {
+  width: 100%;
+  margin-top: .5rem;
+}
+
+/* 위아래 둥둥 애니메이션 */
+@keyframes bounceY {
+  0% {
+    transform: translateY(0);
+    opacity: .7;
+  }
+
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: .7;
+  }
+}
+
+/* 모션 최소화 선호 시 정지 */
+@media (prefers-reduced-motion: reduce) {
+  .scrollHint {
+    animation: none;
+  }
 }

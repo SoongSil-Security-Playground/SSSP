@@ -12,7 +12,10 @@
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  width: 12rem;
+  width: 15rem;
+  height: 10rem;
+  align-items: center;
+  justify-content: center;;
   margin-right: 1rem;
 
   transition:
