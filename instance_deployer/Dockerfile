@@ -4,6 +4,7 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_CTYPE=C.UTF-8
 
 RUN apt-get upgrade
 RUN apt-get update
@@ -17,13 +18,13 @@ RUN pip3 install pwntools
 RUN useradd -m -s /bin/bash ctfuser
 USER ctfuser
 WORKDIR /home/ctfuser
-RUN export LC_CTYPE=C.UTF-8
 
 ########### gdb setup
-RUN git clone https://github.com/hugsy/gef.git
+RUN wget -O ~/.gdbinit-gef.py -q https://gef.blah.cat/py
+
 RUN git clone https://github.com/scwuaptx/Pwngdb.git
 
-RUN echo "source /home/ctfuser/gef/gef.py\\nsource /home/ctfuser/Pwngdb/pwngdb.py\\nsource /home/ctfuser/Pwngdb/angelheap/gdbinit.py\\n\\ndefine hook-run\\npython\\nimport angelheap\\nangelheap.init_angelheap()\\nend\\nend" >> ~/.gdbinit
+RUN echo "source ~/.gdbinit-gef.py\\nsource /home/ctfuser/Pwngdb/pwngdb.py\\nsource /home/ctfuser/Pwngdb/angelheap/gdbinit.py\\n\\ndefine hook-run\\npython\\nimport angelheap\\nangelheap.init_angelheap()\\nend\\nend" >> ~/.gdbinit
 
 ########### vim setup
 RUN echo "set nu" >> ~/.vimrc

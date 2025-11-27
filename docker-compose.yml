@@ -36,6 +36,7 @@ services:
       PUBLIC_IP: ${PUBLIC_IP}
       CORS_ORIGINS: ${CORS_ORIGINS}
     volumes:
+      - ./backend:/app
       - sssp_backend_challenge_files:/app/challenge_files
       - /var/run/docker.sock:/var/run/docker.sock
       # - /etc/letsencrypt:/etc/letsencrypt:ro

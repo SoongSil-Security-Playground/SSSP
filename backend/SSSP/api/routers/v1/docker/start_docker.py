@@ -21,6 +21,7 @@ import shutil
 import socket
 import json
 import logging
+import time
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -64,6 +65,7 @@ def start_docker_container(
             name=cont_name       # --name (container name)
         )
 
+        time.sleep(0.5)  # wait for port mapping to be assigned
         container.reload()
         logging.info(f"Successfully started container {container.id}")
 
