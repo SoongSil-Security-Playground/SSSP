@@ -32,6 +32,11 @@ SSSP uses the following technology stacks
     - So you don't need to setup mysql, challenge_directory!
 
 ### Todo:
+- mysql db 구조 갈아엎기
+- backend pre_start entrypoint 갈아엎기
+- admin panel 프엔수정
+    - 문제 edit 버튼이 ux 나쁨
+    - 문제미리보기에서 flag 안보임
 - Delete Submission
 - Fix Delete Challenge File
 - Authorization when Challenge File Download 
