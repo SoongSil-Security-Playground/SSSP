@@ -65,6 +65,7 @@ class Challenge(Base):
     minimum_points = Column(Integer, nullable=False)
     decay = Column(Integer, nullable=False, default=100)
     is_dynamic = Column(Boolean, nullable=False)
+    useDocker = Column(Boolean, nullable=False, default=False)
     solve_count = Column(Integer, default=0)
 
     submissions = relationship("Submission", back_populates="challenge")
@@ -82,6 +83,13 @@ class Submission(Base):
     user = relationship("User", back_populates="submissions")
     challenge = relationship("Challenge", back_populates="submissions")
 
+class DockerContainer(Base):
+    __tablename__ = "docker_containers"
+    id = Column(Integer, primary_key=True, index=True)
+    container_name = Column(String(255), nullable=False)
+    port = Column(Integer, nullable=True)
+    chall_id = Column(Integer, ForeignKey("challenges.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
 class Notice(Base):
     __tablename__ = "notices"

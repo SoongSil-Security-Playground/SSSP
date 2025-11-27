@@ -4,6 +4,7 @@ import styles from "./index.module.css";
 import { challenge_delete } from "@/shared/hooks/api/useChallenge";
 import { admin_notice_delete } from "@/shared/hooks/api/useNotice";
 import { delete_submission } from "@/shared/hooks/api/useSubmission";
+import { toast } from "react-toastify";
 
 interface DeleteButtonProps {
   selectedIds: number[];
@@ -32,22 +33,28 @@ export const DeleteButton = ({ selectedIds, caseName }: DeleteButtonProps) => {
       selectedIds.forEach((id) => {
         deleteChallenge(id);
       });
-      alert("삭제 성공!");
-      window.location.href = "/setting?category=Challenges";
+      toast.success("삭제가 완료되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Challenges";
+      }, 1000);
     } else if (caseName === "Notification") {
       selectedIds.forEach((id) => {
         deleteNotification(id);
       });
-      alert("삭제 성공!");
-      window.location.href = "/setting?category=Notification";
+      toast.success("삭제가 완료되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Notification";
+      }, 1000);
     } else if (caseName === "Submission") {
       console.log(selectedIds);
       selectedIds.forEach((id) => {
         deleteSubmission(id);
       });
-      alert("삭제 성공!");
-      window.location.href = "/setting?category=Submissions";
-    } else alert("잘못된 접근입니다.");
+      toast.success("삭제가 완료되었습니다!");
+      setTimeout(() => {
+        window.location.href = "/setting?category=Submissions";
+      }, 1000);
+    } else toast.error("잘못된 접근입니다.");
   };
 
   return (

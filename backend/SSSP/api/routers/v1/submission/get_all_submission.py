@@ -42,7 +42,7 @@ def get_all_submission(
         )
         submission_response.append(resp)
 
-    logging.info(f"[*] Submission list >> {submission_response}")
+    # logging.info(f"[*] Submission list >> {submission_response}")
 
     # [TODO] Sort Submission
 

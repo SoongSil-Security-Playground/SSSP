@@ -1,17 +1,20 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, useMemo } from 'react';
-import { useFilters } from '../../FilterPanel/FilterContext';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { challenge_submit } from '@/shared/hooks/api/useChallenge';
-import { Modal } from '../Modal';
-import { FloatingInput } from '../../Input/FloatingInput';
-import { Button } from '../../Button';
-import { StarRating } from '../../Rating';
-import { CheckCircle, Play, Square } from 'lucide-react';
-import { toast } from 'react-toastify';
-import styles from './index.module.css';
-import type { SubmitChallengeSuccess, DefaultChallengeContent } from '@/shared/types/forAPI/ChallengeType';
+import React, { useEffect, useState, useMemo } from "react";
+import { useFilters } from "../../FilterPanel/FilterContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { challenge_submit } from "@/shared/hooks/api/useChallenge";
+import { Modal } from "../Modal";
+import { FloatingInput } from "../../Input/FloatingInput";
+import { Button } from "../../Button";
+import { StarRating } from "../../Rating";
+import { CheckCircle, Play, Square } from "lucide-react";
+import { toast } from "react-toastify";
+import styles from "./index.module.css";
+import type {
+  SubmitChallengeSuccess,
+  DefaultChallengeContent,
+} from "@/shared/types/forAPI/ChallengeType";
 
 export const ChallengeDetailModal: React.FC = () => {
   const qc = useQueryClient();
@@ -29,28 +32,28 @@ export const ChallengeDetailModal: React.FC = () => {
     [items, selectedId]
   );
 
-  const [flagInput, setFlagInput] = useState('');
+  const [flagInput, setFlagInput] = useState("");
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [dockerWindow, setDockerWindow] = useState<Window | null>(null);
 
   const mutation = useMutation<SubmitChallengeSuccess, Error, string>({
     mutationFn: (flag) => challenge_submit(item!.id, flag),
     onSuccess: (data) => {
-      qc.invalidateQueries({ queryKey: ['challenges'] });
+      qc.invalidateQueries({ queryKey: ["challenges"] });
       setSelectedId(null);
-      if (data.detail) {
-        toast.success(data.detail);
+      if (data.status == 0) {
+        toast.success("Correct Flag!");
       }
     },
     onError: (err) => {
-      toast.error(err.message || 'Flag submission failed');
-    }
+      toast.error(err.message || "Flag submission failed");
+    },
   });
 
   useEffect(() => {
-    if (item) setFlagInput('');
+    if (item) setFlagInput("");
   }, [item]);
-  
+
   useEffect(() => {
     if (!dockerWindow) return;
     const timer = setInterval(() => {
@@ -61,22 +64,84 @@ export const ChallengeDetailModal: React.FC = () => {
     }, 500);
     return () => clearInterval(timer);
   }, [dockerWindow]);
-  
+
   const handleClose = () => setSelectedId(null);
-  
-  const handleDockerButton = () => {
-    if (dockerWindow && !dockerWindow.closed) {
+
+  const handleDockerButton = async () => {
+  if (dockerWindow && !dockerWindow.closed) {
+    // const token = localStorage.getItem("token");
+    // const res = await fetch(
+    //   `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/docker/stop/${item!.id}`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    //     },
+    //   }
+    // );
+
+    // if (res.status === 401) {
+    //   alert("ERR");
+    //   return;
+    // }
+
+    // let res: string | null = null;
+    // try {
+    //   res = await res.json();
+    // } catch {
+    //   alert("ERR2");
+    //   return;
+    // }
+
+    // if (typeof res === "string" && res.startsWith("success")) {
+
+    //   dockerWindow.close();
+    //   setDockerWindow(null);
+    // } else {
+    //   alert("Docker close 실패");
+    // }
+
       dockerWindow.close();
       setDockerWindow(null);
-    } else {
-      const win = window.open('_blank');
-      setDockerWindow(win);
+  } else {
+    const token = localStorage.getItem("token");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/docker/start/${item!.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
+
+    if (res.status === 401) {
+      alert("ERR");
+      return;
     }
-  };
+
+    let url: string | null = null;
+    try {
+      url = await res.json();
+    } catch {
+      alert("ERR2");
+      return;
+    }
+
+    if (typeof url === "string" && url.startsWith("http")) {
+      const win = window.open(url, "_blank");
+      setDockerWindow(win);
+    } else {
+      alert("Docker URL 생성 실패");
+    }
+  }
+};
 
   if (listLoading) return <div className={styles.container}>Loading...</div>;
   if (listError) {
-    toast.error(listErrorObj?.message || 'Failed to load challenges');
+    toast.error(listErrorObj?.message || "Failed to load challenges");
     return <div className={styles.container}>Error loading challenge</div>;
   }
   if (!item) return null;
@@ -84,28 +149,36 @@ export const ChallengeDetailModal: React.FC = () => {
   const handleDownload = () => {
     if (!item.file_path) return;
     const url = item.file_path;
-    const filename = url.split('/').pop() ?? 'download';
-    const link = document.createElement('a');
+    const filename = url.split("/").pop() ?? "download";
+    const link = document.createElement("a");
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
-  
+
   const isSolved = item.is_user_solved === 1;
 
   return (
     <Modal isOpen={true} onClose={handleClose}>
-      <div className={(isSolved ? styles.solvedContainer : styles.unsolvedContainer)}>
-        <button className={styles.closeBtn} onClick={handleClose} aria-label="Close">
+      <div
+        className={isSolved ? styles.solvedContainer : styles.unsolvedContainer}
+      >
+        <button
+          className={styles.closeBtn}
+          onClick={handleClose}
+          aria-label="Close"
+        >
           &times;
         </button>
         <div className={styles.title}>{item.name}</div>
         <div className={styles.meta}>
           <StarRating rating={parseInt(item.level, 10)} />
           <span className={styles.points}>{item.points} pts</span>
-          <span className={styles.categoryPill}>{item.category.toUpperCase()}</span>
+          <span className={styles.categoryPill}>
+            {item.category.toUpperCase()}
+          </span>
         </div>
         <p className={styles.description}>{item.description}</p>
         {item.file_path ? (
@@ -114,11 +187,9 @@ export const ChallengeDetailModal: React.FC = () => {
               download
             </Button>
           </>
-        ) :
-          (
-            <></>
-          )
-        }
+        ) : (
+          <></>
+        )}
         {isSolved ? (
           <>
             <div className={styles.solved}>
@@ -128,37 +199,50 @@ export const ChallengeDetailModal: React.FC = () => {
           </>
         ) : (
           <>
-          <Button
-              className={styles.dockerBtn}
-              onClick={handleDockerButton}
-              icon={dockerWindow && !dockerWindow.closed ? <Square size={16} /> : <Play size={16} />}
-              iconPosition="left"
-          >
-            {dockerWindow && !dockerWindow.closed ? 'Close Docker' : 'Run Docker'}
-          </Button>
-          <form className={styles.flagForm} onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitError(null);
-            mutation.mutate(flagInput);
-          }}>
-            
-            <FloatingInput
-              type="text"
-              label="FLAG"
-              value={flagInput}
-              className={styles.flagInput}
-              onChange={(e) => setFlagInput(e.target.value)}
-              disabled={mutation.isPending}
-              required
-            />
-            <Button
-              type="submit"
-              className={styles.flagSubmit}
-              disabled={mutation.isPending || !flagInput}
+            {item.useDocker && (
+              <Button
+                className={styles.dockerBtn}
+                onClick={handleDockerButton}
+                icon={
+                  dockerWindow && !dockerWindow.closed ? (
+                    <Square size={16} />
+                  ) : (
+                    <Play size={16} />
+                  )
+                }
+                iconPosition="left"
+              >
+                {dockerWindow && !dockerWindow.closed
+                  ? "Close Docker"
+                  : "Run Docker"}
+              </Button>
+            )}
+
+            <form
+              className={styles.flagForm}
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSubmitError(null);
+                mutation.mutate(flagInput);
+              }}
             >
-              {mutation.isPending ? 'Submitting…' : 'Submit'}
-            </Button>
-          </form>
+              <FloatingInput
+                type="text"
+                label="FLAG"
+                value={flagInput}
+                className={styles.flagInput}
+                onChange={(e) => setFlagInput(e.target.value)}
+                disabled={mutation.isPending}
+                required
+              />
+              <Button
+                type="submit"
+                className={styles.flagSubmit}
+                disabled={mutation.isPending || !flagInput}
+              >
+                {mutation.isPending ? "Submitting…" : "Submit"}
+              </Button>
+            </form>
           </>
         )}
       </div>

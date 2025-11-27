@@ -1,8 +1,9 @@
 import styles from './layout.module.css'
 import './global.css'
 import QueryProvider from '@/shared/utils/QueryProvider';
-import { AuthProvider } from '@/shared/utils/AuthProvider';
+import { AuthRootProvider } from '@/shared/utils/AuthProvider';
 import { Layout } from '@/shared/components/Layout';
+import ClientToast from '@/shared/components/ClientToast';
 
 export const metadata = {
   title: "SSSP",
@@ -30,13 +31,14 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={styles.root}>
-        <AuthProvider>
+        <AuthRootProvider>
           <QueryProvider>
             <Layout>
               {children}
             </Layout>
           </QueryProvider>
-        </AuthProvider>
+        </AuthRootProvider>
+        <ClientToast />
       </body>
     </html>
   );

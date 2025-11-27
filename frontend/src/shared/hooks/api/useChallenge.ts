@@ -111,10 +111,7 @@ export const challenge_get_spec = async (challenge_id: number) => {
     }
   );
 
-  return (await res.json()) as
-    | GetSpecChallengeSuccess
-    | AuthError
-    | AuthValidateError;
+  return (await res.json()) as GetSpecChallengeSuccess;
 };
 
 // /api/v1/challenges/{challenge_id}/submit
@@ -153,15 +150,18 @@ export const challenge_submit = async (
   }
 
   if (!res.ok) {
-    const errObj = payload as { detail?: string; message?: string };
-    const msg = errObj.detail ?? errObj.message ?? `Error ${res.status}`;
+    const msg = `Error ${res.status}`;
     throw new ChallengeError(msg);
   }
 
   const result = payload as SubmitChallengeSuccess;
 
-  if (!result.is_correct) {
-    throw new ChallengeError(result.detail);
+  if (result.status == 1) {
+    // Incorrect
+    throw new ChallengeError("Incorrect Flag");
+  } else if (result.status == 2) {
+    // Already Solved
+    throw new ChallengeError("Challenge Already Solved");
   }
 
   return result;
@@ -259,29 +259,10 @@ export const challenge_delete = async (challenge_id: number) => {
 // Update Challenge, {PATCH}
 
 export const challenge_update = async (
-  challenge_id: number,
-  name: string,
-  description: string,
-  points: number,
-  level: string,
-  category: string,
-  file: File | null,
-  flag: string
+  formData: FormData,
+  challenge_id: number
 ) => {
   const token = localStorage.getItem("token");
-
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("description", description);
-  formData.append("points", points.toString());
-  formData.append("level", level);
-  formData.append("category", category);
-  formData.append("flag", flag);
-
-  // 파일이 선택되었을 경우에만 전송
-  if (file) {
-    formData.append("file", file);
-  }
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/admin/challenges/${challenge_id}`,

@@ -114,15 +114,21 @@ export default function SubmissionBox({
     handleSelectChange(newSelected);
   };
 
-  const getCorrectStatus = (status: number) =>
-    status === 0 ? "correct" : status === 1 ? "incorrect" : "unknown";
+  const getCorrectStatus = (status: number) =>{
+    if(status === 0) 
+      return "correct";
+    else if(status === 1) 
+      return "incorrect";
+    else 
+      return "Already Solved";
+  }
 
   const getCorrectClass = (status: number) =>
     status === 0
       ? styles.badgeCorrect
       : status === 1
       ? styles.badgeIncorrect
-      : styles.badgeUnknown;
+      : styles.badgeSolved;
 
   return (
     <div className={styles.container}>

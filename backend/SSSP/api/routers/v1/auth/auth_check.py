@@ -20,7 +20,7 @@ router = APIRouter()
 def auth_check(
     token: str = Depends(settings.oauth2_scheme), db: Session = Depends(get_db)
 ):
-    logging.info(f"[*] TOKEN: {token}")
+    # logging.info(f"[*] TOKEN: {token}")
     get_user = auth.get_current_user_by_jwt(token, db)
-    logging.info(f"[*] userinfo {get_user}")
+    # logging.info(f"[*] userinfo {get_user}")
     return {"authority": get_user.authority}

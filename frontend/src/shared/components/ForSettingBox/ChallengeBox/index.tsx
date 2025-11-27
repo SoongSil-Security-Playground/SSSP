@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
+
 import Image from "next/image";
 
 import styles from "./index.module.css";
 import arrowDown from "/public/Table/Tags/arrow-down.svg";
 import { GetAllChallengeSuccess } from "@/shared/types/forAPI/ChallengeType";
-import { EditChallengeModal } from "../../Modal/EditChallengeModal";
+import { useRouter } from "next/navigation";
 
 export interface Challenge {
   name: string;
@@ -80,9 +81,7 @@ export default function ChallengeBox({
   const [ascending, setAscending] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const editingChallenge = sortedRows.find((item) => item.id === editingId);
+  const router = useRouter();
 
   const allSelected =
     chall && chall!.length > 0 && selectedIds.length === chall.length;
@@ -120,16 +119,6 @@ export default function ChallengeBox({
       ? selectedIds.filter((x) => x !== id)
       : [...selectedIds, id];
     handleSelectChange(newSelected);
-  };
-
-  const handleOpen = (id: number) => {
-    setShowEditModal(true);
-    setEditingId(id);
-  };
-
-  const handleClose = () => {
-    setShowEditModal(false);
-    setEditingId(null);
   };
 
   return (
@@ -219,7 +208,9 @@ export default function ChallengeBox({
                     </td>
                     <td
                       className={`${styles.actionsCell}`}
-                      onClick={() => handleOpen(row.id)}
+                      onClick={() =>
+                        router.push(`/setting/challenge/${row.id}/edit`)
+                      }
                     >
                       ⋮
                     </td>
@@ -287,12 +278,6 @@ export default function ChallengeBox({
           </tbody>
         </table>
       </div>
-      {showEditModal && editingId && (
-        <EditChallengeModal
-          handleModal={handleClose}
-          editingChallenge={editingChallenge!}
-        />
-      )}
     </>
   );
 }

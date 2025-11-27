@@ -47,6 +47,9 @@ def stop_docker_container(
         container = client.containers.get(container_id)
         container.stop()
         logging.info(f"Successfully stopped container {container_id}")
+
+        db.query(models.DockerContainer).filter(models.DockerContainer.id == container_id).delete()
+        db.commit()
         return True
     except docker.errors.NotFound:
         logging.warning(f"Container ID[{container_id}] not found")

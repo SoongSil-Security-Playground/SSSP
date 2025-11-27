@@ -12,6 +12,7 @@ export interface DefaultChallengeContent {
   solve_count: number;
   level: string;
   flag: string;
+  useDocker: boolean;
 }
 
 // /api/v1/challenges/download/{file_path}
@@ -49,8 +50,7 @@ export interface SubmitChallengeForRequest {
 }
 
 export interface SubmitChallengeSuccess {
-  is_correct: Boolean;
-  detail: string;
+  status: number;
 }
 
 // /api/v1/challenges/solved/me
@@ -66,12 +66,13 @@ export interface CreateChallengeForRequest {
   category: string;
   description: string;
   flag: string;
-  scoring: string;
+  scoring: boolean;
   points: string;
   decay: string;
   minimumPoints: string;
-  is_dynamic: string;
   files: FileList;
+  useDocker: boolean;
+  level: number;
 }
 
 export interface CreateChallengeSuccess extends DefaultChallengeContent {}

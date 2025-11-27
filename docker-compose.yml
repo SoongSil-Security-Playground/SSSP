@@ -33,9 +33,10 @@ services:
       CHALLENGE_DIR: /app/challenge_files
 
       NEXT_PUBLIC_BACK_SERVER_URL: ${NEXT_PUBLIC_BACK_SERVER_URL}
-
+      PUBLIC_IP: ${PUBLIC_IP}
       CORS_ORIGINS: ${CORS_ORIGINS}
     volumes:
+      - ./backend:/app
       - sssp_backend_challenge_files:/app/challenge_files
       - /var/run/docker.sock:/var/run/docker.sock
       # - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -124,6 +125,14 @@ services:
       NEXT_PUBLIC_BACK_SERVER_URL: ${NEXT_PUBLIC_BACK_SERVER_URL}
       REACT_APP_USE_EMAIL_AUTH: ${USE_EMAIL_AUTH}
     restart: always
+
+  instance_deployer:
+    build: 
+      context: instance_deployer/
+      dockerfile: Dockerfile
+    profiles:
+      - "build-only"
+
 
 volumes:
   mysql_data:

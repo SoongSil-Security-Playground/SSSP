@@ -136,12 +136,14 @@
   color: black;
 }
 
-.badgeUnknown {
-  background-color: #ccc;
-  color: white;
+.badgeSolved {
+  display: inline-block;
   padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: #e57373;
+  color: black;
 }
 
 /* custom checkboxes */

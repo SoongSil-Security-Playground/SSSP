@@ -5,6 +5,9 @@
 
 :root {
     --offwhite: #fafafa;
+    --z-toast: 2147483647;
+    --z-drawer: 1000;
+    --z-backdrop: 900;
 }
 
 *,
@@ -23,4 +26,23 @@ body {
     font-family: 'Press Start 2P',
         'Share Tech Mono',
         sans-serif
+}
+
+
+/* react-toastify 컨테이너 최상단 보장 */
+.Toastify__toast-container {
+    z-index: var(--z-toast) !important;
+    position: fixed;
+    /* 혹시나 해서 명시 */
+}
+
+/* Drawer 계층 정리 */
+.backdropOpen,
+.backdropClosed {
+    z-index: var(--z-backdrop);
+}
+
+.panelOpen,
+.panelClosed {
+    z-index: var(--z-drawer);
 }
