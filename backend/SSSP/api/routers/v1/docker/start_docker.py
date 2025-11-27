@@ -88,7 +88,7 @@ def start_docker_container(
         chall_db = db.query(models.Challenge).filter(models.Challenge.id == chall_id).first()
         chall_flag = chall_db.flag
         chall_filepath = chall_db.file_path
-        chall_filename = chall_db.original_filename
+        chall_filename = "prob"
         chall_filecontent = None
         
         UPLOAD_DIR = Path(settings.challenge_file_path)
@@ -125,8 +125,9 @@ def start_docker_container(
         command.append(f"chmod 700 {destination_path}/flag")
 
         # add sid & execute permission
-        command.append(f"chmod 555 '{destination_path}/{chall_filename}'")
-        command.append(f"chmod +s '{destination_path}/{chall_filename}'")
+        command.append(f"chmod 777 {destination_path}/prob")
+        command.append(f"chmod 555 runner")
+        command.append(f"chmod +s runner")
         for cmd in command:
             exit_code, output = container.exec_run(cmd, user='root')
 
